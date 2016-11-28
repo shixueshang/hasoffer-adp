@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>hasoffer.adp</groupId>
+    <artifactId>hasoffer.adp</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>hasoffer.adp.core</module>
+        <module>hasoffer.adp.admin</module>
+    </modules>
+
+
+    <properties>
+        <spring-default_version>4.3.4.RELEASE</spring-default_version>
+        <spring-jdbc_version>4.3.3.RELEASE</spring-jdbc_version>
+
+        <ali-druid_version>1.0.26</ali-druid_version>
+        <mysql_version>5.1.30</mysql_version>
+        <mybatis_version>3.4.1</mybatis_version>
+        <mybatis-spring_version>1.3.0</mybatis-spring_version>
+        <jodd_version>3.7</jodd_version>
+        <junit_version>4.12</junit_version>
+
+        <jstl_version>1.2</jstl_version>
+        <servlet-api_version>2.5</servlet-api_version>
+        <codehaus_version>1.9.13</codehaus_version>
+        <fasterxml_version>2.8.5</fasterxml_version>
+        <!--<fasterxml_version>2.1.0</fasterxml_version>-->
+
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    <optimize>true</optimize>
+                    <debug>true</debug>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+            <!--<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/resources</directory>
+                            <targetPath>WEB-INF</targetPath>
+                            &lt;!&ndash; enable filtering &ndash;&gt;
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>resin-web.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>-->
+        </plugins>
+    </build>
+
+    <!-- 提交jar到公司maven服务器上 -->
+    <distributionManagement>
+        <repository>
+            <id>hasoffer-nexus-releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://47.88.137.23:8081/nexus/content/repositories/hasofferReleases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>hasoffer-nexus-snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>http://47.88.137.23:8081/nexus/content/repositories/hasofferSnapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <!-- 使用公司的maven服务器 -->
+    <repositories>
+        <repository>
+            <id>hasoffer-nexus-public</id>
+            <name>Hasoffer nexus Mirror</name>
+            <url>http://47.88.137.23:8081/nexus/content/groups/public</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>hasoffer-nexus-releases</id>
+            <name>Hasoffer nexus Mirror Snapshots</name>
+            <url>http://47.88.137.23:8081/nexus/content/repositories/hasofferReleases</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>hasoffer-nexus-snapshots</id>
+            <name>Hasoffer nexus Mirror Snapshots</name>
+            <url>http://47.88.137.23:8081/nexus/content/repositories/hasofferSnapshots</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>hasoffer-nexus-public</id>
+            <name>Hasoffer nexus Mirror</name>
+            <url>http://47.88.137.23:8081/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
