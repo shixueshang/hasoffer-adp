@@ -36,7 +36,7 @@ public class FileUtil {
             // 一次读入一行，直到读入null为文件结束
             while ((tempString = reader.readLine()) != null) {
                 // 显示行号
-                map.put(tempString.split("\\t")[0], tempString.split("\\t")[1]);
+                map.put(tempString.split("\\t")[0].trim(), tempString.split("\\t")[1].trim());
                 line++;
             }
             reader.close();
