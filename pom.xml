@@ -19,11 +19,13 @@
         <spring-jdbc_version>4.3.3.RELEASE</spring-jdbc_version>
 
         <ali-druid_version>1.0.26</ali-druid_version>
+        <ali-fastjson_version>1.2.6</ali-fastjson_version>
         <mysql_version>5.1.30</mysql_version>
         <mybatis_version>3.4.1</mybatis_version>
         <mybatis-spring_version>1.3.0</mybatis-spring_version>
         <jodd_version>3.7</jodd_version>
         <junit_version>4.12</junit_version>
+        <commons-fileupload.version>1.3.1</commons-fileupload.version>
 
         <jstl_version>1.2</jstl_version>
         <servlet-api_version>2.5</servlet-api_version>

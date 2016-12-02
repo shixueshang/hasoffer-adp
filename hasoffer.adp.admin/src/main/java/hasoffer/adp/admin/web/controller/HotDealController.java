@@ -16,15 +16,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping(value = "/hd")
-public class HotDealController {
+public class HotDealController extends BaseController{
 
     @Resource
     HotDealService hotDealService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ModelAndView list_hds(HttpServletRequest request,
-                                 @RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "0") int size) {
+    public ModelAndView list_hds() {
 
         ModelAndView mav = new ModelAndView("hd/list");
 

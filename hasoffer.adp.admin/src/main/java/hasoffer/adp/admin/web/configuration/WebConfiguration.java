@@ -4,6 +4,7 @@ import hasoffer.adp.admin.web.interceptor.ContextInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.view.InternalResourceView;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 @Configuration
@@ -31,6 +33,23 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         resolver.setDefaultViews(Arrays.asList(new MappingJackson2JsonView()));
 
         resolver.setOrder(1);
+
+        return resolver;
+    }
+
+
+    /**
+     * 文件上传
+     * @return
+     * @throws IOException
+     */
+    @Bean(name="multipartResolver")
+    public CommonsMultipartResolver getResolver() throws IOException {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+
+        resolver.setDefaultEncoding("utf-8");
+        resolver.setMaxUploadSizePerFile(104857600);//10MB
+        resolver.setMaxInMemorySize(4096);
 
         return resolver;
     }
@@ -69,5 +88,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
+        registry.addResourceHandler("/assets/**").addResourceLocations("/assets/");
     }
 }
