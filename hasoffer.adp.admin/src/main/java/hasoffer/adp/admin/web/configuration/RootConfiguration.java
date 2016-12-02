@@ -22,6 +22,8 @@ public class RootConfiguration {
 
     private String pvRequestUrl;
 
+    private String domainUrl;
+
     @Bean
     public MessageSource messageSource(){
         ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
@@ -31,7 +33,7 @@ public class RootConfiguration {
 
     public String getImagePathDir() {
         if(imagePathDir == null){
-            imagePathDir = env.getProperty("icon_url");
+            imagePathDir = env.getProperty("icon_path");
         }
         return imagePathDir;
     }
@@ -49,5 +51,16 @@ public class RootConfiguration {
 
     public void setPvRequestUrl(String pvRequestUrl) {
         this.pvRequestUrl = pvRequestUrl;
+    }
+
+    public String getDomainUrl() {
+        if(domainUrl == null){
+            domainUrl = env.getProperty("domain_url");
+        }
+        return domainUrl;
+    }
+
+    public void setDomainUrl(String domainUrl) {
+        this.domainUrl = domainUrl;
     }
 }

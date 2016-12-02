@@ -13,6 +13,7 @@ import hasoffer.adp.core.models.po.Material;
 import hasoffer.adp.core.service.MaterialService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -40,8 +42,17 @@ public class MaterialController extends BaseController{
     public ModelAndView listMarerial(){
         ModelAndView mav = new ModelAndView("/material/list");
         Page<Material> pageResult = materialService.findPage(page, size);
+        List<Material> list = pageResult.getItems();
+        for(Material m : list){
+            if(!StringUtils.isEmpty(m.getIcon())){
+                m.setIcon(configuration.getDomainUrl() + m.getIcon());
+            }
+            if(!StringUtils.isEmpty(m.getOtherIcon())){
+                m.setOtherIcon(configuration.getDomainUrl() + m.getOtherIcon());
+            }
+        }
         mav.addObject("page", PageHelper.getPageModel(request, pageResult));
-        mav.addObject("materials", pageResult.getItems());
+        mav.addObject("materials", list);
         mav.addObject("url", "material");
         return mav;
     }
@@ -63,7 +74,7 @@ public class MaterialController extends BaseController{
             String name = UUID.randomUUID().toString() + "." + suffix;
             String iconPath = configuration.getImagePathDir();
             this.transferFile(iconPath, name, iconFile);
-            material.setIcon(basePath + iconPath + name);
+            material.setIcon(name);
         }
         if(otherIconFile != null && !otherIconFile.isEmpty()){
             String originName = otherIconFile.getOriginalFilename();
@@ -71,7 +82,7 @@ public class MaterialController extends BaseController{
             String name = UUID.randomUUID().toString() + "." + suffix;
             String otherIconPath = configuration.getImagePathDir();
             this.transferFile(otherIconPath, name, iconFile);
-            material.setOtherIcon(basePath + otherIconPath + name);
+            material.setOtherIcon(name);
         }
 
         material.setPvRequestUrl(configuration.getPvRequestUrl());
@@ -88,6 +99,15 @@ public class MaterialController extends BaseController{
     public AjaxJson listJsonMarerial(){
 
         Page<Material> result = materialService.findPage(page, size);
+        List<Material> list = result.getItems();
+        for(Material m : list){
+            if(!StringUtils.isEmpty(m.getIcon())){
+                m.setIcon(configuration.getDomainUrl() + m.getIcon());
+            }
+            if(!StringUtils.isEmpty(m.getOtherIcon())){
+                m.setOtherIcon(configuration.getDomainUrl() + m.getOtherIcon());
+            }
+        }
         return new AjaxJson(Constants.HttpStatus.OK, result);
     }
 
