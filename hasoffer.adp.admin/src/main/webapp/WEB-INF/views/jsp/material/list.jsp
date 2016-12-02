@@ -82,8 +82,16 @@
                                         <td>${material.price}</td>
                                         <td>${material.url}</td>
                                         <td>${material.putCountry}</td>
-                                        <td><img src="${material.icon}" alt="" height="100px;" width="200px"/></td>
-                                        <td><img src="${material.otherIcon}" alt="" height="100px;" width="200px"/></td>
+                                        <td>
+                                            <c:if test="${not empty material.icon}">
+                                                <img src="${material.icon}" alt="" height="100px;" width="200px"/>
+                                            </c:if>
+                                        </td>
+                                        <td>
+                                            <c:if test="${not empty material.otherIcon}">
+                                                <img src="${material.otherIcon}" alt="" height="100px;" width="200px"/>
+                                            </c:if>
+                                        </td>
                                         <td>${material.putPlatform}</td>
                                         <td>${material.platformVersion}</td>
                                         <td>${material.appType}</td>

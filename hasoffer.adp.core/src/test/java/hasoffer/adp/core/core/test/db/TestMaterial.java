@@ -1,7 +1,6 @@
 package hasoffer.adp.core.core.test.db;
 
 
-import hasoffer.adp.base.utils.Constants;
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.core.configuration.CoreConfiguration;
 import hasoffer.adp.core.enums.AndroidVersion;

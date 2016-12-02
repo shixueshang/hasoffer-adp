@@ -2,8 +2,6 @@ package hasoffer.adp.admin.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import hasoffer.adp.admin.web.configuration.RootConfiguration;
-import hasoffer.adp.base.utils.AjaxJson;
-import hasoffer.adp.base.utils.Constants;
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.base.utils.page.PageHelper;
 import hasoffer.adp.core.enums.AndroidVersion;
@@ -16,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -92,23 +89,6 @@ public class MaterialController extends BaseController{
             materialService.update(material);
         }
         return "redirect:/material/list";
-    }
-
-    @RequestMapping(value = "/listJson", method = RequestMethod.GET)
-    @ResponseBody
-    public AjaxJson listJsonMarerial(){
-
-        Page<Material> result = materialService.findPage(page, size);
-        List<Material> list = result.getItems();
-        for(Material m : list){
-            if(!StringUtils.isEmpty(m.getIcon())){
-                m.setIcon(configuration.getDomainUrl() + m.getIcon());
-            }
-            if(!StringUtils.isEmpty(m.getOtherIcon())){
-                m.setOtherIcon(configuration.getDomainUrl() + m.getOtherIcon());
-            }
-        }
-        return new AjaxJson(Constants.HttpStatus.OK, result);
     }
 
     private static void transferFile(String path, String fileName, MultipartFile file) {
