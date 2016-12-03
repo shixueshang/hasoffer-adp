@@ -16,8 +16,7 @@ public class Test {
         String path = "F:\\work\\hasoffer\\bb";
         File[] files = FileUtil.getFiles(path);
         for(File file : files){
-           Map<String, String> fileMap =  FileUtil.readFileByLines(file);
-            list.add(fileMap);
+            list.addAll(FileUtil.readFileByLines(file));
         }
 
         Map<String, List<String>> tagMap = new HashMap<>();
@@ -29,30 +28,27 @@ public class Test {
         for(Map.Entry<String, List<String>> entry : tagMap.entrySet()){
             String android = entry.getKey();
             List<String> tags = entry.getValue();
-            if(tags.size() > 10){
-                System.out.println("tags :" + tags);
-            }
             result.add(addTag(android, tags));
         }
 
         System.out.println("size ： " + result.size());
         for(TagStatistical t : result){
-            if(t.getAndroidid().equals("2c2b436320a041ad")){
-                System.out.println("androidid : " + t.getAndroidid() + " xiaomi : " + t.getXiaomi() + " lenovo : " + t.getLenovo() +
-                        " redmi : " + t.getRedmi() + " huawei : " + t.getHuawei() + " honor : " + t.getHonor() + " samsung : " + t.getSamsung() + " meizu : " + t.getMeizu());
-
-            }
-        }
+            System.out.println("androidid : " + t.getAndroidid() + " xiaomi : " + t.getXiaomi() + " lenovo : " + t.getLenovo() +
+                    " redmi : " + t.getRedmi() + " huawei : " + t.getHuawei() + " honor : " + t.getHonor() + " samsung : " + t.getSamsung() + " meizu : " + t.getMeizu());
 
     }
 
+    }
+
+    /**
+     * 解析map{androidid=tag} 得到新的map中androidid不重复
+     * @param mapData
+     * @param tagMap
+     */
     private static void paraseMap(Map<String, String> mapData,  Map<String, List<String>> tagMap){
         for(Map.Entry<String, String> entry : mapData.entrySet()){
             String key = entry.getKey();
             String value = entry.getValue();
-            if(key.equals("2c2b436320a041ad")){
-                System.out.println("@");
-            }
             if(!tagMap.containsKey(key)){
                 List<String> newList = new ArrayList<>();
                 newList.add(value);

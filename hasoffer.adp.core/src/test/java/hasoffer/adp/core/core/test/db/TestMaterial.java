@@ -3,7 +3,6 @@ package hasoffer.adp.core.core.test.db;
 
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.core.configuration.CoreConfiguration;
-import hasoffer.adp.core.enums.AndroidVersion;
 import hasoffer.adp.core.enums.Platform;
 import hasoffer.adp.core.enums.SettlementWay;
 import hasoffer.adp.core.models.po.Material;
@@ -39,10 +38,8 @@ public class TestMaterial {
     public void insert(){
         Material m = new Material();
         m.setTitle("title");
-        m.setIsCPI(true);
         m.setPutPlatform(Platform.Android);
         m.setSettlementWay(SettlementWay.CPC);
-        m.setPlatformVersion(AndroidVersion.Lower4_1.getIndex());
         materialService.insert(m);
     }
 

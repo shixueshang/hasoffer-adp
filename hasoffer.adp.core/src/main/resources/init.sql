@@ -41,3 +41,15 @@ CREATE TABLE `t_equipment` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `hasoffer`.`t_material_creative` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `materialId` INT NOT NULL,
+  `url` VARCHAR(255) NULL,
+  `width` VARCHAR(45) NULL,
+  `height` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`))
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COMMENT = '素材图';
+
+

@@ -3,6 +3,7 @@ package hasoffer.adp.core.service;
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.core.dao.IMaterialDao;
 import hasoffer.adp.core.models.po.Material;
+import hasoffer.adp.core.models.vo.MaterialCreativeVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,5 +35,9 @@ public class MaterialService {
 
     public void update(Material material){
         dao.update(material);
+    }
+
+    public List<MaterialCreativeVo> findCreatives(Long materialId){
+        return dao.findCreativesByMaterialId(materialId);
     }
 }

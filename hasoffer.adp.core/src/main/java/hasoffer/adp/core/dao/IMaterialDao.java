@@ -1,6 +1,7 @@
 package hasoffer.adp.core.dao;
 
 import hasoffer.adp.core.models.po.Material;
+import hasoffer.adp.core.models.vo.MaterialCreativeVo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,14 +22,17 @@ public interface IMaterialDao {
     int count(@Param("offset") int offset, @Param("size") int size);
 
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    @Insert("insert into t_material(title, subTitle, description, btnText, isCPI, openWay, price, url, putCountry, icon, otherIcon, putPlatform, platformVersion, appType, settlementWay, dailyRunning, pvRequestUrl)" +
-            " values (#{title}, #{subTitle}, #{description}, #{btnText}, #{isCPI}, #{openWay}, #{price}, #{url}, #{putCountry}, #{icon}, #{otherIcon}, #{putPlatform}, #{platformVersion}, #{appType}, #{settlementWay}, #{dailyRunning}, #{pvRequestUrl})")
+    @Insert("insert into t_material(title, subTitle, description, btnText, openWay, price, url, putCountry, icon, putPlatform, minVersion, maxVersion, appType, settlementWay, dailyRunning, pvRequestUrl)" +
+            " values (#{title}, #{subTitle}, #{description}, #{btnText}, #{openWay}, #{price}, #{url}, #{putCountry}, #{icon}, #{putPlatform}, #{minVersion}, #{maxVersion}, #{appType}, #{settlementWay}, #{dailyRunning}, #{pvRequestUrl})")
     @Transactional
     void insert(Material material);
 
-    @Update("update t_material set title=#{title}, subTitle=#{subTitle}, description=#{description}, btnText=#{btnText}, isCPI=#{isCPI}, openWay=#{openWay}, price=#{price}, url=#{url}, putCountry=#{putCountry}, icon=#{icon}, " +
-            "otherIcon=#{otherIcon}, putPlatform=#{putPlatform}, platformVersion=#{platformVersion}, appType=#{appType}, settlementWay=#{settlementWay}, dailyRunning=#{dailyRunning} where id=#{id}")
+    @Update("update t_material set title=#{title}, subTitle=#{subTitle}, description=#{description}, btnText=#{btnText}, openWay=#{openWay}, price=#{price}, url=#{url}, putCountry=#{putCountry}, icon=#{icon}, " +
+            "putPlatform=#{putPlatform}, minVersion=#{minVersion}, maxVersion=#{maxVersion}, appType=#{appType}, settlementWay=#{settlementWay}, dailyRunning=#{dailyRunning} where id=#{id}")
     @Transactional
     void update(Material material);
+
+    @Select("select url, width, height from t_material_creative where materialId = #{materialId}")
+    List<MaterialCreativeVo>  findCreativesByMaterialId(@Param("materialId") long materialId);
 
 }

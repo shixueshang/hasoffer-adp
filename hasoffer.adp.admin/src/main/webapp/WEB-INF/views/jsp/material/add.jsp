@@ -84,23 +84,12 @@
                                             </div>
 
                                             <div class="control-group">
-                                                <label class="control-label">是否CPI</label>
-                                                <div class="controls">
-                                                    <select name="isCPI" id="isCPI" class="large m-wrap">
-                                                        <option value="1">是</option>
-                                                        <option value="0">否</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="control-group">
                                                 <label class="control-label">结算方式</label>
                                                 <div class="controls">
                                                     <select name="settlementWay" id="settlementWay" class="large m-wrap">
-                                                        <option value="CPI">CPI</option>
                                                         <option value="CPC">CPC</option>
                                                         <option value="CPM">CPM</option>
-                                                        <option value="CPA">CPA</option>
+                                                        <option value="CPA">CPS</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -157,34 +146,8 @@
                                                         <div>
                                                             <span class="btn btn-file"><span class="fileupload-new">选择图片</span>
                                                             <span class="fileupload-exists">更换</span>
-                                                            <input type="file" name="iconFile" class="default" accept="image/gif,image/jpeg,image/jpg,image/png,"/></span>
+                                                            <input type="file" name="iconFile" class="default" id="iconFile" accept="image/gif,image/jpeg,image/jpg,image/png,"/></span>
                                                             <input type="hidden" name="icon" id="icon" value="${material.icon}" />
-                                                            <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">移除</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="control-group">
-                                                <label class="control-label">其他icon</label>
-                                                <div class="controls">
-                                                    <div class="fileupload fileupload-new" data-provides="fileupload">
-                                                        <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                                                            <c:choose>
-                                                                <c:when test="${material.otherIcon == null}" >
-                                                                    <img src="<%=request.getContextPath()%>/assets/images/no-image.png" alt="" />
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <img src="<%=basePath%>${material.otherIcon}" alt="" />
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </div>
-                                                        <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
-                                                        <div>
-                                                            <span class="btn btn-file"><span class="fileupload-new">选择图片</span>
-                                                            <span class="fileupload-exists">更换</span>
-                                                            <input type="file" name="otherIconFile" class="default" accept="image/gif,image/jpeg,image/jpg,image/png,"/></span>
-                                                            <input type="hidden" name="otherIcon" id="otherIcon" value="${material.otherIcon}" />
                                                             <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">移除</a>
                                                         </div>
                                                     </div>
@@ -204,9 +167,17 @@
                                             </div>
 
                                             <div class="control-group">
-                                                <label class="control-label">平台版本</label>
+                                                <label class="control-label">平台最低版本</label>
                                                 <div class="controls">
-                                                    <select name="platformVersion" id="platformVersion" class="large m-wrap"></select>
+                                                    <input type="text" name="minVersion" id="minVersion" class="large m-wrap" value="${matetial.minVersion}">
+                                                    <span class="help-inline"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="control-group">
+                                                <label class="control-label">平台最高版本</label>
+                                                <div class="controls">
+                                                    <input type="text" name="maxVersion" id="maxVersion" class="large m-wrap" value="${maxVersion}">
                                                     <span class="help-inline"></span>
                                                 </div>
                                             </div>
@@ -215,9 +186,7 @@
                                                 <label class="control-label">投放app类型</label>
                                                 <div class="controls">
                                                     <c:forEach items="${appTypes}" var="appType">
-                                                        <span style="font-size: 14px;width: 100px !important;">
-                                                            <input type="checkbox" name="appType" value="${appType.name}"  >${appType.name}&nbsp;&nbsp;&nbsp;
-                                                        </span>
+                                                            <input type="checkbox" name="appType" value="${appType.name}" >${appType.name}&nbsp;&nbsp;&nbsp;
                                                     </c:forEach>
                                                 </div>
                                             </div>
@@ -253,40 +222,17 @@
 <script>
     $(function(){
 
-        var isCPI = $('#isCPI');
-        if(isCPI.val() == '1'){
-            $('#settlementWay').empty();
-            $('#settlementWay').append("<option value='CPI'>CPI</option>")
-        }else{
-            $('#settlementWay option:first').remove();
-        }
-        isCPI.change(function(){
-            if(isCPI.val() == '1'){
-                $('#settlementWay').empty();
-                $('#settlementWay').append("<option value='CPI'>CPI</option>");
-            }else{
-                $('#settlementWay').append("<option value='CPI'>CPI</option><option value='CPC'>CPC</option><option value='CPM'>CPM</option><option value='CPA'>CPA</option>")
-                $('#settlementWay option[value="CPI"]').remove();
+        $('#iconFile').change(function(e){
+            var file = this.files[0];
+            var size = file.size;
+            if(size > 150 * 1024){
+                BootstrapDialog.show({
+                    title : '图片太大',
+                    message: '请选择小于150kb的图片!'
+                });
+                return;
             }
-        });
 
-        var putPlatform = $('#putPlatform');
-        var androidVersions = $.parseJSON('${androidVersions}');
-        var IOSVersions = $.parseJSON('${IOSVersions}');
-        putPlatform.change(function(){
-            var platformVersion = $('#platformVersion');
-            platformVersion.empty();
-            if(putPlatform.val() == ''){
-                return false;
-            }else if(putPlatform.val() == 'Android'){
-                $.each(androidVersions, function(i, val){
-                    platformVersion.append("<option value='"+ val.index +"'>"+ val.name +"</option>");
-                });
-            }else{
-                $.each(IOSVersions, function(i, val){
-                    platformVersion.append("<option value='"+ val.index +"'>"+ val.name +"</option>");
-                });
-            }
         });
 
         var form = $('#material_form');
@@ -345,4 +291,19 @@
         });
 
     })
+
+
+    function checkImg(){
+        var img = new Image();//构造JS的Image对象
+        img.src = document.imageForm.file.value;//将本地图片赋给image对象
+        img.onreadystatechange=function(){
+            if (img.readyState=="complete"){
+                alert(["图片大小是:",img.width,img.height]);
+                document.imageForm.width.value = img.width;
+                document.imageForm.height.value = img.height;
+                document.imageForm.size.value = img.fileSize;
+                document.images['image'].src = img.src;
+            }
+        }
+    }
 </script>

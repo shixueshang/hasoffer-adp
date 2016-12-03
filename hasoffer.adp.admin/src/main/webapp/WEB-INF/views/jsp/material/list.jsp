@@ -37,19 +37,17 @@
                                     <td>标题</td>
                                     <td>副标题</td>
                                     <td>按钮文字</td>
-                                    <td>是否CPI</td>
                                     <td>结算方式</td>
                                     <td>打开方式</td>
                                     <td>价格</td>
                                     <td>链接</td>
                                     <td>投放国家</td>
                                     <td>投放icon</td>
-                                    <td>其他icon</td>
                                     <td>投放平台</td>
-                                    <td>平台版本</td>
+                                    <td>平台最低版本</td>
+                                    <td>平台最高版本</td>
                                     <td>投放app类型</td>
                                     <td>每日跑量</td>
-                                    <td width="100px;">操作</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -58,16 +56,6 @@
                                         <td>${material.title}</td>
                                         <td>${material.subTitle}</td>
                                         <td>${material.btnText}</td>
-                                        <td width="60px">
-                                            <c:choose>
-                                                <c:when test="${material.isCPI == true}">
-                                                    <label class="label label-success">是</label>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <label class="label label-warning">否</label>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
                                         <td width="60px">${material.settlementWay}</td>
                                         <td>
                                             <c:choose>
@@ -87,18 +75,11 @@
                                                 <img src="${material.icon}" alt="" height="100px;" width="200px"/>
                                             </c:if>
                                         </td>
-                                        <td>
-                                            <c:if test="${not empty material.otherIcon}">
-                                                <img src="${material.otherIcon}" alt="" height="100px;" width="200px"/>
-                                            </c:if>
-                                        </td>
                                         <td>${material.putPlatform}</td>
-                                        <td>${material.platformVersion}</td>
+                                        <td>${material.minVersion}</td>
+                                        <td>${material.maxVersion}</td>
                                         <td>${material.appType}</td>
                                         <td>${material.dailyRunning}</td>
-                                        <td>
-                                            <a href="<%=request.getContextPath()%>/material/detail/${material.id}" class="btn mini purple"><i class="icon-edit"></i> 编辑</a>
-                                        </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

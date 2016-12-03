@@ -1,13 +1,11 @@
 package hasoffer.adp.admin.web.controller;
 
-import com.alibaba.fastjson.JSON;
 import hasoffer.adp.admin.web.configuration.RootConfiguration;
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.base.utils.page.PageHelper;
-import hasoffer.adp.core.enums.AndroidVersion;
 import hasoffer.adp.core.enums.AppType;
-import hasoffer.adp.core.enums.IOSVersion;
 import hasoffer.adp.core.models.po.Material;
+import hasoffer.adp.core.models.vo.MaterialCreativeVo;
 import hasoffer.adp.core.service.MaterialService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,9 +42,11 @@ public class MaterialController extends BaseController{
             if(!StringUtils.isEmpty(m.getIcon())){
                 m.setIcon(configuration.getDomainUrl() + m.getIcon());
             }
-            if(!StringUtils.isEmpty(m.getOtherIcon())){
-                m.setOtherIcon(configuration.getDomainUrl() + m.getOtherIcon());
+            List<MaterialCreativeVo> creatives = materialService.findCreatives(m.getId());
+            for(MaterialCreativeVo mv : creatives){
+                mv.setUrl(configuration.getDomainUrl() + mv.getUrl());
             }
+            m.setCreatives(creatives);
         }
         mav.addObject("page", PageHelper.getPageModel(request, pageResult));
         mav.addObject("materials", list);
@@ -56,8 +56,6 @@ public class MaterialController extends BaseController{
 
     @RequestMapping(value = "/create")
     public String create(Model model){
-        model.addAttribute("androidVersions", JSON.toJSON(AndroidVersion.bulidAndroidVersion()));
-        model.addAttribute("IOSVersions", JSON.toJSON(IOSVersion.bulidIOSVersion()));
         model.addAttribute("appTypes", AppType.buildAppTypes());
         model.addAttribute("url", "material");
         return "material/add";
@@ -72,14 +70,6 @@ public class MaterialController extends BaseController{
             String iconPath = configuration.getImagePathDir();
             this.transferFile(iconPath, name, iconFile);
             material.setIcon(name);
-        }
-        if(otherIconFile != null && !otherIconFile.isEmpty()){
-            String originName = otherIconFile.getOriginalFilename();
-            String suffix = originName.substring(originName.lastIndexOf(".") + 1);
-            String name = UUID.randomUUID().toString() + "." + suffix;
-            String otherIconPath = configuration.getImagePathDir();
-            this.transferFile(otherIconPath, name, iconFile);
-            material.setOtherIcon(name);
         }
 
         material.setPvRequestUrl(configuration.getPvRequestUrl());

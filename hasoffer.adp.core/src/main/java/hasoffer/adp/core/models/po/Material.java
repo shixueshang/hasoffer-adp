@@ -2,6 +2,9 @@ package hasoffer.adp.core.models.po;
 
 import hasoffer.adp.core.enums.Platform;
 import hasoffer.adp.core.enums.SettlementWay;
+import hasoffer.adp.core.models.vo.MaterialCreativeVo;
+
+import java.util.List;
 
 /**
  * Created by lihongde on 2016/11/29 15:42
@@ -18,8 +21,6 @@ public class Material {
 
     private String btnText;
 
-    private boolean isCPI;
-
     private String openWay;
 
     private float price;
@@ -30,11 +31,11 @@ public class Material {
 
     private String icon;
 
-    private String otherIcon;
-
     private Platform putPlatform;
 
-    private Integer platformVersion;
+    private String minVersion;
+
+    private String maxVersion;
 
     private String appType;
 
@@ -43,6 +44,8 @@ public class Material {
     private String dailyRunning;
 
     private String pvRequestUrl;
+
+    private List<MaterialCreativeVo> creatives;
 
     public Long getId() {
         return id;
@@ -82,14 +85,6 @@ public class Material {
 
     public void setBtnText(String btnText) {
         this.btnText = btnText;
-    }
-
-    public boolean getIsCPI() {
-        return isCPI;
-    }
-
-    public void setIsCPI(boolean isCPI) {
-        this.isCPI = isCPI;
     }
 
     public String getOpenWay() {
@@ -132,14 +127,6 @@ public class Material {
         this.icon = icon;
     }
 
-    public String getOtherIcon() {
-        return otherIcon;
-    }
-
-    public void setOtherIcon(String otherIcon) {
-        this.otherIcon = otherIcon;
-    }
-
     public Platform getPutPlatform() {
         return putPlatform;
     }
@@ -148,12 +135,20 @@ public class Material {
         this.putPlatform = putPlatform;
     }
 
-    public Integer getPlatformVersion() {
-        return platformVersion;
+    public String getMinVersion() {
+        return minVersion;
     }
 
-    public void setPlatformVersion(Integer platformVersion) {
-        this.platformVersion = platformVersion;
+    public void setMinVersion(String minVersion) {
+        this.minVersion = minVersion;
+    }
+
+    public String getMaxVersion() {
+        return maxVersion;
+    }
+
+    public void setMaxVersion(String maxVersion) {
+        this.maxVersion = maxVersion;
     }
 
     public String getAppType() {
@@ -186,5 +181,13 @@ public class Material {
 
     public void setPvRequestUrl(String pvRequestUrl) {
         this.pvRequestUrl = pvRequestUrl;
+    }
+
+    public List<MaterialCreativeVo> getCreatives() {
+        return creatives;
+    }
+
+    public void setCreatives(List<MaterialCreativeVo> creatives) {
+        this.creatives = creatives;
     }
 }
