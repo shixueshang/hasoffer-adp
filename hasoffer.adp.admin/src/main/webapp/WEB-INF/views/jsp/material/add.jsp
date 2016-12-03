@@ -291,19 +291,4 @@
         });
 
     })
-
-
-    function checkImg(){
-        var img = new Image();//构造JS的Image对象
-        img.src = document.imageForm.file.value;//将本地图片赋给image对象
-        img.onreadystatechange=function(){
-            if (img.readyState=="complete"){
-                alert(["图片大小是:",img.width,img.height]);
-                document.imageForm.width.value = img.width;
-                document.imageForm.height.value = img.height;
-                document.imageForm.size.value = img.fileSize;
-                document.images['image'].src = img.src;
-            }
-        }
-    }
 </script>
