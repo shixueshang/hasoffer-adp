@@ -1,6 +1,7 @@
 package hasoffer.adp.core.dao;
 
 import hasoffer.adp.core.models.po.Material;
+import hasoffer.adp.core.models.po.MaterialCreative;
 import hasoffer.adp.core.models.vo.MaterialCreativeVo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,5 +35,10 @@ public interface IMaterialDao {
 
     @Select("select url, width, height from t_material_creative where materialId = #{materialId}")
     List<MaterialCreativeVo>  findCreativesByMaterialId(@Param("materialId") long materialId);
+
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Insert("insert into t_material_creative(materialId, url, width, height) values (#{materialId}, #{url}, #{width}, #{height})")
+    @Transactional
+    void insertCreative(MaterialCreative mc);
 
 }

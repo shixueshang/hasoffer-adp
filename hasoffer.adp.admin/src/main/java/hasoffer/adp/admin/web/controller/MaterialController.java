@@ -1,10 +1,13 @@
 package hasoffer.adp.admin.web.controller;
 
 import hasoffer.adp.admin.web.configuration.RootConfiguration;
+import hasoffer.adp.base.utils.AjaxJson;
+import hasoffer.adp.base.utils.Constants;
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.base.utils.page.PageHelper;
 import hasoffer.adp.core.enums.AppType;
 import hasoffer.adp.core.models.po.Material;
+import hasoffer.adp.core.models.po.MaterialCreative;
 import hasoffer.adp.core.models.vo.MaterialCreativeVo;
 import hasoffer.adp.core.service.MaterialService;
 import org.springframework.stereotype.Controller;
@@ -12,11 +15,16 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,14 +70,14 @@ public class MaterialController extends BaseController{
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String saveOrUpdate(Material material, MultipartFile iconFile, MultipartFile otherIconFile){
+    public String saveOrUpdate(Material material, MultipartFile iconFile){
         if(iconFile != null && !iconFile.isEmpty()){
             String originName = iconFile.getOriginalFilename();
             String suffix = originName.substring(originName.lastIndexOf(".") + 1);
-            String name = UUID.randomUUID().toString() + "." + suffix;
+            String newName = UUID.randomUUID().toString() + "." + suffix;
             String iconPath = configuration.getImagePathDir();
-            this.transferFile(iconPath, name, iconFile);
-            material.setIcon(name);
+            this.transferFile(iconPath, newName, iconFile);
+            material.setIcon(newName);
         }
 
         material.setPvRequestUrl(configuration.getPvRequestUrl());
@@ -77,6 +85,18 @@ public class MaterialController extends BaseController{
             materialService.insert(material);
         }else{
             materialService.update(material);
+        }
+
+        String otherIcons = material.getOtherIcons();
+        if(!StringUtils.isEmpty(otherIcons)){
+            String[] creatives = otherIcons.split(",");
+            for(String imgName : creatives){
+                String wh = imgName.split("_")[1];
+                String width = wh.split("x")[0];
+                String height = wh.split("x")[1];
+                MaterialCreative mc = new MaterialCreative(material.getId(), imgName, width, height);
+                materialService.insertCreatives(mc);
+            }
         }
         return "redirect:/material/list";
     }
@@ -91,5 +111,27 @@ public class MaterialController extends BaseController{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxJson upload(MultipartFile[] creativeFile) throws IOException{
+        List<String> fileNameList = new ArrayList<String>();
+        for(MultipartFile file : creativeFile){
+            String originName = file.getOriginalFilename();
+            String suffix = originName.substring(originName.lastIndexOf(".") + 1);
+
+            BufferedImage sourceImg  = ImageIO.read(file.getInputStream());
+            int width = sourceImg.getWidth();
+            int height = sourceImg.getHeight();
+
+            String newName = UUID.randomUUID().toString() + "_" + width + "x" + height + "_" +"." + suffix;
+            String path = configuration.getImagePathDir();
+            this.transferFile(path, newName, file);
+            fileNameList.add(newName);
+        }
+
+        return new AjaxJson(Constants.HttpStatus.OK, fileNameList);
+
     }
 }

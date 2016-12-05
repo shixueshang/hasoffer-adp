@@ -1,17 +1,32 @@
 package hasoffer.adp.core.core.test.db;
 
 import hasoffer.adp.base.utils.FileUtil;
+import hasoffer.adp.core.configuration.CoreConfiguration;
 import hasoffer.adp.core.models.po.TagStatistical;
+import hasoffer.adp.core.service.TagService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.*;
 
 /**
  * Created by lihongde on 2016/12/2 15:39
  */
-public class Test {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=CoreConfiguration.class)
+@Transactional(transactionManager = "txManager")
+public class TestTag {
 
-    public static void main(String[] args) {
+    @Resource
+    TagService tagService;
+
+    @Test
+    public void test() {
         List<Map<String, String>> list = new ArrayList<>();
         String path = "F:\\work\\hasoffer\\bb";
         File[] files = FileUtil.getFiles(path);
@@ -32,11 +47,13 @@ public class Test {
         }
 
         System.out.println("size ： " + result.size());
-        for(TagStatistical t : result){
-            System.out.println("androidid : " + t.getAndroidid() + " xiaomi : " + t.getXiaomi() + " lenovo : " + t.getLenovo() +
-                    " redmi : " + t.getRedmi() + " huawei : " + t.getHuawei() + " honor : " + t.getHonor() + " samsung : " + t.getSamsung() + " meizu : " + t.getMeizu());
-
-    }
+        System.out.println("satrt insert ... " + new Date());
+        tagService.truncate();
+        /*for(TagStatistical t : result){
+            tagService.insert(t);
+        }*/
+        tagService.batchInsert(result);
+        System.out.println("insert end... " + new Date());
 
     }
 

@@ -45,6 +45,8 @@ public class Material {
 
     private String pvRequestUrl;
 
+    private String otherIcons;
+
     private List<MaterialCreativeVo> creatives;
 
     public Long getId() {
@@ -189,5 +191,14 @@ public class Material {
 
     public void setCreatives(List<MaterialCreativeVo> creatives) {
         this.creatives = creatives;
+    }
+
+
+    public String getOtherIcons() {
+        return otherIcons;
+    }
+
+    public void setOtherIcons(String otherIcons) {
+        this.otherIcons = otherIcons;
     }
 }

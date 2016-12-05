@@ -15,6 +15,13 @@ public class MaterialCreative {
 
     private String height;
 
+    public MaterialCreative(Long materialId, String url, String width, String height){
+        this.materialId = materialId;
+        this.url = url;
+        this.width = width;
+        this.height = height;
+    }
+
     public Long getId() {
         return id;
     }

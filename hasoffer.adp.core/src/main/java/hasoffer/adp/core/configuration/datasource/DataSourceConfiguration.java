@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -142,10 +143,16 @@ public class DataSourceConfiguration {
      * @return 
      */
     @Bean("SqlSessionFactory")
-    public SqlSessionFactoryBean MasterSessionFactory(DynamicDataSource dataSource){
+     public SqlSessionFactoryBean MasterSessionFactory(DynamicDataSource dataSource){
         SqlSessionFactoryBean sf = new SqlSessionFactoryBean();
         sf.setDataSource(dataSource);
         return sf;
+    }
+
+    @Bean("jdbcTemplate")
+    public JdbcTemplate jdbcTemplate(DynamicDataSource dataSource){
+        JdbcTemplate jt = new JdbcTemplate(dataSource);
+        return jt;
     }
     
     /**

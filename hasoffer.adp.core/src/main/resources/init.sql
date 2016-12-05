@@ -41,6 +41,7 @@ CREATE TABLE `t_equipment` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `t_material_creative`;
 CREATE TABLE `hasoffer`.`t_material_creative` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `materialId` INT NOT NULL,
@@ -51,5 +52,22 @@ CREATE TABLE `hasoffer`.`t_material_creative` (
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8
   COMMENT = '素材图';
+
+
+DROP TABLE IF EXISTS `t_tag_statistical`;
+CREATE TABLE `hasoffer`.`t_tag_statistical` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `androidid` VARCHAR(45) NULL,
+  `xiaomi` INT NULL,
+  `lenovo` INT NULL,
+  `redmi` INT NULL,
+  `huawei` INT NULL,
+  `honor` INT NULL,
+  `samsung` INT NULL,
+  `meizu` INT NULL,
+  PRIMARY KEY (`id`))
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COMMENT = '设备统计表';
 
 

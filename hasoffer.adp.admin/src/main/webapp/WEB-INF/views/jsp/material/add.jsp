@@ -12,6 +12,7 @@
 <jsp:include page="../include/nav.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/bootstrap-fileupload/bootstrap-fileupload.css" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/multi-fileupload/css/fileinput.min.css" />
 
 <div class="page-container row-fluid">
     <jsp:include page="../include/left.jsp"/>
@@ -155,6 +156,15 @@
                                             </div>
 
                                             <div class="control-group">
+                                                <label class="control-label">其他图片</label>
+                                                <div class="controls">
+                                                    <input type="file" multiple class="file" name="creativeFile" id="creativeFile"  data-overwrite-initial="false" data-min-file-count="1">
+                                                    <input type="hidden" name="otherIcons" id="otherIcons"/>
+                                                    <span class="help-inline"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="control-group">
                                                 <label class="control-label">投放平台<span class="required">*</span></label>
                                                 <div class="controls">
                                                     <select name="putPlatform" id="putPlatform" class="large m-wrap">
@@ -218,8 +228,35 @@
 </div>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/multi-fileupload/js/fileinput.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/multi-fileupload/js/fileinput_locale_zh.js"></script>
+
 <jsp:include page="../include/footer.jsp"/>
 <script>
+
+    $("#creativeFile").fileinput({
+        uploadUrl: '<%=request.getContextPath()%>/material/fileupload',
+        allowedFileExtensions : ['jpg', 'png','gif'],
+        overwriteInitial: false,
+        maxFileSize: 10000,
+        maxFilesNum: 10,
+        slugCallback: function(filename) {
+            return filename.replace('(', '_').replace(']', '_');
+        }
+    });
+
+    var otherIcons = $('#otherIcons').val();
+    $("#creativeFile").on("fileuploaded", function (event, data, previewId, index) {
+       var res = data.response;
+        if(res.code == 200){
+            otherIcons +=  "," +  res.data[0] ;
+            otherIcons = otherIcons.substr(1, otherIcons.length);
+            $('#otherIcons').val(otherIcons);
+        }
+    });
+
+
+
     $(function(){
 
         $('#iconFile').change(function(e){
