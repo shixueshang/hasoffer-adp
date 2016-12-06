@@ -11,6 +11,7 @@
     <modules>
         <module>hasoffer.adp.core</module>
         <module>hasoffer.adp.admin</module>
+        <module>hasoffer.adp.api</module>
     </modules>
 
 

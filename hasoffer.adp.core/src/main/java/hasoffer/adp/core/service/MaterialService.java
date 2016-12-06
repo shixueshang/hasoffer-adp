@@ -5,6 +5,7 @@ import hasoffer.adp.core.dao.IMaterialDao;
 import hasoffer.adp.core.models.po.Material;
 import hasoffer.adp.core.models.po.MaterialCreative;
 import hasoffer.adp.core.models.vo.MaterialCreativeVo;
+import hasoffer.adp.core.models.vo.MaterialVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
