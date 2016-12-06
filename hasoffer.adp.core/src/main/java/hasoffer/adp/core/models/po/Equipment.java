@@ -1,5 +1,7 @@
 package hasoffer.adp.core.models.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
@@ -7,6 +9,7 @@ import java.util.Date;
  */
 public class Equipment {
 
+    @JsonIgnore
     private Long id;
 
     private String androidId;

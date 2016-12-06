@@ -1,5 +1,7 @@
 package hasoffer.adp.core.models.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 /**
@@ -7,7 +9,8 @@ import java.util.List;
  */
 public class MaterialVo {
 
-    private Long id;
+    @JsonIgnore
+    private  Long id;
 
     private String title;
 
