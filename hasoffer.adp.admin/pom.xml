@@ -43,8 +43,5 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <finalName>adp-admin</finalName>
-    </build>
 
 </project>

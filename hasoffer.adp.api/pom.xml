@@ -32,7 +32,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <finalName>adp-api</finalName>
-    </build>
 </project>
