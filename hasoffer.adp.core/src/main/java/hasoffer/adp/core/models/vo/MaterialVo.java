@@ -1,6 +1,8 @@
 package hasoffer.adp.core.models.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import hasoffer.adp.core.enums.Platform;
+import hasoffer.adp.core.enums.SettlementWay;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class MaterialVo {
 
     private String icon;
 
-    private String putPlatform;
+    private Platform putPlatform;
 
     private String minVersion;
 
@@ -38,7 +40,7 @@ public class MaterialVo {
 
     private String appType;
 
-    private String settlementWay;
+    private SettlementWay settlementWay;
 
     private String dailyRunning;
 
@@ -126,11 +128,11 @@ public class MaterialVo {
         this.icon = icon;
     }
 
-    public String getPutPlatform() {
+    public Platform getPutPlatform() {
         return putPlatform;
     }
 
-    public void setPutPlatform(String putPlatform) {
+    public void setPutPlatform(Platform putPlatform) {
         this.putPlatform = putPlatform;
     }
 
@@ -158,11 +160,11 @@ public class MaterialVo {
         this.appType = appType;
     }
 
-    public String getSettlementWay() {
+    public SettlementWay getSettlementWay() {
         return settlementWay;
     }
 
-    public void setSettlementWay(String settlementWay) {
+    public void setSettlementWay(SettlementWay settlementWay) {
         this.settlementWay = settlementWay;
     }
 
