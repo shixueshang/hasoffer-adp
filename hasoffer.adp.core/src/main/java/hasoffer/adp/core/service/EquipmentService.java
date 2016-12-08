@@ -3,7 +3,6 @@ package hasoffer.adp.core.service;
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.core.dao.IEquipmentDao;
 import hasoffer.adp.core.models.po.Equipment;
-import hasoffer.adp.core.models.po.TagStatistical;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -52,6 +51,7 @@ public class EquipmentService {
         String sql = "insert into t_equipment(androidId, tags, createTime) values(?,?,?)";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter()
         {
+            @Override
             public void setValues(PreparedStatement ps,int i)throws SQLException
             {
                 ps.setString(1, equipments.get(i).getAndroidId());
@@ -62,6 +62,7 @@ public class EquipmentService {
                     ps.executeBatch();
                 }
             }
+            @Override
             public int getBatchSize()
             {
                 return equipments.size();

@@ -88,9 +88,9 @@
                                                 <label class="control-label">结算方式</label>
                                                 <div class="controls">
                                                     <select name="settlementWay" id="settlementWay" class="large m-wrap">
-                                                        <option value="CPC">CPC</option>
-                                                        <option value="CPM">CPM</option>
-                                                        <option value="CPA">CPS</option>
+                                                        <option value="CPC" <c:if test="${material.settlementWay == SettlementWay.CAP}" ><c:out value= "selected=selected"></c:out></c:if>> CPC</option>
+                                                        <option value="CPM" <c:if test="${material.settlementWay == SettlementWay.CPM}" ><c:out value= "selected=selected"></c:out></c:if>>CPM</option>
+                                                        <option value="CPA" <c:if test="${material.settlementWay == SettlementWay.CPA}" ><c:out value= "selected=selected"></c:out></c:if>>CPS</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -99,8 +99,8 @@
                                                 <label class="control-label">打开方式</label>
                                                 <div class="controls">
                                                     <select name="openWay" class="large m-wrap">
-                                                        <option value="inner">内部打开</option>
-                                                        <option value="outer">外部打开</option>
+                                                        <option value="inner" <c:if test="${material.openWay == 'inner'}" ><c:out value= "selected=selected"></c:out></c:if>>内部打开</option>
+                                                        <option value="outer" <c:if test="${material.openWay == 'outer'}" ><c:out value= "selected=selected"></c:out></c:if>>外部打开</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -169,8 +169,8 @@
                                                 <div class="controls">
                                                     <select name="putPlatform" id="putPlatform" class="large m-wrap">
                                                         <option value="">--请选择投放平台--</option>
-                                                        <option value="Android">Android</option>
-                                                        <option value="IOS">IOS</option>
+                                                        <option value="Android" <c:if test="${material.putPlatform == 'Android'}"> <c:out value= "selected=selected"></c:out></c:if>>Android</option>
+                                                        <option value="IOS" <c:if test="${material.putPlatform == 'IOS'}"> <c:out value= "selected=selected"></c:out></c:if>>IOS</option>
                                                     </select>
                                                     <span class="help-inline"></span>
                                                 </div>
@@ -179,7 +179,7 @@
                                             <div class="control-group">
                                                 <label class="control-label">平台最低版本</label>
                                                 <div class="controls">
-                                                    <input type="text" name="minVersion" id="minVersion" class="large m-wrap" value="${matetial.minVersion}">
+                                                    <input type="text" name="minVersion" id="minVersion" class="large m-wrap" value="${material.minVersion}">
                                                     <span class="help-inline"></span>
                                                 </div>
                                             </div>
@@ -187,7 +187,7 @@
                                             <div class="control-group">
                                                 <label class="control-label">平台最高版本</label>
                                                 <div class="controls">
-                                                    <input type="text" name="maxVersion" id="maxVersion" class="large m-wrap" value="${maxVersion}">
+                                                    <input type="text" name="maxVersion" id="maxVersion" class="large m-wrap" value="${material.maxVersion}">
                                                     <span class="help-inline"></span>
                                                 </div>
                                             </div>
@@ -196,7 +196,10 @@
                                                 <label class="control-label">投放app类型</label>
                                                 <div class="controls">
                                                     <c:forEach items="${appTypes}" var="appType">
-                                                            <input type="checkbox" name="appType" value="${appType.name}" >${appType.name}&nbsp;&nbsp;&nbsp;
+                                                        <input type="checkbox" name="appType" value="${appType.name}"
+                                                            <c:forEach items="${checkedApps}" var="checked">
+                                                                <c:if test="${checked == appType.name}">checked="checked"</c:if>
+                                                            </c:forEach> >${appType.name}&nbsp;&nbsp;&nbsp;
                                                     </c:forEach>
                                                 </div>
                                             </div>
@@ -234,6 +237,15 @@
 <jsp:include page="../include/footer.jsp"/>
 <script>
 
+    var creatives = '${creatives}';
+    var imgArr = new Array();
+    if(creatives != ''){
+        $.each($.parseJSON(creatives), function(i, creative){
+            var img = "<img src='"+creative.url+"' class='file-preview-image' />";
+            imgArr.push(img);
+        });
+    }
+
     $("#creativeFile").fileinput({
         uploadUrl: '<%=request.getContextPath()%>/material/fileupload',
         allowedFileExtensions : ['jpg', 'png','gif'],
@@ -242,7 +254,8 @@
         maxFilesNum: 10,
         slugCallback: function(filename) {
             return filename.replace('(', '_').replace(']', '_');
-        }
+        },
+        initialPreview: [imgArr]
     });
 
     var otherIcons = $('#otherIcons').val();
@@ -254,7 +267,6 @@
             $('#otherIcons').val(otherIcons);
         }
     });
-
 
 
     $(function(){

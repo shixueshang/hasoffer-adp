@@ -1,5 +1,6 @@
 package hasoffer.adp.admin.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import hasoffer.adp.admin.web.configuration.RootConfiguration;
 import hasoffer.adp.base.utils.AjaxJson;
 import hasoffer.adp.base.utils.Constants;
@@ -13,6 +14,7 @@ import hasoffer.adp.core.service.MaterialService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +27,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -99,6 +102,24 @@ public class MaterialController extends BaseController{
             }
         }
         return "redirect:/material/list";
+    }
+
+
+    @RequestMapping(value = "/detail/{id}")
+    public String edit(@PathVariable(value = "id") Long id, Model model){
+        Material material = materialService.find(id);
+        List<MaterialCreativeVo> creatives = materialService.findCreatives(id);
+        for(MaterialCreativeVo mv : creatives){
+            mv.setUrl(configuration.getDomainUrl() + mv.getUrl());
+        }
+
+        String appTypes = material.getAppType();
+        List<String> checked = Arrays.asList(appTypes.split(","));
+        model.addAttribute("appTypes", AppType.buildAppTypes());
+        model.addAttribute("checkedApps", checked);
+        model.addAttribute("material", material);
+        model.addAttribute("creatives", JSON.toJSON(creatives));
+        return "material/add";
     }
 
     private static void transferFile(String path, String fileName, MultipartFile file) {

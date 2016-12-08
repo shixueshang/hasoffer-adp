@@ -48,6 +48,7 @@
                                     <td>平台最高版本</td>
                                     <td>投放app类型</td>
                                     <td>每日跑量</td>
+                                    <td width="80px">操作</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -80,6 +81,9 @@
                                         <td>${material.maxVersion}</td>
                                         <td>${material.appType}</td>
                                         <td>${material.dailyRunning}</td>
+                                        <td>
+                                            <a href="<%=request.getContextPath()%>/material/detail/${material.id}" class="btn mini purple"><i class="icon-edit"></i> 编辑</a>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

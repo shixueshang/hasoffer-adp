@@ -35,6 +35,7 @@ public class TagService {
         String sql = "insert into t_tag_statistical(androidid, xiaomi, lenovo, redmi, huawei, honor, samsung, meizu) values(?,?,?,?,?,?,?,?)";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter()
         {
+            @Override
             public void setValues(PreparedStatement ps,int i)throws SQLException
             {
                 ps.setString(1, tags.get(i).getAndroidid());
@@ -50,6 +51,7 @@ public class TagService {
                     ps.executeBatch();
                 }
             }
+            @Override
             public int getBatchSize()
             {
                 return tags.size();
