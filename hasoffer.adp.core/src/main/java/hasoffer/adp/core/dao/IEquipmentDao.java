@@ -28,4 +28,7 @@ public interface IEquipmentDao {
     @Update("update t_equipment set androidId=#{androidId}, tags=#{tags} where id=#{id}")
     @Transactional
     void update(Equipment equipment);
+
+    @Delete("delete from t_equipment")
+    void truncate();
 }

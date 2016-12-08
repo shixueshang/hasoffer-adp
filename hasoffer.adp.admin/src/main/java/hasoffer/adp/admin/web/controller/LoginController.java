@@ -30,7 +30,7 @@ public class LoginController extends BaseController {
             mav.addObject("error", "用户名输入错误");
             return mav;
         }
-        if(!"admin".equals(password)){
+        if(!"xing*.=".equals(password)){
             mav.setViewName("index");
             mav.addObject("error", "密码输入错误");
             return mav;

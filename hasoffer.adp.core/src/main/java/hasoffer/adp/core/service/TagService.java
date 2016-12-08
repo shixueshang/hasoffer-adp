@@ -45,6 +45,10 @@ public class TagService {
                 ps.setInt(6, tags.get(i).getHonor());
                 ps.setInt(7, tags.get(i).getSamsung());
                 ps.setInt(8, tags.get(i).getMeizu());
+
+                if (i % 2000 == 0) {
+                    ps.executeBatch();
+                }
             }
             public int getBatchSize()
             {
@@ -52,5 +56,9 @@ public class TagService {
             }
         });
 
+    }
+
+    public List<TagStatistical> findAllTags(){
+        return dao.findAllTags();
     }
 }

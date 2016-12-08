@@ -21,6 +21,10 @@ public class TagStatistical {
 
     private int meizu;
 
+    public TagStatistical(){
+
+    }
+
     public TagStatistical(String androidid){
         this.androidid = androidid;
     }

@@ -4,7 +4,10 @@ import hasoffer.adp.core.models.po.TagStatistical;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by lihongde on 2016/12/5 14:04
@@ -19,5 +22,8 @@ public interface ITagStatisticalDao {
 
     @Delete(" delete from t_tag_statistical")
     void delete();
+
+    @Select("select * from t_tag_statistical")
+    List<TagStatistical> findAllTags();
 
 }

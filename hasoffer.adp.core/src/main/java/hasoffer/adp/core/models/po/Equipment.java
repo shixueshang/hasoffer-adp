@@ -1,6 +1,7 @@
 package hasoffer.adp.core.models.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import hasoffer.adp.base.utils.TimeUtils;
 
 import java.util.Date;
 
@@ -17,6 +18,16 @@ public class Equipment {
     private String tags;
 
     private Date createTime;
+
+    public Equipment(){
+
+    }
+
+    public Equipment(String androidId, String tags){
+        this.androidId = androidId;
+        this.tags = tags;
+        this.createTime = TimeUtils.now();
+    }
 
     public Long getId() {
         return id;
