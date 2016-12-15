@@ -4,6 +4,7 @@ import hasoffer.adp.rtb.adx.response.Bid;
 import hasoffer.adp.rtb.adx.response.BidResponse;
 import hasoffer.adp.rtb.adx.response.SeatBid;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -20,13 +21,13 @@ import java.util.List;
 @RequestMapping(value = "/")
 public class BidController extends BaseController {
 
-    @RequestMapping(value = "")
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public Object bid(String testbid) throws UnsupportedEncodingException {
 
-        if("nobid".equals(testbid)){
+       /* if("nobid".equals(testbid)){
             response.setStatus(204);
             return "no  bid";
-        }
+        }*/
 
         BufferedReader br = null;
         String body = "";
