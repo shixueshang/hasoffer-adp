@@ -24,10 +24,10 @@ public class BidController extends BaseController {
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public Object bid(String testbid) throws UnsupportedEncodingException {
 
-       /* if("nobid".equals(testbid)){
+        if("nobid".equals(testbid)){
             response.setStatus(204);
             return "no  bid";
-        }*/
+        }
 
         BufferedReader br = null;
         String body = "";
@@ -50,24 +50,34 @@ public class BidController extends BaseController {
 
         BidResponse bidResponse = new BidResponse();
         bidResponse.setBidid("abc1123");
-        bidResponse.setId("1234567890");
-        bidResponse.setCur("USD");
+        bidResponse.setId("1DGXhoQYtm");
 
         List<SeatBid> sbs = new ArrayList<>();
         SeatBid ab = new SeatBid();
-        ab.setSeat("512");
         List<Bid> bids = new ArrayList<>();
         Bid bid = new Bid();
-        bid.setId("1");
-        bid.setImpid("102");
+        bid.setId("1DGXhoQYtm");
+        bid.setImpid("1");
         bid.setPrice(0.21f);
         bid.setAdid("314");
-        bid.setNurl("http://adserver.com/winnotice?impid=102");
-        bid.setAdm("%3C!DOCTYPE%20html%20PUBLIC%20%5C%22-\u00AD‐ %2F%2FW3C%2F%2FDTD%20XHTML%201.0%20Transitional%2F%2FEN%5C%22%20%5C%22htt p%3A%2F%2Fwww.w3.org%2FTR%2Fxhtml1%2FDTD%2Fxhtml1-\u00AD‐ transitional.dtd%5C%22%3E%3Chtml%20xmlns%3D%5C%22http%3A%2F%2Fwww.w3.org%2F1 999%2Fxhtml%5C%22%20xml%3Alang%3D%5C%22en%5C%22%20lang%3D%5C%22en%5C%22 %3E...%3C%2Fhtml%3E");
-        bid.setAdomain(new String[]{"advertiserdomain.com"});
-        bid.setIurl("http://adserver.com/pathtosampleimage");
-        bid.setCid("campaign111");
-        bid.setCrid("creative112");
+        bid.setNurl("http:\\/\\/reports.ubimo.com\\/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&c=MTo6&wp=${AUCTION_PRICE}");
+        bid.setAdm("ad xmlns:xsi=\\\"http:\\/\\/www.w3.org\\/2001\\/XMLSchema-instance\\\" xsi:noNamespaceSchemaLocation=\\\"smaato_ad_v0.9.xsd\\\" modelVersion=\\\"0.9\\\">\n" +
+                "                <imageAd>\n" +
+                "                    <clickUrl>http:\\/\\/reports.ubimo.com\\/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&amp;c=Mzo6&amp;t=https%3A%2F%2Fad.doubleclick.net%2Fddm%2Fclk%2F292804678%3B119963336%3Bw%3Fhttp%3A%2F%2Fwww.academy.com%2Fwebapp%2Fwcs%2Fstores%2Fservlet%2FContainer_10151_10051_-1_%3Fname%3DOfficial_Rules%26uv%3Dvanity%3Aofficialrules\n" +
+                "                    <\\/clickUrl>\n" +
+                "                    <imgUrl>http:\\/\\/static.ubimo.com\\/io\\/603\\/ecd01dce\n" +
+                "                    <\\/imgUrl>\n" +
+                "                    <height>50<\\/height>\n" +
+                "                    <width>320<\\/width>\n" +
+                "                    <beacons>\n" +
+                "                        <beacon>http:\\/\\/reports.ubimo.com\\/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&amp;c=Mjo6<\\/beacon>\n" +
+                "                        <beacon>https:\\/\\/ad.doubleclick.net\\/ddm\\/ad\\/N5865.276855.MOBILEFUSE\\/B8852634.119963336;sz=1x1;ord=1436319256367<\\/beacon>\n" +
+                "                    <\\/beacons>\n" +
+                "                <\\/imageAd>\n" +
+                "            <\\/ad>");
+        bid.setAdomain(new String[]{"academy.com"});
+        bid.setCid("5163");
+        bid.setCrid("12459");
         bid.setAttr(new Integer[]{1, 2, 3, 4, 5, 6, 7, 12});
         bids.add(bid);
         ab.setBid(bids.toArray(new Bid[bids.size()]));
