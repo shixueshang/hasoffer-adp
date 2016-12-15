@@ -38,8 +38,6 @@ public class Creative {
 	transient public String strH;
 	/** String representation of price */
 	transient public String strPrice;
-	/** Attributes used with a video */
-	public List<Node> attributes = new ArrayList<Node>();
 	/** Input ADM field */
 	public List<String> adm;
 	/** The encoded version of the adm as a single string */

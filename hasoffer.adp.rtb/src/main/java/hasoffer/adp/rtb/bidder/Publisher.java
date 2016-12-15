@@ -1,15 +1,14 @@
 package hasoffer.adp.rtb.bidder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hasoffer.adp.rtb.tools.logmaster.AppendToFile;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A publisher for Aerospike based messages, sharable by multiple threads.
  * 
- * @author Ben M. Faul
- *
  */
 public class Publisher implements Runnable {
 	/** The objects thread */
@@ -60,7 +59,11 @@ public class Publisher implements Runnable {
 
 				synchronized (sb) {
 					if (sb.length() != 0) {
-						AppendToFile.item(fileName, sb);
+                        BufferedWriter bw = null;
+                        bw = new BufferedWriter(new FileWriter(fileName, true));
+                        bw.write(sb.toString());
+                        bw.flush();
+                        bw.close();
 						sb.setLength(0);
 					}
 				}
@@ -80,27 +83,12 @@ public class Publisher implements Runnable {
 			runFileLogger();
 	}
 
-	public void runJmqLogger() {
-		String str = null;
-		Object msg = null;
-		while (true) {
-			try {
-				while((msg = queue.poll()) != null) {
-					//logger.publish(msg);
-				}
-				Thread.sleep(1);
-			} catch (Exception e) {
-				e.printStackTrace();
-				// return;
-			}
-		}
-	}
+
 
 	/**
 	 * Add a message to the messages queue.
 	 * 
-	 * @param s
-	 *            . String. JSON formatted message.
+	 * @param s String. JSON formatted message.
 	 */
 	public void add(Object s) {
 		if (fileName != null) {

@@ -12,8 +12,10 @@ import hasoffer.adp.rtb.redis.RedisClient;
 import hasoffer.adp.rtb.tools.MacroProcessing;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The singleton class that makes up the Configuration object. A configuration
@@ -48,7 +50,7 @@ public class Configuration {
 	/** The exchange seat ids used in bid responses */
 	public Map<String, String> seats;
 	/** the configuration item defining seats and their endpoints */
-	public List<Map> seatsList;
+	public List<Map<String, Object>> seatsList;
 	/** The campaigns used to make bids */
 	public List<Campaign> campaignsList = new ArrayList<Campaign>();
 	/** An empty template for the exchange formatted message */
@@ -62,12 +64,12 @@ public class Configuration {
 	/** The time to live in seconds for REDIS keys */
 	public int ttl = 300;
 	/** the list of initially loaded campaigns */
-	public List<Map> initialLoadlist;
+	public List<Map<String, String>> initialLoadlist;
 
 	/** Macros found in the templates */
-	public List<String> macros = new ArrayList();
+	public List<String> macros = new ArrayList<>();
 	/** The templates by by their exchange name */
-	public Map<String, String> masterTemplate = new HashMap();
+	public Map<String, String> masterTemplate = new HashMap<>();
 
 	public String data;
 
@@ -93,7 +95,7 @@ public class Configuration {
 	/** Zeromq command port */
 	public static String commandsPort;
 
-	public List<String> commandAddresses = new ArrayList();
+	public List<String> commandAddresses = new ArrayList<>();
 
 	/** The host name where the aerospike lives */
 	public String cacheHost = null;
@@ -142,11 +144,7 @@ public class Configuration {
                 if (theInstance == null) {
                     theInstance = new Configuration();
                     theInstance.initialize(data);
-                    try {
-                        theInstance.shell = new JJS();
-                    } catch (Exception error) {
-
-                    }
+                    theInstance.shell = new JJS();
                 } else
                     theInstance.initialize(data);
             }
@@ -161,38 +159,31 @@ public class Configuration {
 
 		seats = new HashMap<String, String>();
 		
-		java.net.InetAddress localMachine = null;
-		String useName = null;
-		try {
-			localMachine = java.net.InetAddress.getLocalHost();
-			ipAddress = localMachine.getHostAddress();
-			useName = localMachine.getHostName();
-		} catch (Exception error) {
-			useName = getIpAddress();
-		}
+		InetAddress localMachine = InetAddress.getLocalHost();
+        ipAddress = localMachine.getHostAddress();
+
 
 		/**
 		 * Create the seats id map, and create the bin and win handler classes
 		 * for each exchange
 		 */
-		seatsList = (List<Map>) requestData.get("seats");
-		for (int i = 0; i < seatsList.size(); i++) {
-			Map x = seatsList.get(i);
-			String name = (String) x.get("name");
-			String id = (String) x.get("id");
-			seats.put(name, id);
+		seatsList = (List<Map<String, Object>>) requestData.get("seats");
+        for (Map<String, Object> x : seatsList) {
+            String name = (String) x.get("name");
+            String id = (String) x.get("id");
+            seats.put(name, id);
 
-			String className = (String) x.get("bid");
-			String parts[] = className.split("=");
-			String uri = parts[0];
-			className = parts[1];
-			Class<?> c = Class.forName(className);
-			BidRequest br = (BidRequest) c.newInstance();
-			if (br == null) {
-				throw new Exception("Could not make new instance of: " + className);
-			}
-			RTBServer.exchanges.put(uri, br);
-		}
+            String className = (String) x.get("bid");
+            String parts[] = className.split("=");
+            String uri = parts[0];
+            className = parts[1];
+            Class<?> c = Class.forName(className);
+            BidRequest br = (BidRequest) c.newInstance();
+            if (br == null) {
+                throw new Exception("Could not make new instance of: " + className);
+            }
+            RTBServer.exchanges.put(uri, br);
+        }
 
 		if (requestData.get("forensiq") != null) {
 			Map f = (Map) requestData.get("forensiq");
@@ -201,14 +192,13 @@ public class Configuration {
 			if (!(x == 0 || ck == null || ck.equals("none"))) {
 				forensiq = ForensiqClient.build(ck);
 				if (f.get("endpoint") != null) {
-					forensiq.endpoint = (String) f.get("endpoint");
+					ForensiqClient.endpoint = (String) f.get("endpoint");
 				}
 				if (f.get("bidOnError") != null) {
 					forensiq.bidOnError = (Boolean) f.get("bidOnError");
 				}
 				if (f.get("connections") != null) {
-					int dc = (Integer) f.get("connections");
-					ForensiqClient.getInstance().connections = dc;
+                    ForensiqClient.connections = (Integer) f.get("connections");
 				}
 			}
 		}
@@ -223,14 +213,9 @@ public class Configuration {
 		}
 
 		String strategy = (String) requestData.get("strategy");
-//		if (strategy != null && strategy.equals("heuristic"))
-//			//RTBServer.strategy = STRATEGY_HEURISTIC;
-//		else
-			//RTBServer.strategy = STRATEGY_MAX_CONNECTIONS;
 
 		verbosity = (Map) requestData.get("verbosity");
 		if (verbosity != null) {
-			//logLevel = (Integer) verbosity.get("level");
 			printNoBidReason = (Boolean) verbosity.get("nobid-reason");
 		}
 
@@ -244,9 +229,8 @@ public class Configuration {
 			geoTagger.initTags(states, codes);
 		}
 
-		Boolean bValue = false;
-		bValue = (Boolean) requestData.get("stopped");
-		if (bValue != null && bValue == true) {
+		Boolean bValue = (Boolean) requestData.get("stopped");
+		if (bValue != null && bValue) {
 			RTBServer.stopped = true;
 			pauseOnStart = true;
 		}
@@ -260,7 +244,7 @@ public class Configuration {
 			ttl = (Integer) requestData.get("ttl");
 		}
 
-		initialLoadlist = (List<Map>) requestData.get("campaigns");
+		initialLoadlist = (List<Map<String, String>>) requestData.get("campaigns");
 
 		for (Map<String, String> camp : initialLoadlist) {
 			addCampaign(camp.get("name"), camp.get("id"));
@@ -281,12 +265,7 @@ public class Configuration {
 		while (it.hasNext()) {
 			String key = it.next();
 			String value = (String) m.get(key);
-
 			MacroProcessing.findMacros(macros, value);
-
-			if (key.equalsIgnoreCase("smaato") || key.equalsIgnoreCase("smaaato")) {
-
-			}
 		}
 
 		MacroProcessing.findMacros(macros, "{creative_ad_width} {creative_ad_height}");
@@ -347,8 +326,7 @@ public class Configuration {
 	 */
 	public static InputStream getInputStream(String fname) throws Exception {
 		File f = new File(fname);
-		FileInputStream fis = new FileInputStream(f);
-		return fis;
+		return  new FileInputStream(f);
 	}
 
 
@@ -368,15 +346,13 @@ public class Configuration {
 				if (name.equals("*") || c.adId.equals(name)) {
 					deletions.add(c);
 					delta = true;
-					if (name.equals("*") == false)
+					if (!name.equals("*"))
 						break;
 				}
 			}
 		}
 
-		for (Campaign c : deletions) {
-			campaignsList.remove(c);
-		}
+        deletions.forEach(campaignsList::remove);
 		return delta;
 	}
 
@@ -443,11 +419,7 @@ public class Configuration {
 	 * @return List. The list of campaigns, byadIds, that are running.
 	 */
 	public List<String> getLoadedCampaignNames() {
-		List<String> list = new ArrayList<>();
-		for (Campaign c : campaignsList) {
-			list.add(c.adId);
-		}
-		return list;
+        return  campaignsList.stream().map(c -> c.adId).collect(Collectors.toList());
 	}
 
 	/**
@@ -455,19 +427,7 @@ public class Configuration {
 	 * campaigns
 	 */
 	public void addCampaign(String owner, String name) throws Exception {
-		/*//List<Campaign> list = Database.getInstance().getCampaigns(owner);
-		if (list == null) {
 
-		} else {
-			for (Campaign c : list) {
-				if (c.adId.matches(name)) {
-					deleteCampaign(owner, name);
-					addCampaign(c);
-					Controller.getInstance().sendLog(1, "initialization:campaign",
-							"Loaded  User/Campaign " + name + "/" + c.adId);
-				}
-			}
-		}*/
 	}
 
 	/**

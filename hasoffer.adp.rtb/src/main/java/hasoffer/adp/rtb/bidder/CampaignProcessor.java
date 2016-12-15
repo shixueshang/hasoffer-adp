@@ -23,8 +23,6 @@ import java.util.concurrent.CountDownLatch;
  * function will return null - meaning the campaign is not applicable to the
  * bid.
  * 
- * @author Ben M. Faul
- *
  */
 public class CampaignProcessor implements Runnable {
 	static Random randomGenerator = new Random();
@@ -34,12 +32,6 @@ public class CampaignProcessor implements Runnable {
 
 	/** The bid request that will be used by this processor object */
 	BidRequest br;
-
-	/**
-	 * The unique ID assigned to the bid response. This is probably not needed
-	 * TODO: Need to remove this
-	 */
-	UUID uuid = UUID.randomUUID();
 
 	SelectedCreative selected = null;
 	Thread me = null;
@@ -86,7 +78,6 @@ public class CampaignProcessor implements Runnable {
 			try {
 				flag.await();
 			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 				if (latch != null)
 					latch.countNull();
@@ -118,16 +109,13 @@ public class CampaignProcessor implements Runnable {
 		
 		if (candidates.size() > 1)
 			index = randomGenerator.nextInt(candidates.size());
-		
 
-		
 		/**
 		 * Ok, we found a creative, now, see if the other attributes match
 		 */
 
 		try {
 			for (int i = 0; i < camp.attributes.size(); i++) {
-				
 
 					if (printNoBidReason)
 
@@ -144,7 +132,6 @@ public class CampaignProcessor implements Runnable {
 				latch.countNull();
 			return;
 		}
-		// rec.add("nodes");
 		
 		if (printNoBidReason) {
 			String str = "";
@@ -200,7 +187,6 @@ public class CampaignProcessor implements Runnable {
 			try {
 				me.sleep(1);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}

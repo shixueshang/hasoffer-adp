@@ -146,10 +146,6 @@ public class RTBServer implements Runnable {
 			startedLatch.await();
 			Thread.sleep(2000);
 		} catch (Exception error) {
-			try {
-			} catch (Exception e) {
-				System.out.println("Fatal error: " + error.toString());
-			}
 			me.interrupt();
 		}
 	}
@@ -165,13 +161,9 @@ public class RTBServer implements Runnable {
 
 	public static void panicStop() {
 		try {
-			//BidderEngine.getInstance().sendShutdown();
 			Thread.sleep(100);
-
 		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (Error x) {
-			x.printStackTrace();
 		}
 	}
 
@@ -209,8 +201,7 @@ public class RTBServer implements Runnable {
 		QueuedThreadPool threadPool = new QueuedThreadPool(threads, 50);
 
 		server = new Server(threadPool);
-		ServerConnector connector = null;
-			connector = new ServerConnector(server);
+		ServerConnector connector = new ServerConnector(server);
 			connector.setPort(8080);
 			connector.setIdleTimeout(60000);
 
@@ -223,7 +214,7 @@ public class RTBServer implements Runnable {
 
 			sh.setHandler(handler);
 
-			server.setHandler(sh); // set session handle
+			server.setHandler(sh);
 			
 
 			if (Configuration.getInstance().cacheHost != null) {
@@ -233,10 +224,8 @@ public class RTBServer implements Runnable {
 			 */
 			Runnable redisupdater = () -> {
 				try {
-					while (true) {
-					//	BidderEngine.getInstance().setMemberStatus(getStatus());
-						Thread.sleep(5000);
-					}
+                    //	BidderEngine.getInstance().setMemberStatus(getStatus());
+                    while (true) Thread.sleep(5000);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -287,7 +276,7 @@ public class RTBServer implements Runnable {
 			thread.start();
 
 			if (Configuration.getInstance().deadmanSwitch != null) {
-				if (Configuration.getInstance().deadmanSwitch.canRun() == false) {
+				if (!Configuration.getInstance().deadmanSwitch.canRun()) {
 					RTBServer.stopped = true;
 				}
 			}
@@ -323,15 +312,10 @@ public class RTBServer implements Runnable {
 	 * method.
 	 */
 	public void halt() {
-		try {
 			me.interrupt();
-		} catch (Exception error) {
-
-		}
 		try {
 			server.stop();
-			while (server.isStopped() == false)
-				;
+			while (!server.isStopped());
 		} catch (Exception error) {
 			error.printStackTrace();
 		}
@@ -345,11 +329,9 @@ public class RTBServer implements Runnable {
 	 *         if null or isn't running
 	 */
 	public boolean isRunning() {
-		if (server == null)
-			return false;
+        return server != null && server.isRunning();
 
-		return server.isRunning();
-	}
+    }
 
 }
 
@@ -362,8 +344,6 @@ public class RTBServer implements Runnable {
  * Based on the target URI contents, several actions could be taken. A bid
  * request can be processed, a file resource read and returned, a click or pixel
  * notification could be processed.
- * 
- * @author Ben M. Faul
  * 
  */
 @MultipartConfig
@@ -430,22 +410,16 @@ class Handler extends AbstractHandler {
 				response.setContentType("application/json;charset=utf-8"); //   "application/json;charset=utf-8");
 				if (code == 204) {
 					response.setHeader("X-REASON", json);
-					if (Configuration.getInstance().printNoBidReason)
-						System.out.println("No bid: " + json);
-					//response.setStatus(br.returnNoBidCode());
+					response.setStatus(204);
 				}
 				
 				baseRequest.setHandled(true);
-				if (unknown)
-					RTBServer.unknown++;
+				if (unknown)  RTBServer.unknown++;
 
 				if (code == 200) {
 					RTBServer.totalBidTime.addAndGet(time);
 					RTBServer.bidCountWindow.incrementAndGet();
 					response.setStatus(code);
-					//bresp.writeTo(response);
-				} else {
-					//br.writeNoBid(response,time);
 				}
 				return;
 			} catch (Exception e1) {
@@ -462,12 +436,7 @@ class Handler extends AbstractHandler {
 					url.append(queryString);
 				}
 				String requestURL = url.toString();
-
 				try {
-					//json = WinObject.getJson(requestURL);
-					if (json == null) {
-						
-					}
 					RTBServer.win++;
 				} catch (Exception error) {
 					response.setHeader("X-ERROR",
@@ -480,8 +449,6 @@ class Handler extends AbstractHandler {
 				response.getWriter().println(json);
 				return;
 			}
-
-
 
 			if (target.contains("/redirect")) {
                 try {
@@ -506,15 +473,11 @@ class Handler extends AbstractHandler {
 				response.setContentType("text/javascript;charset=utf-8");
 				response.setStatus(HttpServletResponse.SC_OK);
 				baseRequest.setHandled(true);
-			/*	Echo e = RTBServer.getStatus();
-				String rs = e.toJson();
-				response.getWriter().println(rs);*/
 				return;
 			}
 
 			RTBServer.error++;
 
-			return;
 		}
 
 	public void sendResponse(HttpServletResponse response, String html) throws Exception {

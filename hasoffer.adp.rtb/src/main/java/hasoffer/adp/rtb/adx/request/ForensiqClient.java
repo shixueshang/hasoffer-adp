@@ -54,12 +54,6 @@ public enum ForensiqClient {
 	@JsonIgnore
 	transient ObjectMapper mapper = new ObjectMapper();
 	
-	public static void main(String [] args) throws Exception {
-		ForensiqClient q = ForensiqClient.build();
-		q.bid("","","","","","");
-		
-	}
-	
 	/**
 	 * Default constructor
 	 */

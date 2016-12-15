@@ -5,13 +5,13 @@ import hasoffer.adp.rtb.adx.request.BidRequest;
 import hasoffer.adp.rtb.adx.response.BidResponse;
 import hasoffer.adp.rtb.common.Campaign;
 import hasoffer.adp.rtb.common.Configuration;
-import hasoffer.adp.rtb.common.Creative;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
 
 /**
  * A singleton object that is used to select campaigns based on a given bid
@@ -78,12 +78,6 @@ public class CampaignSelector {
 		boolean printNoBidReason = Configuration.getInstance().printNoBidReason;
 		int logLevel = 5;
 
-		if (printNoBidReason) {
-			printNoBidReason = true;
-
-		}
-		// RunRecord record = new RunRecord("Campaign-Selector");
-
 		Iterator<Campaign> it = config.campaignsList.iterator();
         List<SelectedCreative> candidates = new ArrayList();
         List<CampaignProcessor> tasks = new ArrayList();
@@ -104,225 +98,40 @@ public class CampaignSelector {
 		try {
 			latch.await();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
-		for (CampaignProcessor proc : tasks) {
-			if (proc.selected != null) {
-				candidates.add(proc.selected);
-			}
-		}
-
-		// record.add("candidates");
-		// ///////////////////////////////////////////////////////////
+        candidates.addAll(tasks.stream().filter(proc -> proc.selected != null).map(proc -> proc.selected).collect(Collectors.toList()));
 
 		if (candidates.size() == 0)
 			return null;
 
 		int index = randomGenerator.nextInt(candidates.size());
 
-		// System.err.println("------>INDEX = " + index + "/" +
-		// candidates.size());
-		if (candidates.size() > 1 && printNoBidReason) {
-			String str = "";
-			for (SelectedCreative c : candidates) {
-				str = c.campaign.adId + "/" + c.creative.impid + " ";
-			}
-			try {
-				BidderEngine.getInstance().sendLog(logLevel,
-						"CampaignProcessor:run:campaign-selected-candidates: ",
-						str);
-			} catch (Exception e) {
-
-			}
-
-		}
-
-
-
-		time = System.currentTimeMillis() - time;
-	/*	BidResponse winner = br.buildNewBidResponse(select.campaign, select.creative, (int)time);
-
-		winner.capSpec = select.capSpec;
-		winner.forwardUrl = select.getCreative().forwardurl;
-*/
-
 
 		return null;
 	}
 
-	public BidResponse getMaxConnections(BidRequest br)  throws Exception {
 
-		long xtime = System.currentTimeMillis();
-		Campaign test = null;
-		List<Integer> dups = new ArrayList();
-		SelectedCreative select = null;
-		while ((System.currentTimeMillis() - xtime) < 100) {
-			int index = randomGenerator.nextInt(config.campaignsList.size());
-			if (dups.contains(index) == false) {
-				test = config.campaignsList.get(index);
-				CampaignProcessor p = new CampaignProcessor(test, br, null,
-						null);
-				p.run();
-				select = p.getSelectedCreative();
-				if (select != null)
-					break;
-				dups.add(index);
-			}
-		}
-
-		if (select == null)
-			return null;
-
-
-
-
-	/*	xtime = System.currentTimeMillis() - xtime;
-		BidResponse winner = br.buildNewBidResponse(select.getCampaign(), select.getCreative(), (int)xtime);
-
-		winner.capSpec = select.capSpec;
-		// winner.forwardUrl = select.forwardUrl; // select.getCreative().forwardurl;
-
-		try {
-			if (Configuration.getInstance().printNoBidReason)
-				BidderEngine.getInstance().sendLog(
-						Configuration.getInstance().logLevel,
-						"CampaignProcessor:run:campaign-selected-winner",
-						select.campaign.adId + "/" + select.creative.impid);
-		} catch (Exception error) {
-
-		}*/
-
-		return null;
-	}
 
 	/**
 	 * Hueristic adjustment
 	 */
 	public static void adjustHighWaterMark() {
 		if (RTBServer.avgBidTime > 30) {
-			if (highWaterMark > Configuration.getInstance().campaignsList
-					.size())
-				highWaterMark = Configuration.getInstance().campaignsList
-						.size();
+			if (highWaterMark > Configuration.getInstance().campaignsList.size())
+				highWaterMark = Configuration.getInstance().campaignsList.size();
 			highWaterMark -= 5;
 		} else {
-			if (highWaterMark < Configuration.getInstance().campaignsList
-					.size())
+			if (highWaterMark < Configuration.getInstance().campaignsList.size())
 				highWaterMark += 1;
 			else
-				highWaterMark = Configuration.getInstance().campaignsList
-						.size();
+				highWaterMark = Configuration.getInstance().campaignsList.size();
 		}
-		// System.out.println("--->HIGH WATER MARK: " + highWaterMark);
+
 	}
 
-
-	/**
-	 * Creates a forced bid response on the specified bid request. owner,
-	 * campaign and creative.
-	 * 
-	 * @param br
-	 *            BidRequest. The request from the exchange.
-	 * @param owner
-	 *            String. The account owner of the campaign.
-	 * @param campaignName
-	 *            String. The campaign adid.
-	 * @param creativeName
-	 *            String. The creative id in the campaign.
-	 * @return BidResponse. The response from the
-	 */
-	public BidResponse getSpecific(BidRequest br, String owner,
-			String campaignName, String creativeName) throws Exception {
-		long xtime = System.currentTimeMillis();
-		Campaign camp = null;
-		Creative creative = null;
-		for (Campaign c : config.campaignsList) {
-			if (c.owner.equals(owner) && c.adId.equals(campaignName)) {
-				camp = c;
-				break;
-			}
-		}
-		if (camp == null) {
-			System.out.println("Can't find specification " + owner + "/"
-					+ campaignName);
-			return null;
-		}
-		for (Creative cr : camp.creatives) {
-			if (cr.impid.equals(creativeName)) {
-				creative = cr;
-				break;
-			}
-		}
-		if (creative == null) {
-			System.out.println("Can't find creative " + creative + " for "
-					+ owner + "/" + campaignName);
-			return null;
-		}
-
-	/*	String h = creative.strH;
-		String w = creative.strW;
-		int oldH = creative.h;
-		int oldW = creative.w;
-
-		creative.strW = "" + br.w;
-		creative.strH = "" + br.h;
-		creative.w = br.w;
-		creative.h = br.h;
-
-		try {
-			for (int i = 0; i < camp.attributes.size(); i++) {
-				Node n = camp.attributes.get(i);
-				if (n.test(br) == false) {
-					if (Configuration.getInstance().printNoBidReason)
-					creative.strH = h;
-					creative.strW = w;
-
-					creative.w = oldW;
-					creative.h = oldH;
-					return null; // don't bid
-				}
-			}
-		} catch (Exception error) {
-			error.printStackTrace();
-		}
-
-		xtime = System.currentTimeMillis() - xtime;
-		BidResponse winner = br.buildNewBidResponse(camp, creative, (int)xtime);
-
-		creative.strH = h;
-		creative.strW = w;
-
-		creative.w = oldW;
-		creative.h = oldH;*/
-		return null;
-	}
-
-	/**
-	 * Adds a campaign to the list of usable campaigns.
-	 * 
-	 * @param campaign
-	 *            . A new campaign to add.
-	 */
-	public void add(Campaign campaign) throws Exception {
-		boolean state = RTBServer.stopped;
-		Thread.sleep(100);
-		RTBServer.stopped = true;
-		for (int i = 0; i < config.campaignsList.size(); i++) {
-			Campaign camp = config.campaignsList.get(i);
-			if (camp.owner.equals(campaign.owner)
-					&& camp.adId.equals(campaign.adId)) {
-				config.campaignsList.remove(i);
-				config.campaignsList.add(campaign);
-				RTBServer.stopped = state;
-				return;
-			}
-
-		}
-		RTBServer.stopped = state;
-		config.campaignsList.add(campaign);
-	}
 
 	/**
 	 * Clear all the campaigns of the selector.

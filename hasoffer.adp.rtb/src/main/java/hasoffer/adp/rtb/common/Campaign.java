@@ -1,6 +1,5 @@
 package hasoffer.adp.rtb.common;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,7 +13,6 @@ import java.util.List;
  * A class that implements a campaign. Provide the campaign with evaluation
  * Nodes (a stack) and a bid request, and this campaign will determine if the
  * bid request in question matches this campaign.
- * @author Ben M. Faul
  *
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -31,9 +29,9 @@ public class Campaign implements Comparable {
 	/** The list of constraint nodes for this campaign */
 	public List<Node> attributes = new ArrayList<Node>();
 	/** The list of creatives for this campaign */
-	public List<Creative> creatives = new ArrayList();
+	public List<Creative> creatives = new ArrayList<>();
 	/** Start and end date for this campaign */
-	public List<Integer> date = new ArrayList();
+	public List<Integer> date = new ArrayList<>();
 	/** IAB Categories */
 	public List<String> category;
 	/** encoded IAB category */
@@ -73,85 +71,63 @@ public class Campaign implements Comparable {
 	}
 	
 	/**
-	 * Find the node with the specified hierarchy string.
-	 * @param str String. The hierarchy we are looking for.
-	 * @return Node. The node with this hierarchy, might be null if not exists.
-	 */
-	public Node getAttribute(String str) {
-		
-		for (Node n : attributes) {
-			if (n.equals(str))
-				return n;
-		}
-		return null;
-	}
-	
-	/**
 	 * Return the Lucene query string for this campaign's attributes
 	 * @return String. The lucene query.
 	 */
 	
-	@JsonIgnore
+	/*@JsonIgnore
 	public String getLucene() {
-		String str = getLuceneFromAttrs(attributes);
-		return str;
-	}
+		return getLuceneFromAttrs(attributes);
+	}*/
 	
-	String getLuceneFromAttrs(List<Node> attributes) {
+	/*String getLuceneFromAttrs(List<Node> attributes) {
 		String str = "";
 		
-		List<String> strings = new ArrayList();
-		for (int i=0; i < attributes.size(); i++) {
-			Node x = attributes.get(i);
-			String s = x.getLucene();
-			if (s != null && s.length() > 0)
-				strings.add(s);
-		}
-		
-		for (int i=0; i<strings.size();i++) {
-			String s = strings.get(i);
-			str += s;
-			if (i + 1 < strings.size())
-				str += " AND ";
-		}
-		
-		return str;
-	}
+		List<String> strings = new ArrayList<>();
+        for (Node x : attributes) {
+            String s = x.getLucene();
+            if (s != null && s.length() > 0)
+                strings.add(s);
+        }
+
+        int i=0;
+        while (i<strings.size()) {
+            String s = strings.get(i);
+            str += s;
+            if (i + 1 < strings.size())
+                str += " AND ";
+            i++;
+        }
+
+        return str;
+	}*/
 	
 	/**
 	 * Return the lucene query string for the named creative.
 	 * @param crid String. The creative id.
 	 * @return String. The lucene string for this query.
 	 */
-	@JsonIgnore
-	public String getLucene(String crid) {
-		Creative c = this.getCreative(crid);
-		if (c == null)
-			return null;
-		
-		String pre = "((-_exists_: imp.bidfloor) OR imp.bidfloor :<=" + c.price + ") AND ";
+	/*@JsonIgnore
+    public String getLucene(String crid) {
+        Creative c = this.getCreative(crid);
+        if (c == null)
+            return null;
+        String pre = "((-_exists_: imp.bidfloor) OR imp.bidfloor :<=" + c.price + ") AND ";
+        pre += "imp.banner.w: " + c.w + " AND imp.banner.h: " + c.h;
+        String str = getLucene();
+        String rest = getLuceneFromAttrs(c.attributes);
 
-			pre += "imp.banner.w: " + c.w + " AND imp.banner.h: " + c.h;
+        if (str == null || str.length() == 0) {
+            return pre + " AND " + rest;
+        }
 
-		
-		String str = getLucene();
-		String rest = getLuceneFromAttrs(c.attributes);
-		
-		
-		if (pre == null)
-			return "";
-		
-		if (str == null || str.length() == 0)  {
-			return pre + " AND " + rest;
-		}
-		
-		if (rest == null || rest.length() == 0)
-			return pre + " AND " + str;
-		
-		return pre + " AND " + str + " AND " + rest;
-	}
-	
-	/**
+        if (rest == null || rest.length() == 0)
+            return pre + " AND " + str;
+
+        return pre + " AND " + str + " AND " + rest;
+    }*/
+
+    /**
 	 * Get a creative of this campaign.
 	 * @param crid: String. The creative id.
 	 * @return Creative. The creative or null;
@@ -194,10 +170,8 @@ public class Campaign implements Comparable {
 	 * Configuration.getInstance().addCampaign() will call this for you.
 	 */
 	public void encodeCreatives() throws Exception {
-		
-		for (Creative c : creatives) {
-			c.encodeUrl();
-		}
+
+        creatives.forEach(hasoffer.adp.rtb.common.Creative::encodeUrl);
 	}
 	
 	/**
@@ -206,13 +180,12 @@ public class Campaign implements Comparable {
 	 * @throws Exception if the attributes of the node could not be encoded.
 	 */
 	public void encodeAttributes() throws Exception {
-		for (int i=0;i<attributes.size();i++) {
-			Node n = attributes.get(i);
-			n.setValues();
-		}
+        for (Node n : attributes) {
+            n.setValues();
+        }
 		
 		if (category == null) {
-			category = new ArrayList();    // ol
+			category = new ArrayList<>();
 		}
 		
 		if (category.size()>0) {
