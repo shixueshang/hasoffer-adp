@@ -60,25 +60,24 @@ public class BidController extends BaseController {
         bid.setImpid("1");
         bid.setPrice(0.21f);
         bid.setAdid("314");
-        bid.setNurl("http:\\/\\/reports.ubimo.com\\/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&c=MTo6&wp=${AUCTION_PRICE}");
-        bid.setAdm("ad xmlns:xsi=\\\"http:\\/\\/www.w3.org\\/2001\\/XMLSchema-instance\\\" xsi:noNamespaceSchemaLocation=\\\"smaato_ad_v0.9.xsd\\\" modelVersion=\\\"0.9\\\">\n" +
+        bid.setNurl("http://reports.ubimo.com/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&c=MTo6&wp=${AUCTION_PRICE}");
+        bid.setAdm("ad xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"smaato_ad_v0.9.xsd\" modelVersion=\"0.9\">\n" +
                 "                <imageAd>\n" +
-                "                    <clickUrl>http:\\/\\/reports.ubimo.com\\/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&amp;c=Mzo6&amp;t=https%3A%2F%2Fad.doubleclick.net%2Fddm%2Fclk%2F292804678%3B119963336%3Bw%3Fhttp%3A%2F%2Fwww.academy.com%2Fwebapp%2Fwcs%2Fstores%2Fservlet%2FContainer_10151_10051_-1_%3Fname%3DOfficial_Rules%26uv%3Dvanity%3Aofficialrules\n" +
-                "                    <\\/clickUrl>\n" +
-                "                    <imgUrl>http:\\/\\/static.ubimo.com\\/io\\/603\\/ecd01dce\n" +
-                "                    <\\/imgUrl>\n" +
-                "                    <height>50<\\/height>\n" +
-                "                    <width>320<\\/width>\n" +
+                "                    <clickUrl>http://reports.ubimo.com/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&amp;c=Mzo6&amp;t=https%3A%2F%2Fad.doubleclick.net%2Fddm%2Fclk%2F292804678%3B119963336%3Bw%3Fhttp%3A%2F%2Fwww.academy.com%2Fwebapp%2Fwcs%2Fstores%2Fservlet%2FContainer_10151_10051_-1_%3Fname%3DOfficial_Rules%26uv%3Dvanity%3Aofficialrules\n" +
+                "                    </clickUrl>\n" +
+                "                    <imgUrl>http://static.ubimo.com/io/603/ecd01dce\n" +
+                "                    </imgUrl>\n" +
+                "                    <height>50</height>\n" +
+                "                    <width>320</width>\n" +
                 "                    <beacons>\n" +
-                "                        <beacon>http:\\/\\/reports.ubimo.com\\/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&amp;c=Mjo6<\\/beacon>\n" +
-                "                        <beacon>https:\\/\\/ad.doubleclick.net\\/ddm\\/ad\\/N5865.276855.MOBILEFUSE\\/B8852634.119963336;sz=1x1;ord=1436319256367<\\/beacon>\n" +
-                "                    <\\/beacons>\n" +
-                "                <\\/imageAd>\n" +
-                "            <\\/ad>");
+                "                        <beacon>http://reports.ubimo.com/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&amp;c=Mjo6</beacon>\n" +
+                "                        <beacon>https://ad.doubleclick.net/ddm/ad/N5865.276855.MOBILEFUSE/B8852634.119963336;sz=1x1;ord=1436319256367</beacon>\n" +
+                "                    </beacons>\n" +
+                "                </imageAd>\n" +
+                "            </ad>");
         bid.setAdomain(new String[]{"academy.com"});
         bid.setCid("5163");
         bid.setCrid("12459");
-        bid.setAttr(new Integer[]{1, 2, 3, 4, 5, 6, 7, 12});
         bids.add(bid);
         ab.setBid(bids.toArray(new Bid[bids.size()]));
         sbs.add(ab);
