@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>hasoffer.adp.rtb</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <dependencies>
 
@@ -40,12 +40,6 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>9.3.12.v20160915</version>
         </dependency>
 
         <dependency>

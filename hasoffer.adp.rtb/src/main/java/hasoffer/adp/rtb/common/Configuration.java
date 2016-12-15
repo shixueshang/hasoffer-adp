@@ -7,7 +7,6 @@ import hasoffer.adp.rtb.adx.request.BidRequest;
 import hasoffer.adp.rtb.adx.request.ForensiqClient;
 import hasoffer.adp.rtb.bidder.DeadmanSwitch;
 import hasoffer.adp.rtb.bidder.RTBServer;
-import hasoffer.adp.rtb.geo.GeoTag;
 import hasoffer.adp.rtb.redis.RedisClient;
 import hasoffer.adp.rtb.tools.MacroProcessing;
 
@@ -27,15 +26,11 @@ import java.util.stream.Collectors;
  */
 
 public class Configuration {
-	/** JSON parser for decoding configuration parameters */
 	/** The singleton instance */
 	static volatile Configuration theInstance;
 	
 	public static String ipAddress = null;
 
-	/** Geotag extension object */
-	public GeoTag geoTagger = new GeoTag();
-	/** The Nashhorn shell used by the bidder */
 	JJS shell;
 
 	/** The url of this bidder */
@@ -92,22 +87,9 @@ public class Configuration {
 	public String FORENSIQ_CHANNEL = null;
 	/** The REDIS channel the bidder sends command responses out on */
 	public static String RESPONSES = null;
-	/** Zeromq command port */
-	public static String commandsPort;
 
-	public List<String> commandAddresses = new ArrayList<>();
-
-	/** The host name where the aerospike lives */
-	public String cacheHost = null;
-	/** The aerospike TCP port */
-	public int cachePort = 3000;
-	/** Pause on Startup */
 	public boolean pauseOnStart = false;
-	/** a copy of the config verbosity object */
-	public Map verbosity;
-	/** A copy of the the geotags config */
-	public Map geotags;
-	/** Deadman switch */
+
 	public DeadmanSwitch deadmanSwitch;
 
 	public RedisClient redisson;
@@ -164,70 +146,35 @@ public class Configuration {
 
 
 		/**
-		 * Create the seats id map, and create the bin and win handler classes
-		 * for each exchange
+         * 接入的adx是哪一家
+		 *  {
+         *   "name": "smaato",
+         *   "id": "seat1",
+         *   "bid": "/rtb/bids/smaato=com.xrtb.exchanges.Smaato"
+         *   }
 		 */
 		seatsList = (List<Map<String, Object>>) requestData.get("seats");
-        for (Map<String, Object> x : seatsList) {
-            String name = (String) x.get("name");
-            String id = (String) x.get("id");
-            seats.put(name, id);
+        if(seatsList != null){
+            for (Map<String, Object> x : seatsList) {
+                String name = (String) x.get("name");
+                String id = (String) x.get("id");
+                seats.put(name, id);
 
-            String className = (String) x.get("bid");
-            String parts[] = className.split("=");
-            String uri = parts[0];
-            className = parts[1];
-            Class<?> c = Class.forName(className);
-            BidRequest br = (BidRequest) c.newInstance();
-            if (br == null) {
-                throw new Exception("Could not make new instance of: " + className);
+                String className = (String) x.get("bid");
+                String parts[] = className.split("=");
+                String uri = parts[0];
+                className = parts[1];
+                Class<?> c = Class.forName(className);
+                BidRequest br = (BidRequest) c.newInstance();
+                if (br == null) {
+                    throw new Exception("Could not make new instance of: " + className);
+                }
+                RTBServer.exchanges.put(uri, br);
             }
-            RTBServer.exchanges.put(uri, br);
         }
-
-		if (requestData.get("forensiq") != null) {
-			Map f = (Map) requestData.get("forensiq");
-			String ck = (String) f.get("ck");
-			Integer x = (Integer) f.get("threshhold");
-			if (!(x == 0 || ck == null || ck.equals("none"))) {
-				forensiq = ForensiqClient.build(ck);
-				if (f.get("endpoint") != null) {
-					ForensiqClient.endpoint = (String) f.get("endpoint");
-				}
-				if (f.get("bidOnError") != null) {
-					forensiq.bidOnError = (Boolean) f.get("bidOnError");
-				}
-				if (f.get("connections") != null) {
-                    ForensiqClient.connections = (Integer) f.get("connections");
-				}
-			}
-		}
-
-		/**
-		 * Deal with the app object
-		 */
-        requestData = (Map) requestData.get("app");
-
-		if (requestData.get("threads") != null) {
-			RTBServer.threads = (Integer) requestData.get("threads");
-		}
-
-		String strategy = (String) requestData.get("strategy");
-
-		verbosity = (Map) requestData.get("verbosity");
-		if (verbosity != null) {
-			printNoBidReason = (Boolean) verbosity.get("nobid-reason");
-		}
 
 		encodeTemplates();
 		encodeTemplateStubs();
-
-		geotags = (Map) requestData.get("geo");
-		if (geotags != null) {
-			String states = (String) geotags.get("states");
-			String codes = (String) geotags.get("zipcodes");
-			geoTagger.initTags(states, codes);
-		}
 
 		Boolean bValue = (Boolean) requestData.get("stopped");
 		if (bValue != null && bValue) {
@@ -237,24 +184,18 @@ public class Configuration {
 
 		campaignsList.clear();
 
-		pixelTrackingUrl = (String) requestData.get("pixel-tracking-url");
-		winUrl = (String) requestData.get("winurl");
-		redirectUrl = (String) requestData.get("redirect-url");
-		if (requestData.get("ttl") != null) {
-			ttl = (Integer) requestData.get("ttl");
-		}
-
 		initialLoadlist = (List<Map<String, String>>) requestData.get("campaigns");
-
-		for (Map<String, String> camp : initialLoadlist) {
-			addCampaign(camp.get("name"), camp.get("id"));
-		}
+        if(initialLoadlist != null){
+            for (Map<String, String> camp : initialLoadlist) {
+                addCampaign(camp.get("name"), camp.get("id"));
+            }
+        }
 
 	}
 	
 
 	/**
-	 * Handle specialized encodings, like those needed for Smaato
+	 * 处理宏
 	 */
 	public void encodeTemplates() throws Exception {
 		Map m = (Map) template.get("exchange");
@@ -286,7 +227,6 @@ public class Configuration {
 				masterTemplate.put(key, defaultStr);
 			else
 				masterTemplate.put(key, value);
-
 		}
 
 	}
@@ -397,7 +337,7 @@ public class Configuration {
 
 	/**
 	 * Is the identified campaign running?
-	 * 
+	 *
 	 * @param owner
 	 *            String. The campaign owner
 	 * @param name
@@ -415,7 +355,7 @@ public class Configuration {
 
 	/**
 	 * Returns a list of all the campaigns that are running
-	 * 
+	 *
 	 * @return List. The list of campaigns, byadIds, that are running.
 	 */
 	public List<String> getLoadedCampaignNames() {

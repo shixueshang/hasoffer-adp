@@ -134,7 +134,6 @@ public enum BidderEngine {
                     values.put(key, Double.parseDouble(value));
                 }
             } catch (Exception error) {
-                System.err.println("---------->" + key + ", " + value);
                 values.put(key, 0);
             }
         } else {

@@ -39,7 +39,7 @@ public class EntryServlet extends HttpServlet{
             e.printStackTrace();
         }
         try {
-            RTBServer server = new RTBServer(data);
+            RTBServer server = new RTBServer(data, request, response);
             server.run();
         } catch (Exception e) {
             e.printStackTrace();
