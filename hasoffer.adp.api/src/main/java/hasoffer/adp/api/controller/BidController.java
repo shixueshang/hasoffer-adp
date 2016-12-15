@@ -67,8 +67,8 @@ public class BidController extends BaseController {
                 "                    </clickUrl>\n" +
                 "                    <imgUrl>http://static.ubimo.com/io/603/ecd01dce\n" +
                 "                    </imgUrl>\n" +
-                "                    <height>50</height>\n" +
-                "                    <width>320</width>\n" +
+                "                    <height>36</height>\n" +
+                "                    <width>216</width>\n" +
                 "                    <beacons>\n" +
                 "                        <beacon>http://reports.ubimo.com/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&amp;c=Mjo6</beacon>\n" +
                 "                        <beacon>https://ad.doubleclick.net/ddm/ad/N5865.276855.MOBILEFUSE/B8852634.119963336;sz=1x1;ord=1436319256367</beacon>\n" +
