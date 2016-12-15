@@ -133,6 +133,7 @@ public class RTBServer implements Runnable {
             }
 
             PrintWriter out = response.getWriter();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -39,7 +39,7 @@ public class Node {
 	public static Map<String, Map> builtinMap = new HashMap();
 
 	boolean testit = false;
-	/** Query TBD */
+
 	public static final int QUERY = 0;
 
 	public static final int EQUALS = 1;
@@ -160,8 +160,6 @@ public class Node {
 
 	/** if present will execute this JavaScript code */
 	protected String code = null;
-	/** context to execute in */
-	public JJS shell = null;
 	/** text name of the operator */
 	public String op;
 	/** text name of the query sub op */
@@ -348,10 +346,9 @@ public class Node {
 		this.op = OPNAMES.get(operator);
 	}
 
-	public Node(String name, String heirarchy, String operator, Object value, String code, JJS shell) throws Exception {
+	public Node(String name, String heirarchy, String operator, Object value, String code) throws Exception {
 		this(name, heirarchy, operator, value);
 		this.code = code;
-		this.shell = shell;
 	}
 
 	/**

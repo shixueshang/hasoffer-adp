@@ -31,11 +31,8 @@ public class Configuration {
 	
 	public static String ipAddress = null;
 
-	JJS shell;
-
 	/** The url of this bidder */
 	public String url;
-	/** The log level of the bidding engine */
 	/** Set to true to see why the bid response was not bid on */
 	public boolean printNoBidReason = false;
 	/** The campaign watchdog timer */
@@ -126,7 +123,6 @@ public class Configuration {
                 if (theInstance == null) {
                     theInstance = new Configuration();
                     theInstance.initialize(data);
-                    theInstance.shell = new JJS();
                 } else
                     theInstance.initialize(data);
             }

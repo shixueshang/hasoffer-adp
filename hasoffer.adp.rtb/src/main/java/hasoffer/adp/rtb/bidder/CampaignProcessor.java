@@ -110,12 +110,14 @@ public class CampaignProcessor implements Runnable {
 		if (candidates.size() > 1)
 			index = randomGenerator.nextInt(candidates.size());
 
+
 		/**
 		 * Ok, we found a creative, now, see if the other attributes match
 		 */
 
 		try {
 			for (int i = 0; i < camp.attributes.size(); i++) {
+
 
 					if (printNoBidReason)
 
@@ -132,6 +134,7 @@ public class CampaignProcessor implements Runnable {
 				latch.countNull();
 			return;
 		}
+		// rec.add("nodes");
 		
 		if (printNoBidReason) {
 			String str = "";
@@ -187,6 +190,7 @@ public class CampaignProcessor implements Runnable {
 			try {
 				me.sleep(1);
 			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}

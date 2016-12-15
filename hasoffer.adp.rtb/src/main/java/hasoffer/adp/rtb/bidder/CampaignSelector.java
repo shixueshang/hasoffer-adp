@@ -75,7 +75,6 @@ public class CampaignSelector {
 	 */
 	public BidResponse getHeuristic(BidRequest br) throws Exception {
 		long time = System.currentTimeMillis();
-		boolean printNoBidReason = Configuration.getInstance().printNoBidReason;
 		int logLevel = 5;
 
 		Iterator<Campaign> it = config.campaignsList.iterator();
