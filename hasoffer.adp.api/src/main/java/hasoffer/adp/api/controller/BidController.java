@@ -58,7 +58,7 @@ public class BidController extends BaseController {
         Bid bid = new Bid();
         bid.setId("1DGXhoQYtm");
         bid.setImpid("1");
-        bid.setPrice(0.21f);
+        bid.setPrice(0.98f);
         bid.setAdid("314");
         bid.setNurl("http://reports.ubimo.com/fb?b=JdZQFdbCARgKMURHWGhvUVl0bSMBJeAhAA&c=MTo6&wp=${AUCTION_PRICE}");
         bid.setAdm("<ad xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"smaato_ad_v0.9.xsd\" modelVersion=\"0.9\">\n" +
