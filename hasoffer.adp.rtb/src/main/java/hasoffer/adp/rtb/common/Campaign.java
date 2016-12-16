@@ -26,8 +26,6 @@ public class Campaign implements Comparable {
 	public String name;
 	/** The default ad domain */
 	public String adomain = "default-domain";
-	/** The list of constraint nodes for this campaign */
-	public List<Node> attributes = new ArrayList<Node>();
 	/** The list of creatives for this campaign */
 	public List<Creative> creatives = new ArrayList<>();
 	/** Start and end date for this campaign */
@@ -56,7 +54,6 @@ public class Campaign implements Comparable {
 
 		Campaign camp = mapper.readValue(data, Campaign.class);
 		this.adomain = camp.adomain;
-		this.attributes = camp.attributes;
 		this.creatives = camp.creatives;
 		this.date = camp.date;
 		this.adId = camp.adId;
@@ -69,63 +66,7 @@ public class Campaign implements Comparable {
 		encodeCreatives();
 		encodeAttributes();	
 	}
-	
-	/**
-	 * Return the Lucene query string for this campaign's attributes
-	 * @return String. The lucene query.
-	 */
-	
-	/*@JsonIgnore
-	public String getLucene() {
-		return getLuceneFromAttrs(attributes);
-	}*/
-	
-	/*String getLuceneFromAttrs(List<Node> attributes) {
-		String str = "";
-		
-		List<String> strings = new ArrayList<>();
-        for (Node x : attributes) {
-            String s = x.getLucene();
-            if (s != null && s.length() > 0)
-                strings.add(s);
-        }
 
-        int i=0;
-        while (i<strings.size()) {
-            String s = strings.get(i);
-            str += s;
-            if (i + 1 < strings.size())
-                str += " AND ";
-            i++;
-        }
-
-        return str;
-	}*/
-	
-	/**
-	 * Return the lucene query string for the named creative.
-	 * @param crid String. The creative id.
-	 * @return String. The lucene string for this query.
-	 */
-	/*@JsonIgnore
-    public String getLucene(String crid) {
-        Creative c = this.getCreative(crid);
-        if (c == null)
-            return null;
-        String pre = "((-_exists_: imp.bidfloor) OR imp.bidfloor :<=" + c.price + ") AND ";
-        pre += "imp.banner.w: " + c.w + " AND imp.banner.h: " + c.h;
-        String str = getLucene();
-        String rest = getLuceneFromAttrs(c.attributes);
-
-        if (str == null || str.length() == 0) {
-            return pre + " AND " + rest;
-        }
-
-        if (rest == null || rest.length() == 0)
-            return pre + " AND " + str;
-
-        return pre + " AND " + str + " AND " + rest;
-    }*/
 
     /**
 	 * Get a creative of this campaign.
@@ -153,16 +94,7 @@ public class Campaign implements Comparable {
 		x.encodeAttributes();
 		return x;
 	}
-	
-	/**
-	 * Constructor with pre-defined node.
-	 * @param id String - the id of this campaign.
-	 * @param nodes nodes. List - the list of nodes to add.
-	 */
-	public Campaign(String id, List<Node> nodes) {
-		this.adId = id;
-		this.attributes.addAll(nodes);
-	}
+
 	
 	/**
 	 * Enclose the URL fields. GSON doesn't pick the 2 encoded fields up, so you have to make sure you encode them.
@@ -180,9 +112,7 @@ public class Campaign implements Comparable {
 	 * @throws Exception if the attributes of the node could not be encoded.
 	 */
 	public void encodeAttributes() throws Exception {
-        for (Node n : attributes) {
-            n.setValues();
-        }
+
 		
 		if (category == null) {
 			category = new ArrayList<>();
@@ -192,14 +122,6 @@ public class Campaign implements Comparable {
 			String str = "\"cat\":" + mapper.writer().withDefaultPrettyPrinter().writeValueAsString(category);
 			encodedIab = new StringBuilder(str);
 		}
-	}
-	
-	/**
-	 * Add an evaluation node to the campaign.
-	 * @param node Node - the evaluation node to be added to the set.
-	 */
-	public void add(Node node) {
-		attributes.add(node);
 	}
 
 	/**

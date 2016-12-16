@@ -9,6 +9,7 @@ import hasoffer.adp.core.models.vo.MaterialVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,10 @@ public class MaterialService {
     }
 
     public Material find(long id){
-        return dao.find(id);
+        Material m = dao.find(id);
+        List<MaterialCreative> mcv = dao.findCreativesByMaterialId(id);
+        m.setCreatives(mcv);
+        return m;
     }
 
     public Page<Material> findPage(int page, int size){
@@ -39,11 +43,22 @@ public class MaterialService {
         dao.update(material);
     }
 
-    public List<MaterialCreativeVo> findCreatives(Long materialId){
+    public List<MaterialCreative> findCreatives(Long materialId){
         return dao.findCreativesByMaterialId(materialId);
     }
 
     public void insertCreatives(MaterialCreative mc){
         dao.insertCreative(mc);
+    }
+
+    public List<Material> findMaterials(int width, int height){
+        List<Material> list = new ArrayList<>();
+        List<MaterialCreative> mcs = dao.findCreativesByWidthAndHeight(width, height);
+        for(MaterialCreative mc : mcs){
+            Material m = this.find(mc.getMaterialId());
+            list.add(m);
+        }
+
+        return list;
     }
 }

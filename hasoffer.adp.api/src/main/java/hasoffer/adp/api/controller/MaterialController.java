@@ -5,7 +5,7 @@ import hasoffer.adp.base.utils.AjaxJson;
 import hasoffer.adp.base.utils.Constants;
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.core.models.po.Material;
-import hasoffer.adp.core.models.vo.MaterialCreativeVo;
+import hasoffer.adp.core.models.po.MaterialCreative;
 import hasoffer.adp.core.models.vo.MaterialVo;
 import hasoffer.adp.core.service.MaterialService;
 import org.springframework.beans.BeanUtils;
@@ -40,8 +40,8 @@ public class MaterialController extends BaseController{
             if(!StringUtils.isEmpty(m.getIcon())){
                 m.setIcon(configuration.getDomainUrl() + m.getIcon());
             }
-            List<MaterialCreativeVo> creatives = materialService.findCreatives(m.getId());
-            for(MaterialCreativeVo mcv : creatives){
+            List<MaterialCreative> creatives = materialService.findCreatives(m.getId());
+            for(MaterialCreative mcv : creatives){
                 mcv.setUrl(configuration.getDomainUrl() + mcv.getUrl());
             }
             m.setCreatives(creatives);

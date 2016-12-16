@@ -2,7 +2,6 @@ package hasoffer.adp.core.models.po;
 
 import hasoffer.adp.core.enums.Platform;
 import hasoffer.adp.core.enums.SettlementWay;
-import hasoffer.adp.core.models.vo.MaterialCreativeVo;
 
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class Material {
 
     private String otherIcons;
 
-    private List<MaterialCreativeVo> creatives;
+    private List<MaterialCreative> creatives;
 
     public Long getId() {
         return id;
@@ -185,11 +184,11 @@ public class Material {
         this.pvRequestUrl = pvRequestUrl;
     }
 
-    public List<MaterialCreativeVo> getCreatives() {
+    public List<MaterialCreative> getCreatives() {
         return creatives;
     }
 
-    public void setCreatives(List<MaterialCreativeVo> creatives) {
+    public void setCreatives(List<MaterialCreative> creatives) {
         this.creatives = creatives;
     }
 

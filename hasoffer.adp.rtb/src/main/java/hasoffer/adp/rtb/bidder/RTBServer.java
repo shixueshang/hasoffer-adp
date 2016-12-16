@@ -1,12 +1,13 @@
 package hasoffer.adp.rtb.bidder;
 
+import com.alibaba.fastjson.JSON;
 import hasoffer.adp.rtb.adx.request.BidRequest;
+import hasoffer.adp.rtb.adx.response.BidResponse;
 import hasoffer.adp.rtb.common.Campaign;
 import hasoffer.adp.rtb.common.Configuration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,11 +69,7 @@ public class RTBServer implements Runnable {
 
     public static Map<String, BidRequest> exchanges = new HashMap<>();
 
-    /**
-     * Class instantiator of the RTBServer.
-     *
-     * @param data
-     */
+
     public RTBServer(String data, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         this.request = request;
@@ -116,6 +113,8 @@ public class RTBServer implements Runnable {
                 return;
             }
 
+            BidResponse brep = CampaignSelector.getInstance().getHeuristic(br);
+            PrintWriter out = response.getWriter();
             time = System.currentTimeMillis() - time;
 
             response.setHeader("X-TIME", Long.toString(time));
@@ -124,6 +123,8 @@ public class RTBServer implements Runnable {
 
             if (code == NOBID_CODE) {
                 response.setStatus(NOBID_CODE);
+                out.println("{}");
+                return;
             }
 
             if (code == BID_CODE) {
@@ -132,9 +133,9 @@ public class RTBServer implements Runnable {
                 response.setStatus(BID_CODE);
             }
 
-            PrintWriter out = response.getWriter();
+            out.println(JSON.toJSON(brep));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

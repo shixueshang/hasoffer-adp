@@ -53,8 +53,8 @@ public class MaterialController extends BaseController{
             if(!StringUtils.isEmpty(m.getIcon())){
                 m.setIcon(configuration.getDomainUrl() + m.getIcon());
             }
-            List<MaterialCreativeVo> creatives = materialService.findCreatives(m.getId());
-            for(MaterialCreativeVo mv : creatives){
+            List<MaterialCreative> creatives = materialService.findCreatives(m.getId());
+            for(MaterialCreative mv : creatives){
                 mv.setUrl(configuration.getDomainUrl() + mv.getUrl());
             }
             m.setCreatives(creatives);
@@ -108,8 +108,8 @@ public class MaterialController extends BaseController{
     @RequestMapping(value = "/detail/{id}")
     public String edit(@PathVariable(value = "id") Long id, Model model){
         Material material = materialService.find(id);
-        List<MaterialCreativeVo> creatives = materialService.findCreatives(id);
-        for(MaterialCreativeVo mv : creatives){
+        List<MaterialCreative> creatives = materialService.findCreatives(id);
+        for(MaterialCreative mv : creatives){
             mv.setUrl(configuration.getDomainUrl() + mv.getUrl());
         }
 
@@ -148,7 +148,7 @@ public class MaterialController extends BaseController{
 
             String newName = UUID.randomUUID().toString() + "_" + width + "x" + height + "_" +"." + suffix;
             String path = configuration.getImagePathDir();
-            this.transferFile(path, newName, file);
+            transferFile(path, newName, file);
             fileNameList.add(newName);
         }
 

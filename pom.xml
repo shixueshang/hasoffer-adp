@@ -33,8 +33,6 @@
         <servlet-api_version>3.1.0</servlet-api_version>
         <codehaus_version>1.9.13</codehaus_version>
         <fasterxml_version>2.8.5</fasterxml_version>
-        <!--<fasterxml_version>2.1.0</fasterxml_version>-->
-
     </properties>
 
     <build>

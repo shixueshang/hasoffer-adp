@@ -13,14 +13,8 @@ import java.util.Map;
 
 
 /**
- * A class for handling REDIS based commands to the RTB server. The Controller
- * open REDIS channels to the requested channels to handle commands, and logging
- * channels for log messages, win notifications, bid requests and bids. The idea
- * is to transmit all this information through REDIS so that you can\ build your
- * own database, accounting, and analytic processes outside of the bidding
- * engine.
- *
- * Another job of the Controller is to create the REDIS cache. There could be
+ * A class for handling REDIS  to the RTB server.
+ * Another job is to create the REDIS cache. There could be
  * multiple bidders running in the infrastructure, but handling a win
  * notification requires that you have information about the original bid. This
  * means the system receiving the notification may not be the same system that
@@ -183,8 +177,7 @@ public enum BidderEngine {
     /**
      * Send click info.
      *
-     * @param target
-     *            String. The URI of this click data
+     * @param target String. The URI of this click data
      */
     public void publishClick(String target) {
         /*if (clicksQueue != null) {
@@ -194,8 +187,7 @@ public enum BidderEngine {
     }
 
     /**
-     * Send pixel info. This fires when the ad actually loads into the users web
-     * page.
+     * Send pixel info. This fires when the ad actually loads into the users web page.
      *
      * @param target
      *            String. The URI of this pixel data
@@ -214,8 +206,7 @@ public enum BidderEngine {
     }
 
     /**
-     * Send pixel info. This fires when the ad actually loads into the users web
-     * page.
+     * Send pixel info. This fires when the ad actually loads into the users web page.
      *
      * @param target
      *            String. The URI of this pixel data

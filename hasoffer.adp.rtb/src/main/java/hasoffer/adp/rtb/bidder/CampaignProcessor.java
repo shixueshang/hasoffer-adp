@@ -26,18 +26,19 @@ import java.util.concurrent.CountDownLatch;
  */
 public class CampaignProcessor implements Runnable {
 	static Random randomGenerator = new Random();
-	
-	/** The campaign used by this processor object */
+
 	Campaign camp;
 
-	/** The bid request that will be used by this processor object */
 	BidRequest br;
 
 	SelectedCreative selected = null;
+
 	Thread me = null;
 
 	boolean done = false;
+
 	AbortableCountDownLatch latch;
+
 	CountDownLatch flag;
 
 	/**
@@ -67,11 +68,8 @@ public class CampaignProcessor implements Runnable {
 	public void run() {
 		boolean printNoBidReason = Configuration.getInstance().printNoBidReason;
 		int logLevel = 5;
-		StringBuilder err = null;
 		if (printNoBidReason ) {
-			err = new StringBuilder();
 			printNoBidReason = true;
-
 		}
 
 		if (flag != null) {
@@ -84,9 +82,7 @@ public class CampaignProcessor implements Runnable {
 				return;
 			}
 		}
-		/**
-		 * See if there is a creative that matches first
-		 */
+
 		if (camp == null) {
 			if (latch != null)
 				latch.countNull();
@@ -109,32 +105,6 @@ public class CampaignProcessor implements Runnable {
 		
 		if (candidates.size() > 1)
 			index = randomGenerator.nextInt(candidates.size());
-
-
-		/**
-		 * Ok, we found a creative, now, see if the other attributes match
-		 */
-
-		try {
-			for (int i = 0; i < camp.attributes.size(); i++) {
-
-
-					if (printNoBidReason)
-
-					done = true;
-					if (latch != null)
-						latch.countNull();
-					return;
-
-			}
-		} catch (Exception error) {
-			error.printStackTrace();
-			done = true;
-			if (latch != null)
-				latch.countNull();
-			return;
-		}
-		// rec.add("nodes");
 		
 		if (printNoBidReason) {
 			String str = "";
@@ -174,28 +144,5 @@ public class CampaignProcessor implements Runnable {
 			me.interrupt();
 	}
 
-	/**
-	 * Return the selected creative.
-	 * 
-	 * @return SelectedCreative. The creative returned by the processor.
-	 */
-	public SelectedCreative getSelectedCreative() {
-		return selected;
-	}
-
-	public SelectedCreative call() {
-		while (true) {
-			if (isDone())
-				return selected;
-			try {
-				me.sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
-			}
-
-		}
-	}
 
 }

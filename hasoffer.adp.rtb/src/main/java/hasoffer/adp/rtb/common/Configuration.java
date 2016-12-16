@@ -115,6 +115,17 @@ public class Configuration {
 	}
 
     /**
+     * Return the configuration instance.
+     *
+     * @return The instance.
+     */
+    public static Configuration getInstance() {
+        if (theInstance == null)
+            throw new RuntimeException("Please initialize the Configuration instance first.");
+        return theInstance;
+    }
+
+    /**
      * Return the instance of Configuration, and if necessary, instantiates it first.
      */
     public static Configuration getInstance(String data) throws Exception {
@@ -122,8 +133,7 @@ public class Configuration {
             synchronized (Configuration.class) {
                 if (theInstance == null) {
                     theInstance = new Configuration();
-                    theInstance.initialize(data);
-                } else
+                }
                     theInstance.initialize(data);
             }
         }
@@ -227,17 +237,6 @@ public class Configuration {
 
 	}
 
-
-	/**
-	 * Return the configuration instance.
-	 * 
-	 * @return The instance.
-	 */
-	public static Configuration getInstance() {
-		if (theInstance == null)
-			throw new RuntimeException("Please initialize the Configuration instance first.");
-		return theInstance;
-	}
 
 	/**
 	 * Is the configuration object initialized.

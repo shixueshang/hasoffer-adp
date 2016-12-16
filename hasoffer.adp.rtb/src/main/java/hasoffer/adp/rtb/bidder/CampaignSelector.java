@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
  * found, then one is selected at random, and then the BidRequest object is
  * returned. If no campaign matched, then null is returned.
  * 
- * @author Ben M. Faul
- * 
  */
 public class CampaignSelector {
 
@@ -45,8 +43,6 @@ public class CampaignSelector {
 	 * Returns the singleton instance of the campaign selector.
 	 * 
 	 * @return CampaignSelector. The object that selects campaigns
-	 * @throws Exception
-	 *             if there was an error loading the configuration file.
 	 */
 	public static CampaignSelector getInstance() throws Exception {
 		if (theInstance == null) {
@@ -111,8 +107,6 @@ public class CampaignSelector {
 
 		return null;
 	}
-
-
 
 	/**
 	 * Hueristic adjustment
