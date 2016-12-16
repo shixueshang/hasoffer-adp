@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
  * Class provides macro processing for the RTB4FREE system.
- * 
+ *
  */
 public class MacroProcessing {
 
@@ -19,7 +19,7 @@ public class MacroProcessing {
 	/*
 	 * {redirect_url}", config.redirectUrl); {pixel_url}",
 	 * config.pixelTrackingUrl);
-	 * 
+	 *
 	 * {creative_forward_url}", creat.forwardurl); {creative_ad_price}",
 	 * creat.strPrice); {creative_ad_width}", creat.strW);
 	 * {creative_ad_height}", creat.strH); {creative_id}", creat.impid);
@@ -29,7 +29,7 @@ public class MacroProcessing {
 	 * "%7Bpub%7D", exchange); replaceAll(sb, "%7Bbid_id%7D", oidStr);
 	 * replaceAll(sb, "%7Bad_id%7D", adid); replaceAll(sb, "%7Bsite_id%7D",
 	 * br.siteId); replaceAll(sb, "%7Bcreative_id%7D", creat.impid);
-	 * 
+	 *
 	 * replaceAll(sb, "%7Blat%7D", lat); replaceAll(sb, "%7Blon%7D", lon);
 	 */
 
@@ -158,49 +158,49 @@ public class MacroProcessing {
 			case "%7Bcachebuster%7D":
 				replaceAll(sb, item, Integer.toString(random.nextInt(Integer.SIZE-1)));
 				break;
-				
+
 			case "{redirect_url}":
 			case "%7Bredirect_url%7D":
 				replaceAll(sb, item, config.redirectUrl);
 				break;
-				
+
 			case "{pixel_url}":
 			case "%7Bpixel_url%7D":
 				replaceAll(sb, item, config.pixelTrackingUrl);
 				break;
-				
+
 			case "{win_url}":
 			case "%7Bwin_url%7D":
 				replaceAll(sb, item, config.winUrl);
 				break;
-				
+
 			case "{creative_forward_url}":
 			case "%7Bcreative_forward_url%7D":
 				replaceAll(sb, item, creat.forwardurl);
 				break;
-				
+
 			case "{creative_ad_price}":
 			case "%7Bcreative_ad_price%7D":
 				replaceAll(sb, item, creat.strPrice);
 				break;
-				
+
 			case "{creative_ad_width}":
 			case "%7Bcreative_ad_width%7D":
 				replaceAll(sb, item, creat.strW);
 				break;
-				
+
 			case "{creative_ad_height}":
 			case "%7Bcreative_ad_height%7D":
 				replaceAll(sb, item, creat.strH);
 				break;
-				
+
 			case "{creative_id}":
 			case "%7Bcreative_id%7D":
 			case "{imp}":
 			case "%7Bimp%7D":
 				replaceAll(sb, item, creat.impid);
 				break;
-				
+
 			case "{creative_image_url}":
 			case "%7Bcreative_image_url%7D":
 				replaceAll(sb, item, creat.imageurl);
@@ -229,7 +229,7 @@ public class MacroProcessing {
 
 	/**
 	 * Replace All instances of a string.
-	 * 
+	 *
 	 * @param x
 	 *            StringBuilder. The buffer to do replacements in.
 	 * @param what

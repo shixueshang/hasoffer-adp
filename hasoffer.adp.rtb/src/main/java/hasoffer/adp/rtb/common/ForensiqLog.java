@@ -15,6 +15,6 @@ public class ForensiqLog {
 
 
 	public ForensiqLog() {
-		
+
 	}
 }

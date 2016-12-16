@@ -5,7 +5,6 @@ import hasoffer.adp.rtb.tools.MacroProcessing;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * An object that encapsulates the 'creative' (the ad served up and it's
@@ -20,7 +19,7 @@ public class Creative {
 	public String forwardurl;
 	/** The encoded version of the forward url used by this creative */
 	private transient String encodedFurl;
-	/* The image url used by this creative */
+
 	public String imageurl;
 	/** The encoded image URL used by this creative */
 	private transient String encodedIurl;
@@ -30,14 +29,13 @@ public class Creative {
 	public Integer w;
 	/** The height of this creative */
 	public Integer h;
-	/** sub-template for banner */
-	public String subtemplate;
 	/** String representation of w */
 	transient public String strW;
 	/** String representation of h */
 	transient public String strH;
 	/** String representation of price */
 	transient public String strPrice;
+
 	/** Input ADM field */
 	public List<String> adm;
 	/** The encoded version of the adm as a single string */
@@ -53,16 +51,9 @@ public class Creative {
 	public Integer videoLinearity;
 	/** The videoMimeType */
 	public String videoMimeType;
-	/**
-	 * vast-url, a non standard field for passing an http reference to a file
-	 * for the XML VAST
-	 */
-	public String vasturl;
+
 	/** The price associated with this creative */
 	public double price = 0.01;
-
-	/** Don't use the template, use exactly what is in the creative for the ADM */
-	public boolean adm_override = false;
 
 	@JsonIgnore
 	public transient StringBuilder smaatoTemplate = null;
@@ -71,19 +62,6 @@ public class Creative {
 	@JsonIgnore
 	public transient List<String> macros = new ArrayList();
 
-	/** Cap specification */
-	public String capSpecification;
-	/** Cap frequency count */
-	public int capFrequency = 0;
-	/** Cap timeout in HOURS */
-	public String capTimeout; // is a string, cuz its going into redis
-	
-	/** Unspecified attributes usually used by non openRTB exchganges (like AdX) */
-	public Map extensions;
-	
-	/**
-	 * Empty constructor for creation using json.
-	 */
 	public Creative() {
 
 	}
@@ -97,16 +75,11 @@ public class Creative {
 		MacroProcessing.findMacros(macros, forwardurl);
 		MacroProcessing.findMacros(macros, imageurl);
 
-		/*
-		 * Encode JavaScript tags. Redis <script src=\"a = 100\"> will be
-		 * interpeted as <script src="a=100"> In the ADM, this will cause
-		 * parsing errors. It must be encoded to produce: <script src=\"a=100\">
-		 */
 		if (forwardurl != null) {
 			if (forwardurl.contains("<script")
 					|| forwardurl.contains("<SCRIPT")) {
 				if (forwardurl.contains("\"")
-						&& (forwardurl.contains("\\\"") == false)) {
+						&& (!forwardurl.contains("\\\""))) {
 					forwardurl = forwardurl.replaceAll("\"", "\\\\\"");
 				}
 			}

@@ -16,14 +16,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class RTBServer implements Runnable {
 
-    public static final int PERIODIC_UPDATE_TIME = 60000;
-
     public static final int BID_CODE = 200;
     public static final int NOBID_CODE = 204; // http code no bid
-
-    public static boolean stopped = false;
-
-    public static boolean paused = false;
 
     public static long requests = 0;
     /**
@@ -42,11 +36,6 @@ public class RTBServer implements Runnable {
      * Number of actual requests
      */
     public static long handled = 0;
-
-    /**
-     * The average time
-     */
-    public static long avgBidTime;
 
     /**
      * xtime counter
@@ -88,11 +77,6 @@ public class RTBServer implements Runnable {
     @Override
     public void run() {
 
-        if (Configuration.getInstance().deadmanSwitch != null) {
-            if (!Configuration.getInstance().deadmanSwitch.canRun()) {
-                RTBServer.stopped = true;
-            }
-        }
 
         deltaTime = System.currentTimeMillis();
 

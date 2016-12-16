@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hasoffer.adp.rtb.adx.request.BidRequest;
 import hasoffer.adp.rtb.adx.request.ForensiqClient;
-import hasoffer.adp.rtb.bidder.DeadmanSwitch;
 import hasoffer.adp.rtb.bidder.RTBServer;
 import hasoffer.adp.rtb.redis.RedisClient;
 import hasoffer.adp.rtb.tools.MacroProcessing;
@@ -53,10 +52,6 @@ public class Configuration {
 	public String winUrl;
 	/** The redirect URL */
 	public String redirectUrl;
-	/** The time to live in seconds for REDIS keys */
-	public int ttl = 300;
-	/** the list of initially loaded campaigns */
-	public List<Map<String, String>> initialLoadlist;
 
 	/** Macros found in the templates */
 	public List<String> macros = new ArrayList<>();
@@ -68,26 +63,6 @@ public class Configuration {
 	/** Test bid request for fraud */
 	public static ForensiqClient forensiq;
 
-	/** The channel that raw requests are written to */
-	public String BIDS_CHANNEL = null;
-	/** The channel that wins are written to */
-	public String WINS_CHANNEL = null;
-	/** The channel the bid requests are written to */
-	public String REQUEST_CHANNEL = null;
-	/** The channel where log messages are written to */
-	public String LOG_CHANNEL = null;
-	/** The channel clicks are written to */
-	public String CLICKS_CHANNEL = null;
-	/** The channel nobids are written to */
-	public String NOBIDS_CHANNEL = null;
-	/** The channel to output forenasiq data */
-	public String FORENSIQ_CHANNEL = null;
-	/** The REDIS channel the bidder sends command responses out on */
-	public static String RESPONSES = null;
-
-	public boolean pauseOnStart = false;
-
-	public DeadmanSwitch deadmanSwitch;
 
 	public RedisClient redisson;
 
@@ -182,23 +157,10 @@ public class Configuration {
 		encodeTemplates();
 		encodeTemplateStubs();
 
-		Boolean bValue = (Boolean) requestData.get("stopped");
-		if (bValue != null && bValue) {
-			RTBServer.stopped = true;
-			pauseOnStart = true;
-		}
-
 		campaignsList.clear();
 
-		initialLoadlist = (List<Map<String, String>>) requestData.get("campaigns");
-        if(initialLoadlist != null){
-            for (Map<String, String> camp : initialLoadlist) {
-                addCampaign(camp.get("name"), camp.get("id"));
-            }
-        }
-
 	}
-	
+
 
 	/**
 	 * 处理宏

@@ -30,8 +30,6 @@ public class CampaignSelector {
 	/** The instance of the singleton */
 	static CampaignSelector theInstance;
 
-	public static volatile int highWaterMark = 100;
-
 	/**
 	 * Empty private constructor.
 	 */
@@ -106,23 +104,6 @@ public class CampaignSelector {
 
 
 		return null;
-	}
-
-	/**
-	 * Hueristic adjustment
-	 */
-	public static void adjustHighWaterMark() {
-		if (RTBServer.avgBidTime > 30) {
-			if (highWaterMark > Configuration.getInstance().campaignsList.size())
-				highWaterMark = Configuration.getInstance().campaignsList.size();
-			highWaterMark -= 5;
-		} else {
-			if (highWaterMark < Configuration.getInstance().campaignsList.size())
-				highWaterMark += 1;
-			else
-				highWaterMark = Configuration.getInstance().campaignsList.size();
-		}
-
 	}
 
 
