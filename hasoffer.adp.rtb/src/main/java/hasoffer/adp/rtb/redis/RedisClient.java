@@ -19,25 +19,19 @@ public class RedisClient {
     RedisTemplate redisTemplate;
 
     public boolean expire(final String key, final long seconds) {
-        return (Boolean) redisTemplate.execute(new RedisCallback() {
-            @Override
-            public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
-                redisConnection.expire(key.getBytes(), seconds);
-                return true;
-            }
+        return (Boolean) redisTemplate.execute((RedisCallback) redisConnection -> {
+            redisConnection.expire(key.getBytes(), seconds);
+            return true;
         });
     }
 
     public String mapGet(final String mName, final String key) {
-        return (String) redisTemplate.execute(new RedisCallback() {
-            @Override
-            public String doInRedis(RedisConnection redisConnection) throws DataAccessException {
-                byte[] vs = redisConnection.hGet(mName.getBytes(), key.getBytes());
-                if (vs == null) {
-                    return null;
-                }
-                return new String(vs);
+        return (String) redisTemplate.execute((RedisCallback) redisConnection -> {
+            byte[] vs = redisConnection.hGet(mName.getBytes(), key.getBytes());
+            if (vs == null) {
+                return null;
             }
+            return new String(vs);
         });
     }
 

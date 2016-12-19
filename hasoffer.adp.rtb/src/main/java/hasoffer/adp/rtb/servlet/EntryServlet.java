@@ -23,26 +23,21 @@ public class EntryServlet extends HttpServlet{
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        BufferedReader br = null;
-        String data = "";
+        String data;
 
         try {
-            br = new BufferedReader(new InputStreamReader(request.getInputStream(), "utf-8"));
-            StringBuffer sb = new StringBuffer("");
+            BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "utf-8"));
+            StringBuilder sb = new StringBuilder();
             String temp;
             while ((temp = br.readLine()) != null) {
                 sb.append(temp);
             }
             br.close();
             data = sb.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
             RTBServer server = new RTBServer(data, request, response);
-            server.run();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 }

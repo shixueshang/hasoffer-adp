@@ -21,32 +21,27 @@ public class RTBServer implements Runnable {
 
     public static long requests = 0;
     /**
-     * Counter for number of bids made
+     * 竞价次数计数器
      */
     public static long bid = 0;
     /**
-     * Counter for number of nobids made
+     * 不参与竞价计数器
      */
     public static long nobid = 0;
     /**
-     * Number of errors in accessing the bidder
+     * 竞价过程出错次数
      */
     public static long error = 0;
-    /**
-     * Number of actual requests
-     */
-    public static long handled = 0;
 
     /**
-     * xtime counter
+     * 处理请求花费时间
      */
     public static long xtime = 0;
 
-    static long deltaTime = 0;
-
+    /**
+     * 处理竞价花费时间
+     */
     static AtomicLong totalBidTime = new AtomicLong(0);
-    static AtomicLong bidCountWindow = new AtomicLong(0);
-
 
     private HttpServletRequest request;
 
@@ -77,13 +72,9 @@ public class RTBServer implements Runnable {
     @Override
     public void run() {
 
-
-        deltaTime = System.currentTimeMillis();
-
         long time = System.currentTimeMillis();
         Campaign campaign = null;
         boolean unknown = true;
-        RTBServer.handled++;
         int code = RTBServer.BID_CODE;
         RTBServer.requests++;
         try {
@@ -113,7 +104,6 @@ public class RTBServer implements Runnable {
 
             if (code == BID_CODE) {
                 RTBServer.totalBidTime.addAndGet(time);
-                RTBServer.bidCountWindow.incrementAndGet();
                 response.setStatus(BID_CODE);
             }
 

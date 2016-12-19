@@ -9,12 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A class that implements a campaign. Provide the campaign with evaluation
- * Nodes (a stack) and a bid request, and this campaign will determine if the
- * bid request in question matches this campaign.
- *
- */
+
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Campaign implements Comparable {
 	
@@ -36,10 +31,7 @@ public class Campaign implements Comparable {
 	public transient StringBuilder encodedIab;	
 	/** Should you do forensiq fingerprinting for this campaign? */
 	public boolean forensiq = false;
-	
-	/**
-	 * Empty constructor, simply takes all defaults, useful for testing.
-	 */
+
 	public Campaign() {
 
 	}
@@ -68,11 +60,6 @@ public class Campaign implements Comparable {
 	}
 
 
-    /**
-	 * Get a creative of this campaign.
-	 * @param crid: String. The creative id.
-	 * @return Creative. The creative or null;
-	 */
 	public Creative getCreative(String crid) {
 		for (Creative c : creatives) {
 			if (c.impid.equals(crid)) {
@@ -81,36 +68,15 @@ public class Campaign implements Comparable {
 		}
 		return null;
 	}
-	
-	/**
-	 * Creates a copy of this campaign
-	 * @return Campaign. A campaign that is an exact clone of this one
-	 * @throws Exception on JSON parse errors.
-	 */
-	public Campaign copy() throws Exception {
-
-		String str =  mapper.writer().writeValueAsString(this);
-		Campaign x = mapper.readValue(str, Campaign.class);
-		x.encodeAttributes();
-		return x;
-	}
 
 	
-	/**
-	 * Enclose the URL fields. GSON doesn't pick the 2 encoded fields up, so you have to make sure you encode them.
-	 * This is an important step, the WIN processing will get mangled if this is not called before the campaign is used.
-	 * Configuration.getInstance().addCampaign() will call this for you.
-	 */
+
 	public void encodeCreatives() throws Exception {
 
         creatives.forEach(hasoffer.adp.rtb.common.Creative::encodeUrl);
 	}
 	
-	/**
-	 * Encode the values of all the attributes, instantiating from JSON does not do this, it's an incomplete serialization
-	 * Always call this if you add a campaign without using Configuration.getInstance().addCampaign();
-	 * @throws Exception if the attributes of the node could not be encoded.
-	 */
+
 	public void encodeAttributes() throws Exception {
 
 		
@@ -124,12 +90,7 @@ public class Campaign implements Comparable {
 		}
 	}
 
-	/**
-	 * The compareTo method to ensure that multiple campaigns
-	 * don't exist with the same id.
-	 * @param o Object. The object to compare with.
-	 * @return int. Returns 1 if the ids match, otherwise 0.
-	 */
+
 	@Override
 	public int compareTo(Object o) {
 		Campaign other = (Campaign)o;
@@ -138,11 +99,7 @@ public class Campaign implements Comparable {
 		
 		return 0;
 	}
-	
-	/**
-	 * Returns this object as a JSON string
-	 * @return String. The JSON representation of this object.
-	 */
+
 	public String toJson() {
 		try {
 			return mapper.writer().withDefaultPrettyPrinter().writeValueAsString(this);

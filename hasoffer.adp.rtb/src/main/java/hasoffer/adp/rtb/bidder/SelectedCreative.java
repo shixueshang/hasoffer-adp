@@ -8,7 +8,6 @@ import hasoffer.adp.rtb.common.Creative;
  * A class that is used to hold a campaign and the associated creative that matches a bid request. Used by the
  * CampaignProcessor to return the campaign+creative pair, which will then be used by the CampaignSelector to
  * make the BidResponse.
- * @author Ben M. Faul
  *
  */
 
@@ -17,8 +16,6 @@ public class SelectedCreative {
 	Campaign campaign;
 	/** The creative within the campaign that was selected */
 	Creative creative;
-	/** The cap specification, if present */
-	String capSpec;
 	
 	/**
 	 * Return the campaign of the selection.

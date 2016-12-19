@@ -13,8 +13,6 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
-
 /**
  * The singleton class that makes up the Configuration object. A configuration
  * is a JSON file that describes the campaigns and operational parameters needed
@@ -32,8 +30,6 @@ public class Configuration {
 
 	/** The url of this bidder */
 	public String url;
-	/** Set to true to see why the bid response was not bid on */
-	public boolean printNoBidReason = false;
 	/** The campaign watchdog timer */
 	public long timeout = 80;
 	/** The standard name of this instance */
@@ -308,15 +304,6 @@ public class Configuration {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Returns a list of all the campaigns that are running
-	 *
-	 * @return List. The list of campaigns, byadIds, that are running.
-	 */
-	public List<String> getLoadedCampaignNames() {
-        return  campaignsList.stream().map(c -> c.adId).collect(Collectors.toList());
 	}
 
 	/**

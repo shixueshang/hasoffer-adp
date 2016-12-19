@@ -14,33 +14,25 @@ import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 /**
- * A singleton object that is used to select campaigns based on a given bid
- * request. The selector, through the get() request will determine which
- * campaigns/creatives match a bid request. If there is more than one creative
- * found, then one is selected at random, and then the BidRequest object is
- * returned. If no campaign matched, then null is returned.
+ * 对于每一个竞价请求列出所有投放，选出匹配的创意，如果有多个则随机选择一个，如果没有则返回null
  * 
  */
 public class CampaignSelector {
 
 	static Random randomGenerator = new Random();
-	/** The configuration object used in this selector */
+
 	Configuration config;
 
-	/** The instance of the singleton */
 	static CampaignSelector theInstance;
 
-	/**
-	 * Empty private constructor.
-	 */
+
 	private CampaignSelector() {
 
 	}
 
 	/**
-	 * Returns the singleton instance of the campaign selector.
-	 * 
-	 * @return CampaignSelector. The object that selects campaigns
+	 * 返回投放选择器的单实例
+	 *
 	 */
 	public static CampaignSelector getInstance() throws Exception {
 		if (theInstance == null) {
@@ -54,22 +46,8 @@ public class CampaignSelector {
 		return theInstance;
 	}
 
-	/**
-	 * Given a bid request, select a campaign to use in bidding. This method
-	 * will create a list of Future tasks, each given a campaign and the bid
-	 * request, which will then determine of the campaign is applicable to the
-	 * request. If more than one campaign matches, then more than one Future
-	 * task will return a non-null object 'SelectedCreative' which can be used
-	 * to make a bid, in the multiples case one of the SelectedCreatives is
-	 * chosen at random, then the bid response is created and returned.
-	 * 
-	 * @param br
-	 *            BidRequest. The bid request object of an RTB bid request.
-	 * @return Campaign. The campaign to use to construct the response.
-	 */
 	public BidResponse getHeuristic(BidRequest br) throws Exception {
 		long time = System.currentTimeMillis();
-		int logLevel = 5;
 
 		Iterator<Campaign> it = config.campaignsList.iterator();
         List<SelectedCreative> candidates = new ArrayList();
@@ -81,11 +59,10 @@ public class CampaignSelector {
 
 
 		for (Campaign c : list) {
-			CampaignProcessor p = new CampaignProcessor(c, br, null, null);
+			CampaignProcessor p = new CampaignProcessor(c, br);
 			tasks.add(p);
 		}
 
-		// 13%
 		long start = System.currentTimeMillis();
 
 		try {
@@ -106,28 +83,14 @@ public class CampaignSelector {
 		return null;
 	}
 
-
-	/**
-	 * Clear all the campaigns of the selector.
-	 */
 	public void clear() {
 		config.campaignsList.clear();
 	}
 
-	/**
-	 * Returns the number of campaigns in the selector.
-	 * 
-	 * @return int. The number of campaigns in use by the selector.
-	 */
 	public int size() {
 		return config.campaignsList.size();
 	}
 
-	/**
-	 * Returns the set of campaigns in this selector object.
-	 * 
-	 * @return List. The campaigns set.
-	 */
 	public List<Campaign> getCampaigns() {
 		return config.campaignsList;
 	}
