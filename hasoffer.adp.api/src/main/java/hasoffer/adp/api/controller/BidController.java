@@ -2,37 +2,24 @@ package hasoffer.adp.api.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.BeanUtil;
-import hasoffer.adp.api.configuration.RootConfiguration;
-import hasoffer.adp.base.utils.AjaxJson;
-import hasoffer.adp.base.utils.Constants;
-import hasoffer.adp.core.models.po.Equipment;
 import hasoffer.adp.core.models.po.Material;
-import hasoffer.adp.core.models.po.MaterialCreative;
-import hasoffer.adp.core.service.EquipmentService;
 import hasoffer.adp.core.service.MaterialService;
 import hasoffer.adp.rtb.adx.request.Banner;
 import hasoffer.adp.rtb.adx.request.Impression;
-import hasoffer.adp.rtb.adx.request.Video;
 import hasoffer.adp.rtb.adx.response.Bid;
 import hasoffer.adp.rtb.adx.response.BidResponse;
 import hasoffer.adp.rtb.adx.response.SeatBid;
-import org.springframework.beans.BeanUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -58,12 +45,6 @@ public class BidController extends BaseController {
 
     @Resource
     private MaterialService materialService;
-
-    @Resource
-    private EquipmentService equipmentService;
-
-    @Resource
-    RootConfiguration configuration;
 
     private  ObjectMapper mapper = new ObjectMapper();
 
@@ -170,56 +151,6 @@ public class BidController extends BaseController {
 
     }
 
-    /**
-     *
-     * @param country
-     * @param androidid
-     * @param gaid google advertiser id
-     * @param width
-     * @param height
-     * @return
-     */
-    @RequestMapping(value = "/ym/getAd", method = RequestMethod.GET)
-    public Map<String, Object> bidForYeahmobi(@RequestParam(value = "country", defaultValue = "IN") String country,
-                                    @RequestParam(value = "aid", required = false) String androidid,
-                                    @RequestParam(value = "gaid", required = false) String gaid,
-                                    @RequestParam(value = "imgw") int width,
-                                    @RequestParam(value = "imgh") int height){
-
-        String msg = "没有找到匹配的素材";
-        Map<String, Object> result = new ConcurrentHashMap<>();
-        if(StringUtils.isEmpty(androidid)){
-            result.put("error_msg" ,msg);
-            return result;
-        }
-
-        Equipment eq = equipmentService.findByAndroidid(androidid);
-        if(eq == null){
-            result.put("error_msg" ,msg);
-            return result;
-        }
-
-        String[] tags = eq.getTags().split(",");
-        List<Material> ms = materialService.findLikeByTag(tags[0]);
-        if(ms.size() == 0){
-            result.put("error_msg" ,msg);
-            return result;
-        }
-
-        Material m = ms.get(0);
-        result.put("error_msg","ok");
-        result.put("titel", m.getTitle());
-        result.put("desc", m.getDescription());
-        result.put("img", configuration.getDomainUrl() + m.getCreatives().get(0).getUrl());
-        result.put("imgw", m.getCreatives().get(0).getWidth());
-        result.put("imgh", m.getCreatives().get(0).getHeight());
-        result.put("icon", configuration.getDomainUrl() +  m.getIcon());
-        result.put("clk_url", m.getUrl());
-        result.put("btn_text", m.getBtnText());
-        result.put("imp_tks", new String[]{m.getPvRequestUrl()});
-        result.put("clk_tks", new String[]{"http://adclick.hasoffer.cn"});
-        return result;
-    }
 
 
 }
