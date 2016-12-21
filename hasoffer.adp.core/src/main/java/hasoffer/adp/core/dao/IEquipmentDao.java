@@ -31,4 +31,7 @@ public interface IEquipmentDao {
 
     @Delete("delete from t_equipment")
     void truncate();
+
+    @Select("select * from t_equipment where androidId = #{androidId}")
+    Equipment findByAndroidid(@Param("androidId") String androidid);
 }

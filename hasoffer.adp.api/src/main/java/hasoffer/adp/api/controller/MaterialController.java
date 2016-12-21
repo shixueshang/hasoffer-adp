@@ -9,10 +9,10 @@ import hasoffer.adp.core.models.po.MaterialCreative;
 import hasoffer.adp.core.models.vo.MaterialVo;
 import hasoffer.adp.core.service.MaterialService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by lihongde on 2016/12/1 11:10
  */
-@Controller
+@RestController
 @RequestMapping(value = "/material")
 public class MaterialController extends BaseController{
 

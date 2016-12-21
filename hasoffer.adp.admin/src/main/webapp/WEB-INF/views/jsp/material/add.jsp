@@ -156,7 +156,7 @@
                                             </div>
 
                                             <div class="control-group">
-                                                <label class="control-label">其他图片</label>
+                                                <label class="control-label">投放图片</label>
                                                 <div class="controls">
                                                     <input type="file" multiple class="file" name="creativeFile" id="creativeFile"  data-overwrite-initial="false" data-min-file-count="1">
                                                     <input type="hidden" name="otherIcons" id="otherIcons"/>
@@ -209,6 +209,18 @@
                                                 <div class="controls">
                                                     <input type="text" name="dailyRunning" class="large m-wrap" value="${material.dailyRunning}">
                                                     <span class="help-inline"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="control-group">
+                                                <label class="control-label">投放标签</label>
+                                                <div class="controls">
+                                                    <c:forEach items="${tags}" var="tag">
+                                                        <input type="checkbox" name="tags" value="${tag.name}"
+                                                        <c:forEach items="${checkedTags}" var="checked">
+                                                               <c:if test="${checked == tag.name}">checked="checked"</c:if>
+                                                        </c:forEach> >${tag.name}&nbsp;&nbsp;&nbsp;
+                                                    </c:forEach>
                                                 </div>
                                             </div>
 
@@ -307,7 +319,16 @@
                     required: true,
                     url: true
                 },
+                creativeFile: {
+                    required: true
+                },
                 putPlatform: {
+                    required: true
+                },
+                appType: {
+                    required: true
+                },
+                tags: {
                     required: true
                 }
             },

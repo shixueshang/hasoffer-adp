@@ -70,4 +70,8 @@ public class EquipmentService {
         });
 
     }
+
+    public Equipment findByAndroidid(String androidid){
+        return dao.findByAndroidid(androidid);
+    }
 }

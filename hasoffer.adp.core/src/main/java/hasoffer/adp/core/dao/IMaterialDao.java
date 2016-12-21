@@ -22,13 +22,13 @@ public interface IMaterialDao {
     int count(@Param("offset") int offset, @Param("size") int size);
 
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    @Insert("insert into t_material(title, subTitle, description, btnText, openWay, price, url, putCountry, icon, putPlatform, minVersion, maxVersion, appType, settlementWay, dailyRunning, pvRequestUrl)" +
-            " values (#{title}, #{subTitle}, #{description}, #{btnText}, #{openWay}, #{price}, #{url}, #{putCountry}, #{icon}, #{putPlatform}, #{minVersion}, #{maxVersion}, #{appType}, #{settlementWay}, #{dailyRunning}, #{pvRequestUrl})")
+    @Insert("insert into t_material(title, subTitle, description, btnText, openWay, price, url, putCountry, icon, putPlatform, minVersion, maxVersion, appType, settlementWay, dailyRunning, pvRequestUrl, tags)" +
+            " values (#{title}, #{subTitle}, #{description}, #{btnText}, #{openWay}, #{price}, #{url}, #{putCountry}, #{icon}, #{putPlatform}, #{minVersion}, #{maxVersion}, #{appType}, #{settlementWay}, #{dailyRunning}, #{pvRequestUrl}, #{tags})")
     @Transactional
     void insert(Material material);
 
     @Update("update t_material set title=#{title}, subTitle=#{subTitle}, description=#{description}, btnText=#{btnText}, openWay=#{openWay}, price=#{price}, url=#{url}, putCountry=#{putCountry}, icon=#{icon}, " +
-            "putPlatform=#{putPlatform}, minVersion=#{minVersion}, maxVersion=#{maxVersion}, appType=#{appType}, settlementWay=#{settlementWay}, dailyRunning=#{dailyRunning} where id=#{id}")
+            "putPlatform=#{putPlatform}, minVersion=#{minVersion}, maxVersion=#{maxVersion}, appType=#{appType}, settlementWay=#{settlementWay}, dailyRunning=#{dailyRunning}, tags=#{tags} where id=#{id}")
     @Transactional
     void update(Material material);
 
@@ -42,5 +42,8 @@ public interface IMaterialDao {
 
     @Select("select * from t_material_creative where width = #{width} and height = #{height}")
     List<MaterialCreative> findCreativesByWidthAndHeight(@Param("width") int width, @Param("height") int height);
+
+    @Select("select * from t_material where tags like CONCAT('%','${tags}','%')")
+    List<Material> findLikeByTag(@Param("tags") String tag);
 
 }

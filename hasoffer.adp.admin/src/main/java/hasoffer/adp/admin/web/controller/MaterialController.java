@@ -7,6 +7,7 @@ import hasoffer.adp.base.utils.Constants;
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.base.utils.page.PageHelper;
 import hasoffer.adp.core.enums.AppType;
+import hasoffer.adp.core.enums.Tags;
 import hasoffer.adp.core.models.po.Material;
 import hasoffer.adp.core.models.po.MaterialCreative;
 import hasoffer.adp.core.models.vo.MaterialCreativeVo;
@@ -68,6 +69,7 @@ public class MaterialController extends BaseController{
     @RequestMapping(value = "/create")
     public String create(Model model){
         model.addAttribute("appTypes", AppType.buildAppTypes());
+        model.addAttribute("tags", Tags.bulidTags());
         model.addAttribute("url", "material");
         return "material/add";
     }
@@ -114,9 +116,13 @@ public class MaterialController extends BaseController{
         }
 
         String appTypes = material.getAppType();
-        List<String> checked = Arrays.asList(appTypes.split(","));
+        List<String> checkedApps = Arrays.asList(appTypes.split(","));
+        String tags = material.getTags();
+        List<String> checkedTags = Arrays.asList(tags.split(","));
         model.addAttribute("appTypes", AppType.buildAppTypes());
-        model.addAttribute("checkedApps", checked);
+        model.addAttribute("tags", Tags.bulidTags());
+        model.addAttribute("checkedApps", checkedApps);
+        model.addAttribute("checkedTags", checkedTags);
         model.addAttribute("material", material);
         model.addAttribute("creatives", JSON.toJSON(creatives));
         return "material/add";

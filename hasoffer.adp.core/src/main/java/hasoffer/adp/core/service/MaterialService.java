@@ -61,4 +61,16 @@ public class MaterialService {
 
         return list;
     }
+
+    public List<Material> findLikeByTag(String tag){
+        List<Material> list = new ArrayList<>();
+        List<Material> ms =  dao.findLikeByTag(tag);
+        for(Material mc : ms){
+            Material m = this.find(mc.getId());
+            list.add(m);
+        }
+        return list;
+    }
+
+
 }

@@ -46,6 +46,8 @@ public class Material {
 
     private String otherIcons;
 
+    private String tags;
+
     private List<MaterialCreative> creatives;
 
     public Long getId() {
@@ -199,5 +201,13 @@ public class Material {
 
     public void setOtherIcons(String otherIcons) {
         this.otherIcons = otherIcons;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

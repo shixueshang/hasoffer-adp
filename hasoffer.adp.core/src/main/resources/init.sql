@@ -27,6 +27,7 @@ CREATE TABLE `t_material` (
   `settlementWay` varchar(10) DEFAULT NULL COMMENT '具体结算方式(CPI/CPC/CPM/CPA)',
   `dailyRunning` varchar(45) DEFAULT NULL COMMENT '每日跑量',
   `pvRequestUrl` varchar(255) DEFAULT NULL COMMENT 'pv地址',
+  `tags` VARCHAR(200) NULL COMMENT '标签',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='素材表';
 
@@ -68,5 +69,22 @@ CREATE TABLE `t_tag_statistical` (
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8
   COMMENT = '设备统计表';
+
+
+DROP TABLE IF EXISTS `t_order`;
+CREATE TABLE `t_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `androidid` varchar(45) DEFAULT NULL,
+  `channel` varchar(45) NOT NULL COMMENT '渠道',
+  `orderId` varchar(45) NOT NULL,
+  `orderTime` datetime NOT NULL COMMENT '下单时间',
+  `saleAmount` decimal(10,2) NOT NULL COMMENT '订单金额',
+  `commissionRate` decimal(10,2) DEFAULT NULL COMMENT '佣金比例',
+  `commission` decimal(10,2) DEFAULT NULL COMMENT '佣金',
+  `website` varchar(255) DEFAULT NULL COMMENT '售卖网站',
+  `orderStatus` varchar(45) DEFAULT NULL COMMENT '订单状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
