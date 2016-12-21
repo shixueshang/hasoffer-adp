@@ -1,26 +1,19 @@
 package hasoffer.adp.api.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hasoffer.adp.core.models.po.Material;
 import hasoffer.adp.core.service.MaterialService;
-import hasoffer.adp.rtb.adx.request.Banner;
-import hasoffer.adp.rtb.adx.request.Impression;
-import hasoffer.adp.rtb.adx.response.Bid;
-import hasoffer.adp.rtb.adx.response.BidResponse;
-import hasoffer.adp.rtb.adx.response.SeatBid;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+//import hasoffer.adp.rtb.adx.request.Banner;
+//import hasoffer.adp.rtb.adx.request.Impression;
+//import hasoffer.adp.rtb.adx.response.Bid;
+//import hasoffer.adp.rtb.adx.response.BidResponse;
+//import hasoffer.adp.rtb.adx.response.SeatBid;
 
 /**
  * Created by lihongde on 2016/12/14 17:51
@@ -51,7 +44,7 @@ public class BidController extends BaseController {
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public void bid(String testbid) throws IOException {
 
-        requests ++;
+       /* requests ++;
 
         if("nobid".equals(testbid)){
             nobid ++;
@@ -147,7 +140,7 @@ public class BidController extends BaseController {
         sbs.add(ab);
         bidResponse.setSeatbid(sbs.toArray(new SeatBid[sbs.size()]));
 
-        response.getWriter().println(JSON.toJSON(bidResponse));
+        response.getWriter().println(JSON.toJSON(bidResponse));*/
 
     }
 
