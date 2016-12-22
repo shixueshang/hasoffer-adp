@@ -35,7 +35,6 @@
                                 <thead>
                                 <tr>
                                     <td>标题</td>
-                                    <td>副标题</td>
                                     <td>按钮文字</td>
                                     <td>结算方式</td>
                                     <td>打开方式</td>
@@ -44,10 +43,7 @@
                                     <td>投放国家</td>
                                     <td>投放icon</td>
                                     <td>投放平台</td>
-                                    <td>平台最低版本</td>
-                                    <td>平台最高版本</td>
-                                    <td>投放app类型</td>
-                                    <td>每日跑量</td>
+                                    <td>投放标签</td>
                                     <td width="80px">操作</td>
                                 </tr>
                                 </thead>
@@ -55,7 +51,6 @@
                                 <c:forEach items="${materials}" var="material">
                                     <tr>
                                         <td>${material.title}</td>
-                                        <td>${material.subTitle}</td>
                                         <td>${material.btnText}</td>
                                         <td width="60px">${material.settlementWay}</td>
                                         <td>
@@ -77,10 +72,7 @@
                                             </c:if>
                                         </td>
                                         <td>${material.putPlatform}</td>
-                                        <td>${material.minVersion}</td>
-                                        <td>${material.maxVersion}</td>
-                                        <td>${material.appType}</td>
-                                        <td>${material.dailyRunning}</td>
+                                        <td>${material.tags}</td>
                                         <td>
                                             <a href="<%=request.getContextPath()%>/material/detail/${material.id}" class="btn mini purple"><i class="icon-edit"></i> 编辑</a>
                                         </td>

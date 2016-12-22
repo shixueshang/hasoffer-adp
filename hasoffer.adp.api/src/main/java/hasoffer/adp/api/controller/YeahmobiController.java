@@ -24,13 +24,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class YeahmobiController extends BaseController {
 
     @Resource
+    RootConfiguration configuration;
+    @Resource
     private MaterialService materialService;
-
     @Resource
     private EquipmentService equipmentService;
-
-    @Resource
-    RootConfiguration configuration;
 
     /**
      * 提供获得广告素材接口
@@ -48,7 +46,7 @@ public class YeahmobiController extends BaseController {
                                               @RequestParam(value = "imgw") int width,
                                               @RequestParam(value = "imgh") int height){
 
-        String msg = "没有找到匹配的素材";
+        String msg = "No matching material found";
         Map<String, Object> result = new ConcurrentHashMap<>();
         if(StringUtils.isEmpty(androidid)){
             result.put("error_msg" ,msg);
@@ -75,7 +73,11 @@ public class YeahmobiController extends BaseController {
         result.put("img", configuration.getDomainUrl() + m.getCreatives().get(0).getUrl());
         result.put("imgw", m.getCreatives().get(0).getWidth());
         result.put("imgh", m.getCreatives().get(0).getHeight());
-        result.put("icon", configuration.getDomainUrl() +  m.getIcon());
+        if (StringUtils.isEmpty(m.getIcon())) {
+            result.put("icon", "");
+        } else {
+            result.put("icon", configuration.getDomainUrl() + m.getIcon());
+        }
         result.put("clk_url", m.getUrl());
         result.put("btn_text", m.getBtnText());
         result.put("imp_tks", new String[]{m.getPvRequestUrl()});

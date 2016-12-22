@@ -135,7 +135,7 @@
                                                     <div class="fileupload fileupload-new" data-provides="fileupload">
                                                         <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
                                                             <c:choose>
-                                                                <c:when test="${material.icon == null}" >
+                                                                <c:when test="${material.icon == null or material.icon == ''}">
                                                                     <img src="<%=request.getContextPath()%>/assets/images/no-image.png" alt="" />
                                                                 </c:when>
                                                                 <c:otherwise>
@@ -267,7 +267,7 @@
         slugCallback: function(filename) {
             return filename.replace('(', '_').replace(']', '_');
         },
-        initialPreview: [imgArr]
+        initialPreview: imgArr
     });
 
     var otherIcons = $('#otherIcons').val();
