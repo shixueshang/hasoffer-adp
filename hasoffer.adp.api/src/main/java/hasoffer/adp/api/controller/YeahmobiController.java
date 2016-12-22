@@ -24,13 +24,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class YeahmobiController extends BaseController {
 
     @Resource
+    RootConfiguration configuration;
+    @Resource
     private MaterialService materialService;
-
     @Resource
     private EquipmentService equipmentService;
-
-    @Resource
-    RootConfiguration configuration;
 
     /**
      * 提供获得广告素材接口
@@ -67,6 +65,8 @@ public class YeahmobiController extends BaseController {
             result.put("error_msg" ,msg);
             return result;
         }
+
+//        FlipkartHelper.getUrlWithAff(url, new String[]{"HASAD_YM", androidid});
 
         Material m = ms.get(0);
         result.put("error_msg","ok");
