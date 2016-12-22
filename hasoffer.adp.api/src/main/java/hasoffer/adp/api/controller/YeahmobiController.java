@@ -5,6 +5,7 @@ import hasoffer.adp.core.models.po.Equipment;
 import hasoffer.adp.core.models.po.Material;
 import hasoffer.adp.core.service.EquipmentService;
 import hasoffer.adp.core.service.MaterialService;
+import hasoffer.site.helper.FlipkartHelper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,9 +67,9 @@ public class YeahmobiController extends BaseController {
             return result;
         }
 
-//        FlipkartHelper.getUrlWithAff(url, new String[]{"HASAD_YM", androidid});
 
         Material m = ms.get(0);
+        String url = FlipkartHelper.getUrlWithAff(m.getUrl(), new String[]{"HASAD_YM", androidid});
         result.put("error_msg","ok");
         result.put("titel", m.getTitle());
         result.put("desc", m.getDescription());
@@ -80,7 +81,7 @@ public class YeahmobiController extends BaseController {
         } else {
             result.put("icon", configuration.getDomainUrl() + m.getIcon());
         }
-        result.put("clk_url", m.getUrl());
+        result.put("clk_url", url);
         result.put("btn_text", m.getBtnText());
         result.put("imp_tks", new String[]{m.getPvRequestUrl()});
         result.put("clk_tks", new String[]{"http://adclick.hasoffer.cn"});
