@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
@@ -22,13 +21,6 @@ public class RedisConfigration {
 
     @Autowired
     Environment env;
-
-    @Bean("redisTemplate")
-    public RedisTemplate getRedisTemplate(JedisConnectionFactory connectionFactory) {
-        RedisTemplate redisTemplate = new RedisTemplate();
-
-        return redisTemplate;
-    }
 
     @Bean("jedisConnectionFactory")
     public JedisConnectionFactory connectionFactory(JedisPoolConfig poolConfig) {
