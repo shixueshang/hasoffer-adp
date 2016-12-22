@@ -4,8 +4,6 @@ import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.core.dao.IMaterialDao;
 import hasoffer.adp.core.models.po.Material;
 import hasoffer.adp.core.models.po.MaterialCreative;
-import hasoffer.adp.core.models.vo.MaterialCreativeVo;
-import hasoffer.adp.core.models.vo.MaterialVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -63,12 +61,22 @@ public class MaterialService {
     }
 
     public List<Material> findLikeByTag(String tag){
+
+        return this.buildMaterials(dao.findLikeByTag(tag));
+    }
+
+    public List<Material> findAllMaterials() {
+
+        return this.buildMaterials(dao.findAllMaterials());
+    }
+
+    private List<Material> buildMaterials(List<Material> sources) {
         List<Material> list = new ArrayList<>();
-        List<Material> ms =  dao.findLikeByTag(tag);
-        for(Material mc : ms){
+        for (Material mc : sources) {
             Material m = this.find(mc.getId());
             list.add(m);
         }
+
         return list;
     }
 

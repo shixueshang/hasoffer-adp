@@ -34,4 +34,7 @@ public interface IEquipmentDao {
 
     @Select("select * from t_equipment where androidId = #{androidId}")
     Equipment findByAndroidid(@Param("androidId") String androidid);
+
+    @Select("select * from t_equipment")
+    List<Equipment> findAllEquips();
 }

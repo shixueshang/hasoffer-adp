@@ -24,6 +24,8 @@ public class RootConfiguration {
 
     private String domainUrl;
 
+    private String clickUrl;
+
     @Bean
     public MessageSource messageSource(){
         ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
@@ -62,5 +64,16 @@ public class RootConfiguration {
 
     public void setDomainUrl(String domainUrl) {
         this.domainUrl = domainUrl;
+    }
+
+    public String getClickUrl() {
+        if (clickUrl == null) {
+            clickUrl = env.getProperty("clk_tks");
+        }
+        return clickUrl;
+    }
+
+    public void setClickUrl(String clickUrl) {
+        this.clickUrl = clickUrl;
     }
 }

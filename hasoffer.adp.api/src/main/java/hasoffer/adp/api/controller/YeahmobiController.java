@@ -1,10 +1,8 @@
 package hasoffer.adp.api.controller;
 
-import hasoffer.adp.api.configuration.RootConfiguration;
-import hasoffer.adp.core.models.po.Equipment;
-import hasoffer.adp.core.models.po.Material;
-import hasoffer.adp.core.service.EquipmentService;
-import hasoffer.adp.core.service.MaterialService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import hasoffer.data.redis.IRedisMapService;
+import hasoffer.data.redis.IRedisService;
 import hasoffer.site.helper.FlipkartHelper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,11 +23,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class YeahmobiController extends BaseController {
 
     @Resource
-    RootConfiguration configuration;
+    IRedisService redisService;
+
     @Resource
-    private MaterialService materialService;
-    @Resource
-    private EquipmentService equipmentService;
+    IRedisMapService redisMapService;
+
+    ObjectMapper mapper = new ObjectMapper();
 
     /**
      * 提供获得广告素材接口
@@ -54,37 +53,38 @@ public class YeahmobiController extends BaseController {
             return result;
         }
 
-        Equipment eq = equipmentService.findByAndroidid(androidid);
+        Object eq = redisMapService.getValue("AIDTAGMAP", androidid);
         if(eq == null){
             result.put("error_msg" ,msg);
             return result;
         }
 
-        String[] tags = eq.getTags().split(",");
-        List<Material> ms = materialService.findLikeByTag(tags[0]);
-        if(ms.size() == 0){
+        String[] tags = eq.toString().split(",");
+        Object mids = redisMapService.getValue("MATTAGMAP", tags[0]);
+        if (mids == null) {
             result.put("error_msg" ,msg);
             return result;
         }
 
+        String mid = mids.toString().split(",")[0];
 
-        Material m = ms.get(0);
-        String url = FlipkartHelper.getUrlWithAff(m.getUrl(), new String[]{"HASAD_YM", androidid});
-        result.put("error_msg","ok");
-        result.put("titel", m.getTitle());
-        result.put("desc", m.getDescription());
-        result.put("img", configuration.getDomainUrl() + m.getCreatives().get(0).getUrl());
-        result.put("imgw", m.getCreatives().get(0).getWidth());
-        result.put("imgh", m.getCreatives().get(0).getHeight());
-        if (StringUtils.isEmpty(m.getIcon())) {
-            result.put("icon", "");
-        } else {
-            result.put("icon", configuration.getDomainUrl() + m.getIcon());
+        Object m = redisMapService.getValue("MRESULT", mid);
+        if (m == null) {
+            result.put("error_msg", msg);
+            return result;
         }
-        result.put("clk_url", url);
-        result.put("btn_text", m.getBtnText());
-        result.put("imp_tks", new String[]{m.getPvRequestUrl()});
-        result.put("clk_tks", new String[]{"http://adclick.hasoffer.cn"});
+
+        try {
+            result = mapper.readValue(m.toString(), Map.class);
+
+            String url = FlipkartHelper.getUrlWithAff(result.get("clk_url").toString(), new String[]{"HASAD_YM", androidid});
+            result.put("clk_url", url);
+            result.put("error_msg", "ok");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 }

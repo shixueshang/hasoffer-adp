@@ -17,7 +17,18 @@
                 </ul>
             </li>
 
-            </ul>
+
+            <li class="has-sub">
+                <a href="javascript:;"><i class="icon-wrench"></i><span class="title">系统管理</span><span
+                        class="selected"></span><span class="arrow"></span></a>
+                <ul class="sub">
+                    <li class="active">
+                        <a href="<%=request.getContextPath()%>/task/loadRedisData">手动任务</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
     </div>
 
 <script>

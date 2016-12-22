@@ -46,4 +46,7 @@ public interface IMaterialDao {
     @Select("select * from t_material where tags like CONCAT('%','${tags}','%')")
     List<Material> findLikeByTag(@Param("tags") String tag);
 
+    @Select("select * from t_material")
+    List<Material> findAllMaterials();
+
 }
