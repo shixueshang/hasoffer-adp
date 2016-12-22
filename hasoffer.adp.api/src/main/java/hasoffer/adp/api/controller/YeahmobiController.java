@@ -66,6 +66,8 @@ public class YeahmobiController extends BaseController {
             return result;
         }
 
+//        FlipkartHelper.getUrlWithAff(url, new String[]{"HASAD_YM", androidid});
+
         Material m = ms.get(0);
         result.put("error_msg","ok");
         result.put("titel", m.getTitle());
