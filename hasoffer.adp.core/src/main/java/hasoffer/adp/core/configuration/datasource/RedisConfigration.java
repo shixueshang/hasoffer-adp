@@ -1,7 +1,6 @@
 package hasoffer.adp.core.configuration.datasource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,6 @@ import redis.clients.jedis.JedisPoolConfig;
  * Created by lihongde on 2016/12/22 12:26
  */
 @Configuration
-@EnableCaching
 @PropertySource("classpath:/redis.properties")
 @ComponentScan("hasoffer.data.redis")
 public class RedisConfigration {
