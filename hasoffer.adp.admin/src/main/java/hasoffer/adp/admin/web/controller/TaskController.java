@@ -92,6 +92,7 @@ public class TaskController extends BaseController {
             for (Material m : mlist) {
 
                 AdResultPo arp = new AdResultPo();
+                arp.setCrid(m.getId());
                 arp.setTitle(m.getTitle());
                 arp.setDesc(m.getDescription());
                 arp.setImg(configuration.getDomainUrl() + m.getCreatives().get(0).getUrl());
