@@ -51,15 +51,11 @@ public class TaskController extends BaseController {
     }
 
     /**
-     * 1、查询所有的设备，按照{aid=tags}格式加载到redis中
-     * 2、查询所有素材，按照{tag=mid1, mid2}格式加载到redis
-     * 3、查询所有素材，按照{mid=mobj}格式加载到redis
-     * 4、封装result加载到redis
+     * 查询所有的设备，按照{aid=tags}格式加载到redis中
      */
-    @RequestMapping(value = "/execute", method = RequestMethod.GET)
+    @RequestMapping(value = "/loadEqData", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxJson execute() {
-
+    public AjaxJson loadEqData() {
         try {
             List<Equipment> eqs = equipmentService.findAllEquips();
             Map<String, String> amap = new HashMap<>();
@@ -69,7 +65,25 @@ public class TaskController extends BaseController {
 
             redisMapService.putMap(Constants.REDIS_MAP_KEY.AIDTAGMAP, amap);
 
+            System.out.println("load data success...");
+            return new AjaxJson(Constants.HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("load data failed...");
+            e.printStackTrace();
+            return new AjaxJson(Constants.HttpStatus.SERVER_ERROR);
+        }
+    }
 
+    /**
+     * 查询所有素材，按照{tag=mid1, mid2}格式加载到redis
+     *
+     * @return
+     */
+    @RequestMapping(value = "/loadMtagData", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxJson loadMtagData() {
+
+        try {
             List<Material> list = materialService.findAllMaterials();
             Map<String, String> mtmap = new HashMap<>();
             for (Material m : list) {
@@ -87,7 +101,25 @@ public class TaskController extends BaseController {
 
             redisMapService.putMap(Constants.REDIS_MAP_KEY.MATTAGMAP, tagMap);
 
+            System.out.println("load data success...");
+            return new AjaxJson(Constants.HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("load data failed...");
+            e.printStackTrace();
+            return new AjaxJson(Constants.HttpStatus.SERVER_ERROR);
+        }
 
+    }
+
+    /**
+     * 封装result加载到redis
+     *
+     * @return
+     */
+    @RequestMapping(value = "/loadResultData", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxJson loadResultData() {
+        try {
             List<Material> mlist = materialService.findAllMaterials();
             for (Material m : mlist) {
 
@@ -120,7 +152,6 @@ public class TaskController extends BaseController {
             e.printStackTrace();
             return new AjaxJson(Constants.HttpStatus.SERVER_ERROR);
         }
-
     }
 
     /**

@@ -340,7 +340,7 @@
                 var $modal = this.getModal();
                 var $backdrop = $modal.data('bs.modal').$backdrop;
                 $modal.css('z-index', zIndexModal + (dialogCount - 1) * 20);
-                $backdrop.css('z-index', zIndexBackdrop + (dialogCount - 1) * 20);
+                // $backdrop.css('z-index', zIndexBackdrop + (dialogCount - 1) * 20);
             }
 
             return this;

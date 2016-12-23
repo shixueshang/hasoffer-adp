@@ -19,8 +19,28 @@
                 <div class="span12" style="height: 30px;"></div>
                 <div class="span12">
                     <div class="alert alert-block alert-info">
-                        <span style="font-size: 16px;">加载数据到Redis,请点击下面的按钮。。</span><br/>
-                        <button type="button" id="loadRedisData" class="btn blue ladda-button task-btn"
+                        <span style="font-size: 16px;">加载设备到Redis,请点击下面的按钮。。</span><br/>
+                        <button type="button" class="btn blue ladda-button task-eq"
+                                data-style="expand-left"><span class="ladda-label">加载数据</span></button>
+
+                    </div>
+                </div>
+
+                <div class="span12" style="height: 30px;"></div>
+                <div class="span12">
+                    <div class="alert alert-block alert-info">
+                        <span style="font-size: 16px;">加载素材标签到Redis,请点击下面的按钮。。</span><br/>
+                        <button type="button" class="btn blue ladda-button task-mtag"
+                                data-style="expand-left"><span class="ladda-label">加载数据</span></button>
+
+                    </div>
+                </div>
+
+                <div class="span12" style="height: 30px;"></div>
+                <div class="span12">
+                    <div class="alert alert-block alert-info">
+                        <span style="font-size: 16px;">加载返回结果到Redis,请点击下面的按钮。。</span><br/>
+                        <button type="button" class="btn blue ladda-button task-result"
                                 data-style="expand-left"><span class="ladda-label">加载数据</span></button>
 
                     </div>
@@ -36,38 +56,66 @@
 
 <script>
 
-    $('#loadRedisData').click(function () {
-
-        var la = Ladda.create(document.querySelector('.task-btn'));
+    $('.task-eq').click(function () {
+        var la = Ladda.create(document.querySelector('.task-eq'));
         la.start();
-
         $.ajax({
             type: 'GET',
-            url: '<%=request.getContextPath()%>/task/execute',
+            url: '<%=request.getContextPath()%>/task/loadEqData',
             success: function (res) {
                 la.stop();
-                console.info(res.code)
                 if (res.code == 200) {
-                    BootstrapDialog.show({
-                        title: 'success',
-                        message: '执行成功'
-                    })
+                    BootstrapDialog.show({title: 'success', message: '执行成功'})
                 } else {
-                    BootstrapDialog.show({
-                        title: 'failure',
-                        message: '执行失败'
-                    })
+                    BootstrapDialog.show({title: 'failure', message: '执行失败'})
                 }
-
             },
             error: function () {
                 la.stop();
-                BootstrapDialog.show({
-                    title: 'failure',
-                    message: '执行失败'
-                })
+                BootstrapDialog.show({title: 'failure', message: '执行失败'})
             }
+        })
+    })
 
+    $('.task-mtag').click(function () {
+        var la = Ladda.create(document.querySelector('.task-mtag'));
+        la.start();
+        $.ajax({
+            type: 'GET',
+            url: '<%=request.getContextPath()%>/task/loadMtagData',
+            success: function (res) {
+                la.stop();
+                if (res.code == 200) {
+                    BootstrapDialog.show({title: 'success', message: '执行成功'})
+                } else {
+                    BootstrapDialog.show({title: 'failure', message: '执行失败'})
+                }
+            },
+            error: function () {
+                la.stop();
+                BootstrapDialog.show({title: 'failure', message: '执行失败'})
+            }
+        })
+    })
+
+    $('.task-result').click(function () {
+        var la = Ladda.create(document.querySelector('.task-result'));
+        la.start();
+        $.ajax({
+            type: 'GET',
+            url: '<%=request.getContextPath()%>/task/loadResultData',
+            success: function (res) {
+                la.stop();
+                if (res.code == 200) {
+                    BootstrapDialog.show({title: 'success', message: '执行成功'})
+                } else {
+                    BootstrapDialog.show({title: 'failure', message: '执行失败'})
+                }
+            },
+            error: function () {
+                la.stop();
+                BootstrapDialog.show({title: 'failure', message: '执行失败'})
+            }
         })
     })
 
