@@ -46,6 +46,7 @@
             url: '<%=request.getContextPath()%>/task/execute',
             success: function (res) {
                 la.stop();
+                console.info(res.code)
                 if (res.code == 200) {
                     BootstrapDialog.show({
                         title: 'success',

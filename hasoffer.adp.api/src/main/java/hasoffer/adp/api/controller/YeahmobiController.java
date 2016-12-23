@@ -77,6 +77,23 @@ public class YeahmobiController extends BaseController {
         try {
             result = mapper.readValue(m.toString(), Map.class);
 
+            String[] clk_tks = (String[]) result.get("clk_tks");
+            String[] ctarr = new String[clk_tks.length];
+            for (int i = 0; i < clk_tks.length; i++) {
+                clk_tks[i] += "click?aid=" + androidid;
+                ctarr[i] = clk_tks[i];
+
+            }
+            result.put("clk_tks", ctarr);
+
+            String[] imp_tks = (String[]) result.get("imp_tks");
+            String[] itarr = new String[imp_tks.length];
+            for (int j = 0; j < imp_tks.length; j++) {
+                imp_tks[j] += "?aid=" + androidid;
+                itarr[j] = imp_tks[j];
+            }
+            result.put("imp_tks", itarr);
+
             String url = FlipkartHelper.getUrlWithAff(result.get("clk_url").toString(), new String[]{"HASAD_YM", androidid});
             result.put("clk_url", url);
             result.put("error_msg", "ok");
