@@ -1,6 +1,7 @@
 package hasoffer.adp.core.service;
 
 import hasoffer.adp.core.dao.ITagStatisticalDao;
+import hasoffer.adp.core.models.po.Tag;
 import hasoffer.adp.core.models.po.TagStatistical;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -62,5 +63,34 @@ public class TagService {
 
     public List<TagStatistical> findAllTags(){
         return dao.findAllTags();
+    }
+
+
+    public void batchInsertTag(List<Tag> tags) {
+        String sql = "insert into t_tag(aid, ymd, samsung, xiaomi, redmi, moto, leeco, lenovo) values(?,?,?,?,?,?,?,?)";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, tags.get(i).getAid());
+                ps.setString(2, tags.get(i).getYmd());
+                ps.setInt(3, tags.get(i).getSamsung());
+                ps.setInt(4, tags.get(i).getXiaomi());
+                ps.setInt(5, tags.get(i).getRedmi());
+                ps.setInt(6, tags.get(i).getMoto());
+                ps.setInt(7, tags.get(i).getLeeco());
+                ps.setInt(8, tags.get(i).getLenovo());
+
+                if (i % 2000 == 0) {
+                    System.out.println("batchsize == " + i);
+                    ps.executeBatch();
+                }
+            }
+
+            @Override
+            public int getBatchSize() {
+                return tags.size();
+            }
+        });
+
     }
 }

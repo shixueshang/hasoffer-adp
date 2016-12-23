@@ -87,4 +87,26 @@ CREATE TABLE `t_order` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+CREATE TABLE `adp`.`t_tag` (
+  `id`      INT         NOT NULL AUTO_INCREMENT,
+  `aid`     VARCHAR(45) NOT NULL,
+  `ymd`     VARCHAR(45) NOT NULL,
+  `samsung` INT         NULL,
+  `xiaomi`  INT         NULL,
+  `redmi`   INT         NULL,
+  `moto`    INT         NULL,
+  `leeco`   INT         NULL,
+  `lenovo`  INT         NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
+
+
+
+
+
+
+
+
 
