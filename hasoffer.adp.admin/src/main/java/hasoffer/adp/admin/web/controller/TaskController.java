@@ -67,7 +67,7 @@ public class TaskController extends BaseController {
                 amap.put(e.getAndroidId(), e.getTags());
             }
 
-            redisMapService.putMap("AIDTAGMAP", amap);
+            redisMapService.putMap(Constants.REDIS_MAP_KEY.AIDTAGMAP, amap);
 
 
             List<Material> list = materialService.findAllMaterials();
@@ -85,7 +85,7 @@ public class TaskController extends BaseController {
             Map<String, String> tagMap = new HashMap<>();
             this.paraseMap(mtmap, tagMap);
 
-            redisMapService.putMap("MATTAGMAP", tagMap);
+            redisMapService.putMap(Constants.REDIS_MAP_KEY.MATTAGMAP, tagMap);
 
 
             List<Material> mlist = materialService.findAllMaterials();
@@ -110,7 +110,7 @@ public class TaskController extends BaseController {
 
                 String s = JSON.toJSONString(arp);
 
-                redisMapService.putMap("MRESULT", m.getId().toString(), s);
+                redisMapService.putMap(Constants.REDIS_MAP_KEY.MRESULT, m.getId().toString(), s);
             }
             System.out.println("load data success...");
             return new AjaxJson(Constants.HttpStatus.OK);

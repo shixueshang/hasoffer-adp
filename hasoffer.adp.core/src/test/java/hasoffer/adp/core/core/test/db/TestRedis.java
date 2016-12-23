@@ -2,6 +2,7 @@ package hasoffer.adp.core.core.test.db;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hasoffer.adp.base.utils.Constants;
 import hasoffer.adp.core.configuration.CoreConfiguration;
 import hasoffer.adp.core.models.po.Equipment;
 import hasoffer.adp.core.models.po.Material;
@@ -71,7 +72,7 @@ public class TestRedis {
             amap.put(e.getAndroidId(), e.getTags());
         }
 
-        redisMapService.putMap("AIDTAGMAP", amap);
+        redisMapService.putMap(Constants.REDIS_MAP_KEY.AIDTAGMAP, amap);
 
     }
 
@@ -92,19 +93,19 @@ public class TestRedis {
         Map<String, String> tagMap = new HashMap<>();
         paraseMap(mtmap, tagMap);
 
-        redisMapService.putMap("MATTAGMAP", tagMap);
+        redisMapService.putMap(Constants.REDIS_MAP_KEY.MATTAGMAP, tagMap);
 
     }
 
     @Test
     public void testGet() {
-        Map<String, Object> map = redisMapService.getMap("AIDTAGMAP");
+        Map<String, Object> map = redisMapService.getMap(Constants.REDIS_MAP_KEY.AIDTAGMAP);
         System.out.println(map.size());
     }
 
     @Test
     public void getMatTagData() {
-        Map<String, String> map = redisMapService.getMap("MATTAGMAP");
+        Map<String, String> map = redisMapService.getMap(Constants.REDIS_MAP_KEY.MATTAGMAP);
         System.out.println(map);
     }
 
@@ -132,20 +133,20 @@ public class TestRedis {
 
             String ms = JSON.toJSONString(m);
 
-            redisMapService.putMap("MATMAP", m.getId().toString(), ms);
-            redisMapService.putMap("MRESULT", m.getId().toString(), s);
+            redisMapService.putMap(Constants.REDIS_MAP_KEY.MATTAGMAP, m.getId().toString(), ms);
+            redisMapService.putMap(Constants.REDIS_MAP_KEY.MRESULT, m.getId().toString(), s);
         }
     }
 
     @Test
     public void getMaterial() throws IOException {
 
-        Object m = redisMapService.getValue("MATMAP", "2");
+        Object m = redisMapService.getValue(Constants.REDIS_MAP_KEY.MATTAGMAP, "2");
 
         System.out.println(m);
 
 
-        Object rr = redisMapService.getValue("MRESULT", "2");
+        Object rr = redisMapService.getValue(Constants.REDIS_MAP_KEY.MRESULT, "2");
 
         ObjectMapper mapper = new ObjectMapper();
 

@@ -67,4 +67,23 @@ public class Constants {
 
     }
 
+    public static class REDIS_MAP_KEY {
+
+        /**
+         * 加载aid和tags数据
+         */
+        public static final String AIDTAGMAP = "AIDTAGMAP";
+
+        /**
+         * 加载tag和素材id数据
+         */
+        public static final String MATTAGMAP = "MATTAGMAP";
+
+        /**
+         * 返回给yeahmobi数据
+         */
+        public static final String MRESULT = "MRESULT";
+
+    }
+
 }
