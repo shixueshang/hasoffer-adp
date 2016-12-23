@@ -29,7 +29,7 @@ public interface IEquipmentDao {
     @Transactional
     void update(Equipment equipment);
 
-    @Delete("delete from t_equipment")
+    @Delete("truncate table t_equipment")
     void truncate();
 
     @Select("select * from t_equipment where androidId = #{androidId}")

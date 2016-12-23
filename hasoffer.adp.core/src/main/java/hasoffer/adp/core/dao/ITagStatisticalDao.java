@@ -1,5 +1,6 @@
 package hasoffer.adp.core.dao;
 
+import hasoffer.adp.core.models.po.Tag;
 import hasoffer.adp.core.models.po.TagStatistical;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -20,10 +21,14 @@ public interface ITagStatisticalDao {
     @Transactional
     void insert(TagStatistical tag);
 
-    @Delete(" delete from t_tag_statistical")
+    @Delete(" truncate table t_tag_statistical")
     void delete();
 
     @Select("select * from t_tag_statistical")
     List<TagStatistical> findAllTags();
+
+    @Select("select aid,sum(samsung) as samsung, sum(xiaomi) as xiaomi, sum(redmi) as redmi, sum(moto) as moto, sum(leeco) as leeco, sum(lenovo) as lenovo " +
+            "from t_tag group by aid")
+    List<Tag> findTagsGroupByAid();
 
 }

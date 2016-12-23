@@ -13,7 +13,8 @@ CREATE TABLE `t_material` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) NOT NULL COMMENT '标题',
   `subTitle` varchar(45) DEFAULT NULL COMMENT '副标题',
-  `description` varchar(200) DEFAULT NULL COMMENT '描述',
+  `description` VARCHAR(500) DEFAULT NULL
+  COMMENT '描述',
   `btnText` varchar(45) DEFAULT NULL COMMENT '按钮文字',
   `openWay` varchar(10) DEFAULT NULL COMMENT '打开方式',
   `price` float DEFAULT NULL COMMENT '价格',

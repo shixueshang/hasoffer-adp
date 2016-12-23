@@ -59,6 +59,7 @@ public class EquipmentService {
                 ps.setObject(3, equipments.get(i).getCreateTime());
 
                 if (i % 2000 == 0) {
+                    System.out.println("batchsize = " + i);
                     ps.executeBatch();
                 }
             }

@@ -93,4 +93,8 @@ public class TagService {
         });
 
     }
+
+    public List<Tag> findTagsGroupByAid() {
+        return dao.findTagsGroupByAid();
+    }
 }
