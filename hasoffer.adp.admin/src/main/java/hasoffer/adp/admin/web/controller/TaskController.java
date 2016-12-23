@@ -10,6 +10,7 @@ import hasoffer.adp.core.models.po.Material;
 import hasoffer.adp.core.models.vo.AdResultPo;
 import hasoffer.adp.core.service.EquipmentService;
 import hasoffer.adp.core.service.MaterialService;
+import hasoffer.base.utils.StringUtils;
 import hasoffer.data.redis.IRedisMapService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -96,7 +97,12 @@ public class TaskController extends BaseController {
                 arp.setImg(configuration.getDomainUrl() + m.getUrl());
                 arp.setImgw(m.getCreatives().get(0).getWidth());
                 arp.setImgh(m.getCreatives().get(0).getHeight());
-                arp.setIcon(configuration.getDomainUrl() + m.getIcon());
+                if (!StringUtils.isEmpty(m.getIcon())) {
+                    arp.setIcon(configuration.getDomainUrl() + m.getIcon());
+                } else {
+                    arp.setIcon("");
+                }
+
                 arp.setClk_url(m.getUrl());
                 arp.setBtn_text(m.getBtnText());
                 arp.setImp_tks(new String[]{m.getPvRequestUrl()});

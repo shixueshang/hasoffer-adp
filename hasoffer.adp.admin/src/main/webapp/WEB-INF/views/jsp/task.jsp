@@ -4,6 +4,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <jsp:include page="include/header.jsp"/>
+
+<link href="<%=request.getContextPath()%>/assets/bootstrap-loading/dist/ladda-themeless.min.css" rel="stylesheet"/>
 <body class="fixed-top">
 <jsp:include page="include/nav.jsp"/>
 
@@ -13,8 +15,15 @@
 
         <div class="container-fluid">
             <div class="row-fluid">
+
+                <div class="span12" style="height: 30px;"></div>
                 <div class="span12">
-                    <button type="button" id="loadRedisData" class="btn blue">加载数据</button>
+                    <div class="alert alert-block alert-info">
+                        <span style="font-size: 16px;">加载数据到Redis,请点击下面的按钮。。</span><br/>
+                        <button type="button" id="loadRedisData" class="btn blue ladda-button task-btn"
+                                data-style="expand-left"><span class="ladda-label">加载数据</span></button>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -22,16 +31,21 @@
 </div>
 
 <jsp:include page="include/footer.jsp"/>
+<script src="<%=request.getContextPath()%>/assets/bootstrap-loading/dist/spin.min.js"></script>
+<script src="<%=request.getContextPath()%>/assets/bootstrap-loading/dist/ladda.min.js"></script>
 
 <script>
 
     $('#loadRedisData').click(function () {
 
+        var la = Ladda.create(document.querySelector('.task-btn'));
+        la.start();
+
         $.ajax({
             type: 'GET',
             url: '<%=request.getContextPath()%>/task/execute',
             success: function (res) {
-                console.info(res)
+                la.stop();
                 if (res.code == 200) {
                     BootstrapDialog.show({
                         title: 'success',
@@ -45,7 +59,8 @@
                 }
 
             },
-            fail: function () {
+            error: function () {
+                la.stop();
                 BootstrapDialog.show({
                     title: 'failure',
                     message: '执行失败'

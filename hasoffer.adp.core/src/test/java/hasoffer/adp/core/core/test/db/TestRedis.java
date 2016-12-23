@@ -71,7 +71,7 @@ public class TestRedis {
             amap.put(e.getAndroidId(), e.getTags());
         }
 
-        redisMapService.putMap("aidTagMap", amap);
+        redisMapService.putMap("AIDTAGMAP", amap);
 
     }
 
@@ -92,19 +92,19 @@ public class TestRedis {
         Map<String, String> tagMap = new HashMap<>();
         paraseMap(mtmap, tagMap);
 
-        redisMapService.putMap("matTagMap", tagMap);
+        redisMapService.putMap("MATTAGMAP", tagMap);
 
     }
 
     @Test
     public void testGet() {
-        Map<String, Object> map = redisMapService.getMap("aidTagMap");
+        Map<String, Object> map = redisMapService.getMap("AIDTAGMAP");
         System.out.println(map.size());
     }
 
     @Test
     public void getMatTagData() {
-        Map<String, String> map = redisMapService.getMap("matTagMap");
+        Map<String, String> map = redisMapService.getMap("MATTAGMAP");
         System.out.println(map);
     }
 
