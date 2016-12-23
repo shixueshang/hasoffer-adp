@@ -109,6 +109,7 @@ public class TaskController extends BaseController {
             System.out.println("load data success...");
             return new AjaxJson(Constants.HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println("load data failed...");
             return new AjaxJson(Constants.HttpStatus.SERVER_ERROR);
         }
 

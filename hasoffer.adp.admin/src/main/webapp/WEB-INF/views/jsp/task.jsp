@@ -30,11 +30,20 @@
         $.ajax({
             type: 'GET',
             url: '<%=request.getContextPath()%>/task/execute',
-            success: function () {
-                BootstrapDialog.show({
-                    title: 'success',
-                    message: '执行成功'
-                })
+            success: function (res) {
+                console.info(res)
+                if (res.code == 200) {
+                    BootstrapDialog.show({
+                        title: 'success',
+                        message: '执行成功'
+                    })
+                } else {
+                    BootstrapDialog.show({
+                        title: 'failure',
+                        message: '执行失败'
+                    })
+                }
+
             },
             fail: function () {
                 BootstrapDialog.show({
