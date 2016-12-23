@@ -88,7 +88,7 @@ public class TestEquipment {
                 tmap.put("xiaomi", t.getXiaomi());
             }
             if (t.getLenovo() > 0) {
-                tmap.put("lenove", t.getLenovo());
+                tmap.put("lenovo", t.getLenovo());
             }
             if (t.getRedmi() > 0) {
                 tmap.put("redmi", t.getRedmi());

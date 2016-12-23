@@ -81,14 +81,14 @@ public class YeahmobiController extends BaseController {
             List<String> clk_tks = (List) result.get("clk_tks");
             String[] ctarr = new String[clk_tks.size()];
             for (int i = 0; i < clk_tks.size(); i++) {
-                ctarr[i] = clk_tks.get(i) + "click?aid=" + androidid;
+                ctarr[i] = clk_tks.get(i) + "click?aid=" + androidid + "&ad=" + result.get("crid");
             }
             result.put("clk_tks", ctarr);
 
             List<String> imp_tks = (List) result.get("imp_tks");
             String[] itarr = new String[imp_tks.size()];
             for (int j = 0; j < imp_tks.size(); j++) {
-                itarr[j] = imp_tks.get(j) + "?aid=" + androidid;
+                itarr[j] = imp_tks.get(j) + "?aid=" + androidid + "&ad=" + result.get("crid");
             }
             result.put("imp_tks", itarr);
 
