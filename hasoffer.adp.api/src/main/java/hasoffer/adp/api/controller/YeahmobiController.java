@@ -33,7 +33,7 @@ public class YeahmobiController extends BaseController {
     /**
      * 命中次数
      */
-    public static long successfulMatchs = 0;
+    public static long successMatchs = 0;
     /**
      * 未命中次数
      */
@@ -42,8 +42,10 @@ public class YeahmobiController extends BaseController {
      * 请求失败次数
      */
     public static long failed = 0;
+
     @Resource
     IRedisMapService redisMapService;
+
     ObjectMapper mapper = new ObjectMapper();
 
     /**
@@ -59,10 +61,10 @@ public class YeahmobiController extends BaseController {
     public Map<String, Object> bidForYeahmobi(@RequestParam(value = "country", defaultValue = "IN") String country,
                                               @RequestParam(value = "aid", required = false) String androidid,
                                               @RequestParam(value = "gaid", required = false) String gaid,
-                                              @RequestParam(value = "imgw") int width,
-                                              @RequestParam(value = "imgh") int height){
+                                              @RequestParam(value = "imgw", defaultValue = "506") int width,
+                                              @RequestParam(value = "imgh", defaultValue = "900") int height) {
 
-        requests++;
+        System.out.println("ad-api request aid : " + androidid);
         String msg = "No matching material found";
         Map<String, Object> result = new ConcurrentHashMap<>();
         if(StringUtils.isEmpty(androidid)){
@@ -115,9 +117,11 @@ public class YeahmobiController extends BaseController {
             String url = FlipkartHelper.getUrlWithAff(result.get("clk_url").toString(), new String[]{"HASAD_YM", androidid});
             result.put("clk_url", url);
             result.put("error_msg", "ok");
-            successfulMatchs++;
+            successMatchs++;
+            System.out.println("successMatchs : " + successMatchs);
         } catch (IOException e) {
             failed++;
+            System.out.println("failed : " + failed);
             e.printStackTrace();
         }
 
@@ -125,7 +129,7 @@ public class YeahmobiController extends BaseController {
     }
 
 
-    @Scheduled(cron = "0 0/1 *  * * ? ")
+    @Scheduled(cron = "0 0 0/1 * * ? ")
     public void reqCounts() {
 
         Date houreAgo = TimeUtils.getBeforeHour();
@@ -135,7 +139,7 @@ public class YeahmobiController extends BaseController {
         reqCounts.put("now", new Date());
         reqCounts.put("requests", requests);
         reqCounts.put("missed", missed);
-        reqCounts.put("successfulMatchs", successfulMatchs);
+        reqCounts.put("successMatchs", successMatchs);
         reqCounts.put("failed", failed);
 
         redisMapService.putMap(Constants.REDIS_MAP_KEY.REQCOUNTS, reqCounts);
