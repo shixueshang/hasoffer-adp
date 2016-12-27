@@ -43,6 +43,12 @@
             <artifactId>quartz</artifactId>
             <version>${quartz.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+            <version>${fasterxml_version}</version>
+        </dependency>
     </dependencies>
 
 </project>
