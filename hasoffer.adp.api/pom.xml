@@ -36,6 +36,13 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${spring-default_version}</version>
         </dependency>
+
+        <!-- Quartz framework -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

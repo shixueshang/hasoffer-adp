@@ -84,6 +84,11 @@ public class Constants {
          */
         public static final String MRESULT = "MRESULT";
 
+        /**
+         * 统计请求结果
+         */
+        public static final String REQCOUNTS = "REQCOUNTS";
+
     }
 
 }

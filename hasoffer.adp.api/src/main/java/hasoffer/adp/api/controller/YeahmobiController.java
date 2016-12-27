@@ -1,9 +1,11 @@
 package hasoffer.adp.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hasoffer.adp.base.utils.Constants;
+import hasoffer.adp.base.utils.TimeUtils;
 import hasoffer.data.redis.IRedisMapService;
-import hasoffer.data.redis.IRedisService;
 import hasoffer.site.helper.FlipkartHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,12 +26,24 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping(value = "/ym")
 public class YeahmobiController extends BaseController {
 
-    @Resource
-    IRedisService redisService;
-
+    /**
+     * 请求次数
+     */
+    public static long requests = 0;
+    /**
+     * 命中次数
+     */
+    public static long successfulMatchs = 0;
+    /**
+     * 未命中次数
+     */
+    public static long missed = 0;
+    /**
+     * 请求失败次数
+     */
+    public static long failed = 0;
     @Resource
     IRedisMapService redisMapService;
-
     ObjectMapper mapper = new ObjectMapper();
 
     /**
@@ -47,31 +62,36 @@ public class YeahmobiController extends BaseController {
                                               @RequestParam(value = "imgw") int width,
                                               @RequestParam(value = "imgh") int height){
 
+        requests++;
         String msg = "No matching material found";
         Map<String, Object> result = new ConcurrentHashMap<>();
         if(StringUtils.isEmpty(androidid)){
             result.put("error_msg" ,msg);
+            missed++;
             return result;
         }
 
-        Object eq = redisMapService.getValue("AIDTAGMAP", androidid);
+        Object eq = redisMapService.getValue(Constants.REDIS_MAP_KEY.AIDTAGMAP, androidid);
         if(eq == null){
             result.put("error_msg" ,msg);
+            missed++;
             return result;
         }
 
         String[] tags = eq.toString().split(",");
-        Object mids = redisMapService.getValue("MATTAGMAP", tags[0]);
+        Object mids = redisMapService.getValue(Constants.REDIS_MAP_KEY.MATTAGMAP, tags[0]);
         if (mids == null) {
             result.put("error_msg" ,msg);
+            missed++;
             return result;
         }
 
         String mid = mids.toString().split(",")[0];
 
-        Object m = redisMapService.getValue("MRESULT", mid);
+        Object m = redisMapService.getValue(Constants.REDIS_MAP_KEY.MRESULT, mid);
         if (m == null) {
             result.put("error_msg", msg);
+            missed++;
             return result;
         }
 
@@ -95,11 +115,30 @@ public class YeahmobiController extends BaseController {
             String url = FlipkartHelper.getUrlWithAff(result.get("clk_url").toString(), new String[]{"HASAD_YM", androidid});
             result.put("clk_url", url);
             result.put("error_msg", "ok");
-
+            successfulMatchs++;
         } catch (IOException e) {
+            failed++;
             e.printStackTrace();
         }
 
         return result;
+    }
+
+
+    @Scheduled(cron = "0 0/1 *  * * ? ")
+    public void reqCounts() {
+
+        Date houreAgo = TimeUtils.getBeforeHour();
+
+        Map<String, Object> reqCounts = new ConcurrentHashMap<>();
+        reqCounts.put("houreAgo", houreAgo);
+        reqCounts.put("now", new Date());
+        reqCounts.put("requests", requests);
+        reqCounts.put("missed", missed);
+        reqCounts.put("successfulMatchs", successfulMatchs);
+        reqCounts.put("failed", failed);
+
+        redisMapService.putMap(Constants.REDIS_MAP_KEY.REQCOUNTS, reqCounts);
+
     }
 }

@@ -75,7 +75,7 @@
                 BootstrapDialog.show({title: 'failure', message: '执行失败'})
             }
         })
-    })
+    });
 
     $('.task-mtag').click(function () {
         var la = Ladda.create(document.querySelector('.task-mtag'));
@@ -96,7 +96,7 @@
                 BootstrapDialog.show({title: 'failure', message: '执行失败'})
             }
         })
-    })
+    });
 
     $('.task-result').click(function () {
         var la = Ladda.create(document.querySelector('.task-result'));
