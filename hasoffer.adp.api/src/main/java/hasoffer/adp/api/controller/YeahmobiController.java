@@ -64,6 +64,7 @@ public class YeahmobiController extends BaseController {
                                               @RequestParam(value = "imgw", defaultValue = "506") int width,
                                               @RequestParam(value = "imgh", defaultValue = "900") int height) {
 
+        requests++;
         System.out.println("ad-api request aid : " + androidid);
         String msg = "No matching material found";
         Map<String, Object> result = new ConcurrentHashMap<>();
@@ -121,7 +122,7 @@ public class YeahmobiController extends BaseController {
             System.out.println("successMatchs : " + successMatchs);
         } catch (IOException e) {
             failed++;
-            System.out.println("failed : " + failed);
+            System.out.println("failed : " + failed + " aid : " + androidid);
             e.printStackTrace();
         }
 
@@ -131,6 +132,8 @@ public class YeahmobiController extends BaseController {
 
     @Scheduled(cron = "0 0 0/1 * * ? ")
     public void reqCounts() {
+
+        Map<String, Object> cache = redisMapService.getMap(Constants.REDIS_MAP_KEY.REQCOUNTS);
 
         Date houreAgo = TimeUtils.getBeforeHour();
 
