@@ -2,6 +2,7 @@ package hasoffer.adp.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hasoffer.adp.base.utils.Constants;
+import hasoffer.adp.base.utils.FileUtil;
 import hasoffer.adp.base.utils.TimeUtils;
 import hasoffer.data.redis.IRedisMapService;
 import hasoffer.site.helper.FlipkartHelper;
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -50,9 +51,10 @@ public class YeahmobiController extends BaseController {
 
     /**
      * 提供获得广告素材接口
+     *
      * @param country
      * @param androidid
-     * @param gaid google advertiser id
+     * @param gaid      google advertiser id
      * @param width
      * @param height
      * @return
@@ -64,38 +66,73 @@ public class YeahmobiController extends BaseController {
                                               @RequestParam(value = "imgw", defaultValue = "506") int width,
                                               @RequestParam(value = "imgh", defaultValue = "900") int height) {
 
+        /**
+         * 根据机器mac地址,给每台机器设置全投或不投开关
+         */
+        String mac = FileUtil.getMacAddress();
+        String dswitch = (String) redisMapService.getValue(Constants.REDIS_MAP_KEY.DELIVERYSWITCH, mac);
+        if (dswitch == null) {
+            redisMapService.putMap(Constants.REDIS_MAP_KEY.DELIVERYSWITCH, mac, String.valueOf(false));
+        }
+        boolean flag = Boolean.valueOf(dswitch);
+
         requests++;
         System.out.println("ad-api request aid : " + androidid);
         String msg = "No matching material found";
         Map<String, Object> result = new ConcurrentHashMap<>();
-        if(StringUtils.isEmpty(androidid)){
-            result.put("error_msg" ,msg);
-            missed++;
-            return result;
+        if (StringUtils.isEmpty(androidid)) {
+            if (flag) {
+                //随机选取一个androidid
+                Set<String> aids = redisMapService.getKeys(Constants.REDIS_MAP_KEY.AIDTAGMAP);
+                androidid = FileUtil.getRandomElement(aids);
+            } else {
+                result.put("error_msg", msg);
+                missed++;
+                return result;
+            }
         }
 
         Object eq = redisMapService.getValue(Constants.REDIS_MAP_KEY.AIDTAGMAP, androidid);
-        if(eq == null){
-            result.put("error_msg" ,msg);
-            missed++;
-            return result;
+        if (eq == null) {
+            if (flag) {
+                //随机选取一个tag
+                Set<String> tags = redisMapService.getKeys(Constants.REDIS_MAP_KEY.MATTAGMAP);
+                eq = FileUtil.getRandomElement(tags);
+            } else {
+                result.put("error_msg", msg);
+                missed++;
+                return result;
+            }
         }
 
         String[] tags = eq.toString().split(",");
         Object mids = redisMapService.getValue(Constants.REDIS_MAP_KEY.MATTAGMAP, tags[0]);
         if (mids == null) {
-            result.put("error_msg" ,msg);
-            missed++;
-            return result;
+            if (flag) {
+                //随机选取一个素材
+                Set<String> matids = redisMapService.getKeys(Constants.REDIS_MAP_KEY.MRESULT);
+                mids = FileUtil.getRandomElement(matids);
+            } else {
+                result.put("error_msg", msg);
+                missed++;
+                return result;
+            }
         }
 
         String mid = mids.toString().split(",")[0];
 
         Object m = redisMapService.getValue(Constants.REDIS_MAP_KEY.MRESULT, mid);
         if (m == null) {
-            result.put("error_msg", msg);
-            missed++;
-            return result;
+            if (flag) {
+                //随机选取一个素材
+                Set<String> matids = redisMapService.getKeys(Constants.REDIS_MAP_KEY.MRESULT);
+                String matid = FileUtil.getRandomElement(matids);
+                m = redisMapService.getValue(Constants.REDIS_MAP_KEY.MRESULT, matid);
+            } else {
+                result.put("error_msg", msg);
+                missed++;
+                return result;
+            }
         }
 
         try {
@@ -120,10 +157,12 @@ public class YeahmobiController extends BaseController {
             result.put("error_msg", "ok");
             successMatchs++;
             System.out.println("successMatchs : " + successMatchs);
-        } catch (IOException e) {
+        } catch (Exception e) {
             failed++;
             System.out.println("failed : " + failed + " aid : " + androidid);
             e.printStackTrace();
+            result.put("error_msg", msg);
+            return result;
         }
 
         return result;
@@ -136,16 +175,19 @@ public class YeahmobiController extends BaseController {
         Map<String, Object> cache = redisMapService.getMap(Constants.REDIS_MAP_KEY.REQCOUNTS);
 
         Date houreAgo = TimeUtils.getBeforeHour();
+        String hourDate = TimeUtils.formatDate(houreAgo, TimeUtils.hourDatePattern);
+        Map<String, Object> hourMap = new ConcurrentHashMap<>();
 
-        Map<String, Object> reqCounts = new ConcurrentHashMap<>();
-        reqCounts.put("houreAgo", houreAgo);
-        reqCounts.put("now", new Date());
-        reqCounts.put("requests", requests);
-        reqCounts.put("missed", missed);
-        reqCounts.put("successMatchs", successMatchs);
-        reqCounts.put("failed", failed);
+        hourMap.put("houreAgo", houreAgo);
+        hourMap.put("now", new Date());
+        hourMap.put("requests", requests);
+        hourMap.put("missed", missed);
+        hourMap.put("successMatchs", successMatchs);
+        hourMap.put("failed", failed);
+        cache.put(hourDate, hourMap);
 
-        redisMapService.putMap(Constants.REDIS_MAP_KEY.REQCOUNTS, reqCounts);
+        System.out.println(cache);
+        redisMapService.putMap(Constants.REDIS_MAP_KEY.REQCOUNTS, cache);
 
     }
 }

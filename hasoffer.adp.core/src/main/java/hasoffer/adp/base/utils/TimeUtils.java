@@ -9,7 +9,9 @@ import java.util.Date;
  */
 public class TimeUtils {
 
-    private static String defaultDatePattern = "yyyy-MM-dd HH:mm:ss";
+    public static String defaultDatePattern = "yyyy-MM-dd HH:mm:ss";
+
+    public static String hourDatePattern = "yyyyMMddHH";
 
     public static Date now(){
         return new Date();
@@ -25,6 +27,15 @@ public class TimeUtils {
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) - 1);
         SimpleDateFormat df = new SimpleDateFormat(defaultDatePattern);
         return calendar.getTime();
+    }
+
+
+    public static String formatDate(Date date, String pattern) {
+        if (date == null) {
+            return "";
+        }
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        return format.format(date);
     }
 
 }

@@ -47,7 +47,7 @@ public class TaskController extends BaseController {
     public String task(Model model) {
         model.addAttribute("url", "/task");
 
-        return "task";
+        return "setting/task";
     }
 
     /**

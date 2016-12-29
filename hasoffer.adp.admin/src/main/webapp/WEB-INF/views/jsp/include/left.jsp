@@ -25,6 +25,9 @@
                     <li class="active">
                         <a href="<%=request.getContextPath()%>/task/loadRedisData">手动任务</a>
                     </li>
+                    <li class="active">
+                        <a href="<%=request.getContextPath()%>/switch/listServers">服务器列表</a>
+                    </li>
                 </ul>
             </li>
 

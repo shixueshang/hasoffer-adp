@@ -157,4 +157,15 @@ public class TestRedis {
 
 
     }
+
+
+    @Test
+    public void testReqCache() {
+
+        Map<String, Object> m = redisMapService.getMap(Constants.REDIS_MAP_KEY.REQCOUNTS);
+        for (Map.Entry entry : m.entrySet()) {
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue());
+        }
+    }
 }

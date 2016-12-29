@@ -3,14 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<jsp:include page="include/header.jsp"/>
+<jsp:include page="../include/header.jsp"/>
 
 <link href="<%=request.getContextPath()%>/assets/bootstrap-loading/dist/ladda-themeless.min.css" rel="stylesheet"/>
 <body class="fixed-top">
-<jsp:include page="include/nav.jsp"/>
+<jsp:include page="../include/nav.jsp"/>
 
 <div class="page-container row-fluid">
-    <jsp:include page="include/left.jsp"/>
+    <jsp:include page="../include/left.jsp"/>
     <div class="page-content">
 
         <div class="container-fluid">
@@ -50,7 +50,7 @@
     </div>
 </div>
 
-<jsp:include page="include/footer.jsp"/>
+<jsp:include page="../include/footer.jsp"/>
 <script src="<%=request.getContextPath()%>/assets/bootstrap-loading/dist/spin.min.js"></script>
 <script src="<%=request.getContextPath()%>/assets/bootstrap-loading/dist/ladda.min.js"></script>
 

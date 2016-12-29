@@ -1,5 +1,6 @@
 package hasoffer.adp.core.core.test.db;
 
+import hasoffer.adp.base.utils.HttpPostGet;
 import hasoffer.adp.base.utils.MapValueComparator;
 import hasoffer.adp.core.configuration.CoreConfiguration;
 import hasoffer.adp.core.models.po.Equipment;
@@ -133,5 +134,31 @@ public class TestEquipment {
 
         System.out.println("insert tags end ..." + new Date());
 
+    }
+
+    @Test
+    public void testMatchSamsung() {
+        final String url = "http://ad.hasoffer.cn/ym/getAd?imgw=100&imgh=1000&aid=%s";
+        List<Equipment> eqs = equipmentService.findAllEquips();
+        for (Equipment eq : eqs) {
+            if (!eq.getTags().equals("samsung")) {
+                continue;
+            }
+
+            String aid = eq.getAndroidId();
+
+            String real_url = String.format(url, aid);
+
+            HttpPostGet h = new HttpPostGet();
+            try {
+                String re = h.sendGet(real_url);
+                int code = h.getResponseCode();
+
+                System.out.println(String.format("response[%d] : %s", code, re));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

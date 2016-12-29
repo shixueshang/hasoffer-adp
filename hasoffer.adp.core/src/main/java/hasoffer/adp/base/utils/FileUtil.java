@@ -1,13 +1,14 @@
 package hasoffer.adp.base.utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by lihongde on 2016/12/2 15:43
@@ -52,6 +53,38 @@ public class FileUtil {
             }
         }
         return fileData;
+    }
+
+    public static String getMacAddress() {
+        String mac = "";
+        try {
+            Process p = new ProcessBuilder("ifconfig").start();
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while ((line = br.readLine()) != null) {
+                Pattern pat = Pattern.compile("\\b\\w+:\\w+:\\w+:\\w+:\\w+:\\w+\\b");
+                Matcher mat = pat.matcher(line);
+                if (mat.find()) {
+                    mac = mat.group(0);
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+        }
+        return mac;
+    }
+
+
+    public static <E> E getRandomElement(Set<E> set) {
+        int rn = ThreadLocalRandom.current().nextInt(set.size());
+        int i = 0;
+        for (E e : set) {
+            if (i == rn) {
+                return e;
+            }
+            i++;
+        }
+        return null;
     }
 
 }

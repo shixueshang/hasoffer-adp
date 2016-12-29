@@ -89,6 +89,11 @@ public class Constants {
          */
         public static final String REQCOUNTS = "REQCOUNTS";
 
+        /**
+         * 投放开关
+         */
+        public static final String DELIVERYSWITCH = "DELIVERYSWITCH";
+
     }
 
 }
