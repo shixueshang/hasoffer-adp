@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class AdResultPo implements Serializable {
 
-    private Long crid;
+    private String crid;
 
     private String title;
 
@@ -29,11 +29,11 @@ public class AdResultPo implements Serializable {
 
     private String[] clk_tks;
 
-    public Long getCrid() {
+    public String getCrid() {
         return crid;
     }
 
-    public void setCrid(Long crid) {
+    public void setCrid(String crid) {
         this.crid = crid;
     }
 
