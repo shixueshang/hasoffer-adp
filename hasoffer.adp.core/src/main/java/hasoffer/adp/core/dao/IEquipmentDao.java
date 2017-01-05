@@ -1,5 +1,6 @@
 package hasoffer.adp.core.dao;
 
+import hasoffer.adp.core.models.po.Device;
 import hasoffer.adp.core.models.po.Equipment;
 import org.apache.ibatis.annotations.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,4 +38,7 @@ public interface IEquipmentDao {
 
     @Select("select * from t_equipment")
     List<Equipment> findAllEquips();
+
+    @Select("SELECT deviceId, brand, deviceName FROM urmdevice where deviceName in('Xiaomi Redmi Note 3 kenzo', 'samsung SM-J200G j2ltedd', 'samsung SM-J700F j7eltexx', 'LWNOVO Lenovo A6000 Kraft-A6000', 'Xiaomi 2014818 2014818','LENOVO Lenovo K50a40 aio_otfp', 'samsung SM-G7102 ms013gxx')")
+    List<Device> findDevices();
 }

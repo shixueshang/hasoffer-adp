@@ -58,12 +58,9 @@ public class TaskController extends BaseController {
     public AjaxJson loadEqData() {
         try {
             List<Equipment> eqs = equipmentService.findAllEquips();
-            Map<String, String> amap = new HashMap<>();
             for (Equipment e : eqs) {
-                amap.put(e.getAndroidId(), e.getTags());
+                redisMapService.putMap(Constants.REDIS_MAP_KEY.AIDTAGMAP, e.getAndroidId(), e.getTags());
             }
-
-            redisMapService.putMap(Constants.REDIS_MAP_KEY.AIDTAGMAP, amap);
 
             System.out.println("load data success...");
             return new AjaxJson(Constants.HttpStatus.OK);

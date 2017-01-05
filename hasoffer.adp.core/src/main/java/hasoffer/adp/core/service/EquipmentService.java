@@ -2,6 +2,7 @@ package hasoffer.adp.core.service;
 
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.core.dao.IEquipmentDao;
+import hasoffer.adp.core.models.po.Device;
 import hasoffer.adp.core.models.po.Equipment;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -79,5 +80,10 @@ public class EquipmentService {
 
     public List<Equipment> findAllEquips() {
         return dao.findAllEquips();
+    }
+
+
+    public List<Device> findDevice() {
+        return dao.findDevices();
     }
 }
