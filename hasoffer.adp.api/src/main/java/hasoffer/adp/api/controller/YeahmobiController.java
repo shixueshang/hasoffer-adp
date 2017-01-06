@@ -143,7 +143,7 @@ public class YeahmobiController extends BaseController {
             List<String> clk_tks = (List) result.get("clk_tks");
             String[] ctarr = new String[clk_tks.size()];
             for (int i = 0; i < clk_tks.size(); i++) {
-                ctarr[i] = clk_tks.get(i) + "click?aid=" + androidid + "&ad=" + mid;
+                ctarr[i] = clk_tks.get(i) + "?aid=" + androidid + "&ad=" + mid;
             }
             result.put("clk_tks", ctarr);
 
