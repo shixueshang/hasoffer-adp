@@ -28,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class YeahmobiController extends BaseController {
 
     private static final String CLICK_PREF_URL = "http://adclick.hasoffer.cn/rd?url=%s";
+
     /**
      * 请求次数
      */
@@ -44,6 +45,7 @@ public class YeahmobiController extends BaseController {
      * 请求失败次数
      */
     public static long failed = 0;
+
     @Resource
     IRedisMapService redisMapService;
 
