@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping(value = "/ym")
 public class YeahmobiController extends BaseController {
 
+    private static final String CLICK_PREF_URL = "http://adclick.hasoffer.cn/rd?url=%s";
     /**
      * 请求次数
      */
@@ -43,7 +44,6 @@ public class YeahmobiController extends BaseController {
      * 请求失败次数
      */
     public static long failed = 0;
-
     @Resource
     IRedisMapService redisMapService;
 
@@ -153,7 +153,10 @@ public class YeahmobiController extends BaseController {
             result.put("imp_tks", itarr);
 
             String url = FlipkartHelper.getUrlWithAff(result.get("clk_url").toString(), new String[]{"HASAD_YM", androidid});
-            result.put("clk_url", url);
+
+            String nurl = String.format(CLICK_PREF_URL, hasoffer.base.utils.StringUtils.urlEncode(url));
+
+            result.put("clk_url", nurl);
             result.put("error_msg", "ok");
             successMatchs++;
             System.out.println("successMatchs : " + successMatchs);

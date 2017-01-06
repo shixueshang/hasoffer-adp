@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public enum Tags {
 
-    xiaomi, lenovo, redmi, moto, leeco, samsung;
+    xiaomi, lenovo, redmi, moto, leeco, samsung, redmi_note3, samsung_SM_J200G, samsung_SM_J700F, lenovo_A6000, redmi2, lenovo_K50a40, samsung_SM_G7102;
 
     public static List<Map<String, Object>> bulidTags(){
         List<Map<String, Object>> tags = new ArrayList<Map<String, Object>>();
