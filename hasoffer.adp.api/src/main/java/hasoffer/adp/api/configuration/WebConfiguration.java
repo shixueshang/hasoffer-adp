@@ -4,7 +4,6 @@ import hasoffer.adp.api.interceptor.ContextInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
@@ -15,7 +14,6 @@ import java.util.Arrays;
 @Configuration
 @EnableWebMvc
 @ComponentScan("hasoffer.adp.api.controller")
-@EnableScheduling
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
     /**

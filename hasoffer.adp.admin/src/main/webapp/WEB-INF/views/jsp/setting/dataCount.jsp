@@ -63,7 +63,7 @@
                                 <tbody>
                                 <c:forEach items="${logs}" var="log">
                                     <tr>
-                                        <td>${log.date}</td>
+                                        <td><fmt:formatDate value="${log.date}" pattern="yyyy-MM-dd"/></td>
                                         <td>${log.requests}</td>
                                         <td>${log.pvCallback}</td>
                                         <td>${log.pvClicks}</td>

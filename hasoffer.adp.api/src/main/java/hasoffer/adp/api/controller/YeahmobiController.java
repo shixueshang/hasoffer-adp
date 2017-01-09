@@ -26,6 +26,8 @@ public class YeahmobiController extends BaseController {
 
     private static final String CLICK_PREF_URL = "http://adclick.hasoffer.cn/rd?url=%s";
 
+    private static final String AD_CHANNEL = "HASAD_YM";
+
     /**
      * 命中次数
      */
@@ -139,7 +141,7 @@ public class YeahmobiController extends BaseController {
             }
             result.put("imp_tks", itarr);
 
-            String url = FlipkartHelper.getUrlWithAff(result.get("clk_url").toString(), new String[]{"HASAD_YM", androidid});
+            String url = FlipkartHelper.getUrlWithAff(result.get("clk_url").toString(), new String[]{AD_CHANNEL, androidid});
 
             String nurl = String.format(CLICK_PREF_URL, hasoffer.base.utils.StringUtils.urlEncode(url));
 

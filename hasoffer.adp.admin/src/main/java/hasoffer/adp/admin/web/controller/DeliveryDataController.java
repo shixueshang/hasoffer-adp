@@ -56,6 +56,7 @@ public class DeliveryDataController extends BaseController {
         log.setImgRequests(imgs);
         log.setClicks(clicks);
 
+        System.out.println("start insert log......");
         accessLogService.insert(log);
 
     }
