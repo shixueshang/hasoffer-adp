@@ -177,7 +177,8 @@
                                             </div>
 
                                             <div class="control-group">
-                                                <label class="control-label">平台最低版本</label>
+                                                <label class="control-label">平台最低版本<span
+                                                        class="required">*</span></label>
                                                 <div class="controls">
                                                     <input type="text" name="minVersion" id="minVersion" class="large m-wrap" value="${material.minVersion}">
                                                     <span class="help-inline"></span>
@@ -185,7 +186,8 @@
                                             </div>
 
                                             <div class="control-group">
-                                                <label class="control-label">平台最高版本</label>
+                                                <label class="control-label">平台最高版本<span
+                                                        class="required">*</span></label>
                                                 <div class="controls">
                                                     <input type="text" name="maxVersion" id="maxVersion" class="large m-wrap" value="${material.maxVersion}">
                                                     <span class="help-inline"></span>
@@ -329,6 +331,12 @@
                     required: true
                 },
                 tags: {
+                    required: true
+                },
+                minVersion: {
+                    required: true
+                },
+                maxVersion: {
                     required: true
                 }
             },

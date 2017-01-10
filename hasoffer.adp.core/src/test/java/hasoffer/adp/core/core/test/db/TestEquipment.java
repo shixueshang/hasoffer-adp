@@ -5,6 +5,7 @@ import hasoffer.adp.base.utils.MapValueComparator;
 import hasoffer.adp.core.configuration.CoreConfiguration;
 import hasoffer.adp.core.models.po.Equipment;
 import hasoffer.adp.core.models.po.Tag;
+import hasoffer.adp.core.models.po.Tag2;
 import hasoffer.adp.core.models.po.TagStatistical;
 import hasoffer.adp.core.service.EquipmentService;
 import hasoffer.adp.core.service.TagService;
@@ -161,4 +162,58 @@ public class TestEquipment {
             }
         }
     }
+
+
+    @Test
+    public void insertTag2() {
+        //equipmentService.truncate();
+        List<Tag2> list = tagService.findAllTag2s();
+        List<Equipment> data = new ArrayList<>();
+        for (Tag2 t : list) {
+            StringBuilder sb = new StringBuilder();
+            if (t.getOnePlus_3T() > 0) {
+                sb.append("OnePlus_3T,");
+            }
+            if (t.getMoto_G_Plus_4th_Gen() > 0) {
+                sb.append("Moto_G_Plus_4th_Gen,");
+            }
+            if (t.getLenovo_Vibe_K5_Note() > 0) {
+                sb.append("Lenovo_Vibe_K5_Note,");
+            }
+            if (t.getLeEco_Le_1s_Eco() > 0) {
+                sb.append("LeEco_Le_1s_Eco,");
+            }
+            if (t.getMoto_M() > 0) {
+                sb.append("Moto_M,");
+            }
+            if (t.getLenovo_Phab_2() > 0) {
+                sb.append("Lenovo_Phab_2,");
+            }
+            if (t.getPanasonic_Eluga_Note() > 0) {
+                sb.append("Panasonic_Eluga_Note,");
+            }
+            if (t.getSAMSUNG_Galaxy_On8() > 0) {
+                sb.append("SAMSUNG_Galaxy_On8,");
+            }
+            if (t.getSAMSUNG_Galaxy_On_Nxt() > 0) {
+                sb.append("SAMSUNG_Galaxy_On_Nxt,");
+            }
+            if (t.getYu_Yureka_Plus() > 0) {
+                sb.append("Yu_Yureka_Plus,");
+            }
+            String tag = "";
+            if (!sb.toString().equals("")) {
+                tag = sb.substring(0, sb.length() - 1);
+            }
+
+            Equipment e = new Equipment(t.getAid(), tag);
+            data.add(e);
+        }
+        System.out.println("start insert tags ..." + new Date());
+        equipmentService.batchInsert(data);
+
+        System.out.println("insert tags end ..." + new Date());
+
+    }
+
 }

@@ -1,8 +1,10 @@
 package hasoffer.adp.base.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by chevy on 16-11-19.
@@ -36,6 +38,17 @@ public class TimeUtils {
         }
         SimpleDateFormat format = new SimpleDateFormat(pattern);
         return format.format(date);
+    }
+
+    public static final Date parseUSDate(String strDate, String datePattern) {
+        SimpleDateFormat df = null;
+        Date date = null;
+        df = new SimpleDateFormat(datePattern, Locale.US);
+        try {
+            date = df.parse(strDate);
+        } catch (ParseException pe) {
+        }
+        return date;
     }
 
 }

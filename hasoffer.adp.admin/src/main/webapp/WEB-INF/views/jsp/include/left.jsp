@@ -28,6 +28,9 @@
                     <li class="active">
                         <a href="<%=request.getContextPath()%>/switch/listServers">服务器列表</a>
                     </li>
+                    <li class="active">
+                        <a href="<%=request.getContextPath()%>/data/list">数据统计</a>
+                    </li>
                 </ul>
             </li>
 

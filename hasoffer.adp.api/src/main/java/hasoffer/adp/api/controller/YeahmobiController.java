@@ -3,10 +3,8 @@ package hasoffer.adp.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hasoffer.adp.base.utils.Constants;
 import hasoffer.adp.base.utils.FileUtil;
-import hasoffer.adp.base.utils.TimeUtils;
 import hasoffer.data.redis.IRedisMapService;
 import hasoffer.site.helper.FlipkartHelper;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,17 +27,10 @@ public class YeahmobiController extends BaseController {
     private static final String CLICK_PREF_URL = "http://adclick.hasoffer.cn/rd?url=%s";
 
     /**
-     * 请求次数
-     */
-    public static long requests = 0;
-    /**
      * 命中次数
      */
     public static long successMatchs = 0;
-    /**
-     * 未命中次数
-     */
-    public static long missed = 0;
+
     /**
      * 请求失败次数
      */
@@ -78,7 +68,6 @@ public class YeahmobiController extends BaseController {
         }
         boolean flag = Boolean.valueOf(dswitch);
 
-        requests++;
         System.out.println("ad-api request aid : " + androidid);
         String msg = "No matching material found";
         Map<String, Object> result = new ConcurrentHashMap<>();
@@ -89,7 +78,6 @@ public class YeahmobiController extends BaseController {
                 androidid = FileUtil.getRandomElement(aids);
             } else {
                 result.put("error_msg", msg);
-                missed++;
                 return result;
             }
         }
@@ -102,7 +90,6 @@ public class YeahmobiController extends BaseController {
                 eq = FileUtil.getRandomElement(tags);
             } else {
                 result.put("error_msg", msg);
-                missed++;
                 return result;
             }
         }
@@ -116,7 +103,6 @@ public class YeahmobiController extends BaseController {
                 mids = FileUtil.getRandomElement(matids);
             } else {
                 result.put("error_msg", msg);
-                missed++;
                 return result;
             }
         }
@@ -132,7 +118,6 @@ public class YeahmobiController extends BaseController {
                 m = redisMapService.getValue(Constants.REDIS_MAP_KEY.MRESULT, matid);
             } else {
                 result.put("error_msg", msg);
-                missed++;
                 return result;
             }
         }
@@ -173,26 +158,4 @@ public class YeahmobiController extends BaseController {
         return result;
     }
 
-
-    @Scheduled(cron = "0 0 0/1 * * ? ")
-    public void reqCounts() {
-
-        Map<String, Object> cache = redisMapService.getMap(Constants.REDIS_MAP_KEY.REQCOUNTS);
-
-        Date houreAgo = TimeUtils.getBeforeHour();
-        String hourDate = TimeUtils.formatDate(houreAgo, TimeUtils.hourDatePattern);
-        Map<String, Object> hourMap = new ConcurrentHashMap<>();
-
-        hourMap.put("houreAgo", houreAgo);
-        hourMap.put("now", new Date());
-        hourMap.put("requests", requests);
-        hourMap.put("missed", missed);
-        hourMap.put("successMatchs", successMatchs);
-        hourMap.put("failed", failed);
-        cache.put(hourDate, hourMap);
-
-        System.out.println(cache);
-        redisMapService.putMap(Constants.REDIS_MAP_KEY.REQCOUNTS, cache);
-
-    }
 }

@@ -1,32 +1,32 @@
 package hasoffer.adp.core.core.test.db;
 
 
-import hasoffer.base.model.HttpResponseModel;
-import hasoffer.base.utils.http.HttpUtils;
+import hasoffer.site.helper.FlipkartHelper;
 
 /**
  * Created by lihongde on 2016/12/22 20:08
  */
 public class Test {
 
-    public static void t1(String[] args) {
-        String str = "\t3\t0\t0\t0\t0\t0";
+    public static void main(String[] args) {
+        String s = "      9 2c7c5299d15808a\tSAMSUNG_Galaxy_On8";
 
-        String[] a = str.split("\\t");
+        System.out.println(s.trim());
+        System.out.println(s.trim().split("\\t")[1]);
 
-        System.out.println(a.length);
-        for (String s : a) {
-            System.out.println(s);
-        }
 
+        String dd = s.trim().split("\\t")[0];
+
+        System.out.println(dd.split(" ")[0]);
+        System.out.println(dd.split(" ")[1]);
 
     }
 
     @org.junit.Test
     public void t2() {
-        String url = "https://www.flipkart.com/prepare-data-interpretation-cat/p/itmehf6pzpzw69rg?pid=9789352602254&srno=b_1_2&otracker=hp_omu_Deals%20of%20the%20Day_2_Min.%2055%25%20Off_b5967c00-8791-4b50-9589-51b8b39af5ad_0&lid=LSTBOK9789352602254BFSX1Y";
-        HttpResponseModel rps = HttpUtils.get(url, null);
+        String u = "http://www.amazon.in/iPaky-Luxury-Quality-Ultra-Thin-Silicon/dp/B01AJXSW5C/ref=sr_1_1?s=electronics&ie=UTF8&qid=1484038368&sr=1-1";
+        String url = FlipkartHelper.getUrlWithAff(u, new String[]{"HASAD_YM", "779eb68b01472b6c"});
 
-        System.out.println(rps.getBodyString());
+        System.out.println(url);
     }
 }

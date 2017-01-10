@@ -88,6 +88,7 @@ CREATE TABLE `t_order` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+DROP TABLE IF EXISTS `t_tag`;
 CREATE TABLE `t_tag` (
   `id`      INT         NOT NULL AUTO_INCREMENT,
   `aid`     VARCHAR(45) NOT NULL,
@@ -103,9 +104,24 @@ CREATE TABLE `t_tag` (
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8;
 
-
-
-
+DROP TABLE IF EXISTS `t_tag2`;
+CREATE TABLE `adp`.`t_tag2` (
+  `id`                    INT         NOT NULL AUTO_INCREMENT,
+  `aid`                   VARCHAR(45) NULL,
+  `OnePlus_3T`            INT         NULL,
+  `Moto_G_Plus_4th_Gen`   INT         NULL,
+  `Lenovo_Vibe_K5_Note`   INT         NULL,
+  `LeEco_Le_1s_Eco`       INT         NULL,
+  `Moto_M`                INT         NULL,
+  `Lenovo_Phab_2`         INT         NULL,
+  `Panasonic_Eluga_Note`  INT         NULL,
+  `SAMSUNG_Galaxy_On8`    INT         NULL,
+  `SAMSUNG_Galaxy_On_Nxt` INT         NULL,
+  `Yu_Yureka_Plus`        INT         NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
 
 
 
