@@ -50,6 +50,8 @@ public class Material {
 
     private List<MaterialCreative> creatives;
 
+    private Integer isDelivery;
+
     public Long getId() {
         return id;
     }
@@ -209,5 +211,13 @@ public class Material {
 
     public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    public Integer getIsDelivery() {
+        return isDelivery;
+    }
+
+    public void setIsDelivery(Integer isDelivery) {
+        this.isDelivery = isDelivery;
     }
 }

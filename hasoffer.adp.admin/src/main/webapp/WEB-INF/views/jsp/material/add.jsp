@@ -113,7 +113,7 @@
                                             </div>
 
                                             <div class="control-group">
-                                                <label class="control-label">链接</label>
+                                                <label class="control-label">链接<span class="required">*</span></label>
                                                 <div class="controls">
                                                     <input type="text" name="url" class="large m-wrap" value="${material.url}"/>
                                                 </div>
@@ -320,9 +320,6 @@
                 url: {
                     required: true,
                     url: true
-                },
-                creativeFile: {
-                    required: true
                 },
                 putPlatform: {
                     required: true

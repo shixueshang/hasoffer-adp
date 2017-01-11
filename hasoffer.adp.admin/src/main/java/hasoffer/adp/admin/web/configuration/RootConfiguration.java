@@ -26,6 +26,14 @@ public class RootConfiguration {
 
     private String clickUrl;
 
+    private String requestPath;
+
+    private String callbackPath;
+
+    private String adimgPath;
+
+    private String adclickPath;
+
     @Bean
     public MessageSource messageSource(){
         ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
@@ -75,5 +83,49 @@ public class RootConfiguration {
 
     public void setClickUrl(String clickUrl) {
         this.clickUrl = clickUrl;
+    }
+
+    public String getRequestPath() {
+        if (requestPath == null) {
+            requestPath = env.getProperty("request_path");
+        }
+        return requestPath;
+    }
+
+    public void setRequestPath(String requestPath) {
+        this.requestPath = requestPath;
+    }
+
+    public String getCallbackPath() {
+        if (callbackPath == null) {
+            callbackPath = env.getProperty("callback_path");
+        }
+        return callbackPath;
+    }
+
+    public void setCallbackPath(String callbackPath) {
+        this.callbackPath = callbackPath;
+    }
+
+    public String getAdimgPath() {
+        if (adimgPath == null) {
+            adimgPath = env.getProperty("adimg_path");
+        }
+        return adimgPath;
+    }
+
+    public void setAdimgPath(String adimgPath) {
+        this.adimgPath = adimgPath;
+    }
+
+    public String getAdclickPath() {
+        if (adclickPath == null) {
+            adclickPath = env.getProperty("adclick_path");
+        }
+        return adclickPath;
+    }
+
+    public void setAdclickPath(String adclickPath) {
+        this.adclickPath = adclickPath;
     }
 }

@@ -1,7 +1,10 @@
 package hasoffer.adp.core.core.test.db;
 
 
+import hasoffer.adp.base.utils.TimeUtils;
 import hasoffer.site.helper.FlipkartHelper;
+
+import java.util.Date;
 
 /**
  * Created by lihongde on 2016/12/22 20:08
@@ -9,16 +12,11 @@ import hasoffer.site.helper.FlipkartHelper;
 public class Test {
 
     public static void main(String[] args) {
-        String s = "      9 2c7c5299d15808a\tSAMSUNG_Galaxy_On8";
+        Date yesterday = new Date(hasoffer.base.utils.TimeUtils.yesterday());
+        System.out.println(yesterday);
 
-        System.out.println(s.trim());
-        System.out.println(s.trim().split("\\t")[1]);
-
-
-        String dd = s.trim().split("\\t")[0];
-
-        System.out.println(dd.split(" ")[0]);
-        System.out.println(dd.split(" ")[1]);
+        Date end = TimeUtils.getEndTimeOfDate(yesterday);
+        System.out.println(end);
 
     }
 

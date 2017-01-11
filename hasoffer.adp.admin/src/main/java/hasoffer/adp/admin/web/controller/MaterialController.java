@@ -10,7 +10,6 @@ import hasoffer.adp.core.enums.AppType;
 import hasoffer.adp.core.enums.Tags;
 import hasoffer.adp.core.models.po.Material;
 import hasoffer.adp.core.models.po.MaterialCreative;
-import hasoffer.adp.core.models.vo.MaterialCreativeVo;
 import hasoffer.adp.core.service.MaterialService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,10 +39,21 @@ import java.util.UUID;
 public class MaterialController extends BaseController{
 
     @Resource
+    RootConfiguration configuration;
+    @Resource
     private MaterialService materialService;
 
-    @Resource
-    RootConfiguration configuration;
+    private static void transferFile(String path, String fileName, MultipartFile file) {
+        File targetFile = new File(path, fileName);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+        try {
+            file.transferTo(targetFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView listMarerial(){
@@ -106,7 +116,6 @@ public class MaterialController extends BaseController{
         return "redirect:/material/list";
     }
 
-
     @RequestMapping(value = "/detail/{id}")
     public String edit(@PathVariable(value = "id") Long id, Model model){
         Material material = materialService.find(id);
@@ -126,18 +135,6 @@ public class MaterialController extends BaseController{
         model.addAttribute("material", material);
         model.addAttribute("creatives", JSON.toJSON(creatives));
         return "material/add";
-    }
-
-    private static void transferFile(String path, String fileName, MultipartFile file) {
-        File targetFile = new File(path, fileName);
-        if (!targetFile.exists()) {
-            targetFile.mkdirs();
-        }
-        try {
-            file.transferTo(targetFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
@@ -160,5 +157,16 @@ public class MaterialController extends BaseController{
 
         return new AjaxJson(Constants.HttpStatus.OK, fileNameList);
 
+    }
+
+    @RequestMapping(value = "/changeDelivery/{id}")
+    public String changeDelivery(@PathVariable(value = "id") Long id) {
+        Material m = materialService.find(id);
+        Integer isDelivery = m.getIsDelivery();
+        m.setIsDelivery(isDelivery == 1 ? 0 : 1);
+
+        materialService.update(m);
+
+        return "redirect:/material/list";
     }
 }

@@ -28,7 +28,7 @@ public interface IMaterialDao {
     void insert(Material material);
 
     @Update("update t_material set title=#{title}, subTitle=#{subTitle}, description=#{description}, btnText=#{btnText}, openWay=#{openWay}, price=#{price}, url=#{url}, putCountry=#{putCountry}, icon=#{icon}, " +
-            "putPlatform=#{putPlatform}, minVersion=#{minVersion}, maxVersion=#{maxVersion}, appType=#{appType}, settlementWay=#{settlementWay}, dailyRunning=#{dailyRunning}, tags=#{tags} where id=#{id}")
+            "putPlatform=#{putPlatform}, minVersion=#{minVersion}, maxVersion=#{maxVersion}, appType=#{appType}, settlementWay=#{settlementWay}, dailyRunning=#{dailyRunning}, tags=#{tags}, isDelivery=#{isDelivery} where id=#{id}")
     @Transactional
     void update(Material material);
 
@@ -46,7 +46,7 @@ public interface IMaterialDao {
     @Select("select * from t_material where tags like CONCAT('%','${tags}','%')")
     List<Material> findLikeByTag(@Param("tags") String tag);
 
-    @Select("select * from t_material")
+    @Select("select * from t_material where isDelivery = 1")
     List<Material> findAllMaterials();
 
 }

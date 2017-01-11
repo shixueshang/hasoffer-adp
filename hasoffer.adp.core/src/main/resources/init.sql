@@ -32,6 +32,11 @@ CREATE TABLE `t_material` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='素材表';
 
+ALTER TABLE `t_material`
+ADD COLUMN `isDelivery` TINYINT(1) NULL DEFAULT 1
+COMMENT '是否投放'
+AFTER `tags`;
+
 
 DROP TABLE IF EXISTS `t_equipment`;
 CREATE TABLE `t_equipment` (
@@ -124,6 +129,18 @@ CREATE TABLE `adp`.`t_tag2` (
   DEFAULT CHARACTER SET = utf8;
 
 
-
+DROP TABLE IF EXISTS `t_access_log`;
+CREATE TABLE `t_access_log` (
+  `id`          INT  NOT NULL AUTO_INCREMENT,
+  `date`        DATE NULL,
+  `requests`    INT  NULL,
+  `pvCallback`  INT  NULL,
+  `pvClicks`    INT  NULL,
+  `imgRequests` INT  NULL,
+  `clicks`      INT  NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
 
 

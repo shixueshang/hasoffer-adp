@@ -41,9 +41,9 @@
                                     <td>价格</td>
                                     <td>链接</td>
                                     <td>投放国家</td>
-                                    <td>投放icon</td>
                                     <td>投放平台</td>
                                     <td>投放标签</td>
+                                    <td>是否投放</td>
                                     <td width="80px">操作</td>
                                 </tr>
                                 </thead>
@@ -66,16 +66,31 @@
                                         <td>${material.price}</td>
                                         <td>${material.url}</td>
                                         <td>${material.putCountry}</td>
-                                        <td>
-                                            <c:if test="${not empty material.icon}">
-                                                <img src="${material.icon}" alt="" height="100px;" width="200px"/>
-                                            </c:if>
-                                        </td>
                                         <td>${material.putPlatform}</td>
                                         <td>${material.tags}</td>
                                         <td>
-                                            <a href="<%=request.getContextPath()%>/material/detail/${material.id}" class="btn mini purple"><i class="icon-edit"></i> 编辑</a>
+                                            <c:choose>
+                                                <c:when test="${material.isDelivery == '1'}">
+                                                    <span class="label label-success">是</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="label label-warning">否</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
+                                        <td>
+                                            <a href="<%=request.getContextPath()%>/material/detail/${material.id}" class="btn mini purple"><i class="icon-edit"></i> 编辑</a>
+                                            <c:if test="${material.isDelivery == '1'}">
+                                                <a href="<%=request.getContextPath()%>/material/changeDelivery/${material.id}"
+                                                   class="btn mini purple"> 取消投放</a>
+                                            </c:if>
+                                            <c:if test="${material.isDelivery == '0'}">
+                                                <a href="<%=request.getContextPath()%>/material/changeDelivery/${material.id}"
+                                                   class="btn mini purple"> 投放</a>
+                                            </c:if>
+
+                                        </td>
+
                                     </tr>
                                 </c:forEach>
                                 </tbody>

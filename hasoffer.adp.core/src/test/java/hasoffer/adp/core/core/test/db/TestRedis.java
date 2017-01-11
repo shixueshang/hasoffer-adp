@@ -98,9 +98,20 @@ public class TestRedis {
     }
 
     @Test
+    public void del() {
+        Map<String, Object> map = redisMapService.getMap(Constants.REDIS_MAP_KEY.AIDTAGMAP);
+        System.out.println(map.size());
+        for (Map.Entry entry : map.entrySet()) {
+            redisMapService.delKeys(Constants.REDIS_MAP_KEY.AIDTAGMAP, entry.getKey());
+        }
+
+    }
+
+    @Test
     public void testGet() {
         Map<String, Object> map = redisMapService.getMap(Constants.REDIS_MAP_KEY.AIDTAGMAP);
         System.out.println(map.size());
+        System.out.println(map.get("1001ac218f269703"));
     }
 
     @Test

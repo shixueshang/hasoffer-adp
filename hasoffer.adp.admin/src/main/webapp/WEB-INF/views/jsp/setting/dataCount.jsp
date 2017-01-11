@@ -7,7 +7,7 @@
 <jsp:include page="../include/header.jsp"/>
 
 <link rel="stylesheet"
-      href="<%=request.getContextPath()%>/assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+      href="<%=request.getContextPath()%>/assets/bootstrap-datepicker/css/datepicker.css">
 <body class="fixed-top">
 <jsp:include page="../include/nav.jsp"/>
 
@@ -28,19 +28,18 @@
                 </div>
             </div>
 
-
             <div class="row-fluid">
-                <div class="span12">
-                    <label class="control-label">起始时间</label>
-                    <input type="text" id="dateTimeStart" class="form_datetime" data-date-format="yyyy-mm-dd hh:ii:ss"
-                           pattern="yyyy-MM-dd HH:mm:ss"/>
+                <form class="form-inline" action="<%=request.getContextPath()%>/data/find" method="get">
+                    <div class="form-group">
+                        <label class="control-label">起始日期</label>
+                        <input type="text" id="dateTimeStart" name="dateTimeStart" class="form-control datepicker"/>
 
-                    <label class="control-label">截止时间</label>
-                    <input type="text" id="dateTimeEnd" class="form_datetime" data-date-format="yyyy-mm-dd hh:ii:ss"
-                           pattern="yyyy-MM-dd HH:mm:ss"/>
+                        <label class="control-label">截止日期</label>
+                        <input type="text" id="dateTimeEnd" name="dateTimeEnd" class="form-control datepicker"/>
+                        <button type="submit" class="btn blue searchBtn"><i class="icon-search"></i> 查询</button>
+                    </div>
+                </form>
 
-                    <button type="button" class="btn blue searchBtn"><i class="icon-search"></i> 查询</button>
-                </div>
             </div>
             <div class="row-fluid">
                 <div class="span12">
@@ -52,6 +51,7 @@
                             <table class="table table-bordered table-hover" id="dataCount">
                                 <thead>
                                 <tr>
+                                    <td>日期</td>
                                     <td>请求数</td>
                                     <td>pv回调数</td>
                                     <td>click回调数</td>
@@ -61,7 +61,16 @@
                                 </thead>
 
                                 <tbody>
-
+                                <c:forEach items="${logs}" var="log">
+                                    <tr>
+                                        <td>${log.date}</td>
+                                        <td>${log.requests}</td>
+                                        <td>${log.pvCallback}</td>
+                                        <td>${log.pvClicks}</td>
+                                        <td>${log.imgRequests}</td>
+                                        <td>${log.clicks}</td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -76,34 +85,23 @@
 <jsp:include page="../include/footer.jsp"/>
 
 <script type="text/javascript"
-        src="<%=request.getContextPath()%>/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+        src="<%=request.getContextPath()%>/assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
 <script>
 
-    $("#dateTimeStart").datetimepicker();
-    $("#dateTimeEnd").datetimepicker();
-
-    $(".searchBtn").click(function () {
-        var dateTimeStart = $("#dateTimeStart").val();
-        var dateTimeEnd = $("#dateTimeEnd").val();
-        $.ajax({
-            url: "<%=request.getContextPath()%>/data/find",
-            type: "GET",
-            data: {dateTimeStart: dateTimeStart, dateTimeEnd: dateTimeEnd},
-            dataType: "json",
-            contentType: "application/json",
-            success: function (data) {
-                console.info(data);
-
-                var tBody = "<tr> <td>" + data.data.reqCount + "</td> <td>" + data.data.pvCallCount + "</td> <td>" + data.data.clickCallCount + "</td> <td>" + data.data.imgCount + "</td> <td>" + data.data.clickCount + "</td></tr>";
-
-                $("#dataCount tbody").html(tBody);
-            },
-            error: function (data) {
-
-            }
+    $(function () {
+        $("#dateTimeStart").datepicker({
+            format: 'yyyy-mm-dd',
+            startView: 'day',
+            autoclose: true,
+            defaultDate: new Date()
+        });
+        $("#dateTimeEnd").datepicker({
+            format: 'yyyy-mm-dd',
+            startView: 'day',
+            autoclose: true,
+            defaultDate: new Date()
         });
     })
-
 
 </script>
