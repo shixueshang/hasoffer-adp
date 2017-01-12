@@ -8,6 +8,7 @@ import hasoffer.adp.core.models.po.AccessLog;
 import hasoffer.adp.core.service.AccessLogService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,7 +63,8 @@ public class DeliveryDataController extends BaseController {
     }
 
     @RequestMapping(value = "/data/list")
-    public String countPage() {
+    public String countPage(Model model) {
+        model.addAttribute("url", "/data/list");
         return "setting/dataCount";
     }
 
@@ -72,7 +74,9 @@ public class DeliveryDataController extends BaseController {
         Page<AccessLog> pageResult = accessLogService.findPage(page, size, dateTimeStart, dateTimeEnd);
         mav.addObject("page", PageHelper.getPageModel(request, pageResult));
         mav.addObject("logs", pageResult.getItems());
-        mav.addObject("url", "data");
+        mav.addObject("url", "/data/list");
+        mav.addObject("dateTimeStart", dateTimeStart);
+        mav.addObject("dateTimeEnd", dateTimeEnd);
         return mav;
     }
 

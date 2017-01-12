@@ -20,7 +20,7 @@ public class Test {
 
     @org.junit.Test
     public void t2() {
-        String u = "http://www.amazon.in/iPaky-Luxury-Quality-Ultra-Thin-Silicon/dp/B01AJXSW5C/ref=sr_1_1?s=electronics&ie=UTF8&qid=1484038368&sr=1-1";
+        String u = "https://www.flipkart.com/ipaky-back-cover-xiaomi-redmi-note-3/p/itmeg6eakadfhfzb?pid=ACCEG6EAGFFYZSKR";
         String url = FlipkartHelper.getUrlWithAff(u, new String[]{"HASAD_YM", "779eb68b01472b6c"});
 
         System.out.println(url);

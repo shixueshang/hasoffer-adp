@@ -32,10 +32,14 @@
                 <form class="form-inline" action="<%=request.getContextPath()%>/data/find" method="get">
                     <div class="form-group">
                         <label class="control-label">起始日期</label>
-                        <input type="text" id="dateTimeStart" name="dateTimeStart" class="form-control datepicker"/>
+                        <input type="text" id="dateTimeStart" name="dateTimeStart"
+                               value="<fmt:formatDate value="${dateTimeStart}" pattern="yyyy-MM-dd"/>"
+                               class="form-control datepicker"/>
 
-                        <label class="control-label">截止日期</label>
-                        <input type="text" id="dateTimeEnd" name="dateTimeEnd" class="form-control datepicker"/>
+                        <label class="control-label" style="margin-left: 20px">截止日期</label>
+                        <input type="text" id="dateTimeEnd" name="dateTimeEnd"
+                               value="<fmt:formatDate value="${dateTimeEnd}" pattern="yyyy-MM-dd"/>"
+                               class="form-control datepicker"/>
                         <button type="submit" class="btn blue searchBtn"><i class="icon-search"></i> 查询</button>
                     </div>
                 </form>
