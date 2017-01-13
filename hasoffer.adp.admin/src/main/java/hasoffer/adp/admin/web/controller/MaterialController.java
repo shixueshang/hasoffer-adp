@@ -72,7 +72,6 @@ public class MaterialController extends BaseController{
         }
         mav.addObject("page", PageHelper.getPageModel(request, pageResult));
         mav.addObject("materials", list);
-        mav.addObject("url", "/material/list");
         return mav;
     }
 
@@ -80,7 +79,6 @@ public class MaterialController extends BaseController{
     public String create(Model model){
         model.addAttribute("appTypes", AppType.buildAppTypes());
         model.addAttribute("tags", Tags.bulidTags());
-        model.addAttribute("url", "/material/create");
         return "material/add";
     }
 

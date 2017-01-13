@@ -13,7 +13,6 @@ import hasoffer.adp.core.service.MaterialService;
 import hasoffer.base.utils.StringUtils;
 import hasoffer.data.redis.IRedisMapService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,8 +43,7 @@ public class TaskController extends BaseController {
     RootConfiguration configuration;
 
     @RequestMapping(value = "/loadRedisData", method = RequestMethod.GET)
-    public String task(Model model) {
-        model.addAttribute("url", "/task");
+    public String task() {
 
         return "setting/task";
     }

@@ -31,6 +31,9 @@ public class ContextInterceptor implements HandlerInterceptor {
 
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o,
                            ModelAndView modelAndView) throws Exception {
+
+        String uri = httpServletRequest.getRequestURI();
+        httpServletRequest.setAttribute("uri", uri);
         if (modelAndView != null) {
 
         }

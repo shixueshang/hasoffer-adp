@@ -26,7 +26,6 @@ public class DeliverySwitchController extends BaseController {
 
         Map<String, Object> map = redisMapService.getMap(Constants.REDIS_MAP_KEY.DELIVERYSWITCH);
         model.addAttribute("servers", map);
-        model.addAttribute("url", "switch");
         return "setting/listServers";
     }
 
