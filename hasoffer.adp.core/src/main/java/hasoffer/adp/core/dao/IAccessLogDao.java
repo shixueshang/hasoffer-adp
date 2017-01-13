@@ -20,7 +20,7 @@ public interface IAccessLogDao {
     @Transactional
     void insert(AccessLog log);
 
-    @Select("select * from t_access_log where date between #{dateTimeStart} and #{dateTimeEnd} limit #{offset}, #{size}")
+    @Select("select * from t_access_log where date between #{dateTimeStart} and #{dateTimeEnd} order by date limit #{offset}, #{size} ")
     List<AccessLog> findPage(@Param("offset") int offset, @Param("size") int size, @Param("dateTimeStart") Date dateTimeStart, @Param("dateTimeEnd") Date dateTimeEnd);
 
     @Select("select count(*) from t_access_log where date between #{dateTimeStart} and #{dateTimeEnd} limit #{offset}, #{size}")

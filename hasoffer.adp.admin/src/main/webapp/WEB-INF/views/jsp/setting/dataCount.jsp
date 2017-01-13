@@ -59,8 +59,10 @@
                                     <td>请求数</td>
                                     <td>pv回调数</td>
                                     <td>click回调数</td>
+                                    <td>回调点击率</td>
                                     <td>图片请求数</td>
                                     <td>点击数</td>
+                                    <td>点击率</td>
                                 </tr>
                                 </thead>
 
@@ -71,8 +73,14 @@
                                         <td>${log.requests}</td>
                                         <td>${log.pvCallback}</td>
                                         <td>${log.pvClicks}</td>
+                                        <td><fmt:formatNumber value="${(log.pvClicks / log.pvCallback) * 100 }"
+                                                              pattern="#.###" minFractionDigits="3"/> %
+                                        </td>
                                         <td>${log.imgRequests}</td>
                                         <td>${log.clicks}</td>
+                                        <td><fmt:formatNumber value="${(log.clicks / log.imgRequests) * 100 }"
+                                                              pattern="#.###" minFractionDigits="3"/> %
+                                        </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
@@ -83,6 +91,7 @@
             </div>
 
         </div>
+        <jsp:include page="../include/page.jsp"/>
     </div>
 </div>
 

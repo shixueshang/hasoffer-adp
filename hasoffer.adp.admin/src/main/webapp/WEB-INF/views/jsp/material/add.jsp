@@ -228,6 +228,7 @@
 
 
                                             <div class="form-actions">
+                                                <input name="isDelivery" type="hidden" value="${material.isDelivery}"/>
                                                 <input name="id" type="hidden" id="materialId" value="${material.id}"/>
                                                 <button type="submit" class="btn blue"><i class="icon-ok"></i> 保存</button>
                                             </div>
