@@ -72,7 +72,7 @@ public class DeliveryDataController extends BaseController {
         mailInfo.setFromAddress(rootConfiguration.getMailFromaddress());
         mailInfo.setToAddress(rootConfiguration.getMailToaddress());
         mailInfo.setSubject("日志统计");
-        String content = "请求数 : " + reqs + "\n" + "pv回调数 : " + pvCall + "\n" + "pv点击数 : " + pvClick + "\n" + "图片请求 : " + imgs + "\n" + "点击数 : " + clicks;
+        String content = "请求数 : " + reqs + "\n" + "pv回调数 : " + pvCall + "\n" + "pv点击数 : " + pvClick + "\n" + "图片请求数 : " + imgs + "\n" + "点击数 : " + clicks;
         mailInfo.setContent(content);
 
         SimpleMailSender sms = new SimpleMailSender();
