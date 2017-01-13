@@ -35,7 +35,7 @@ public class DeliveryDataController extends BaseController {
     @Resource
     AccessLogService accessLogService;
 
-    @Scheduled(cron = "0 0/2 * * * ? ")
+    @Scheduled(cron = "0 0 1 * * ? ")
     public void reqCount() {
 
         String requestPath = rootConfiguration.getRequestPath();
@@ -83,7 +83,6 @@ public class DeliveryDataController extends BaseController {
     private int count(File file, boolean flag, String str) {
         BufferedReader reader = null;
         Date yesterday = new Date(hasoffer.base.utils.TimeUtils.yesterday());
-        System.out.println("yesterday : " + yesterday);
         int count = 0;
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -101,7 +100,6 @@ public class DeliveryDataController extends BaseController {
 
                 Date logTime = TimeUtils.parseUSDate(time, DATE_PATTERN);
                 if (TimeUtils.getStartTimeOfDate(yesterday).getTime() < logTime.getTime() && logTime.getTime() < TimeUtils.getEndTimeOfDate(yesterday).getTime()) {
-                    System.out.println("logTime : " + logTime);
                     if (flag) {
                         if (reqUrl.contains(str)) {
                             count++;
