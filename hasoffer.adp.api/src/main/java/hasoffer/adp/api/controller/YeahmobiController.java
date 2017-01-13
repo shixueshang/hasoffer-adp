@@ -61,7 +61,7 @@ public class YeahmobiController extends BaseController {
                                               @RequestParam(value = "imgh", defaultValue = "900") int height) {
 
         /**
-         * 根据机器mac地址,给每台机器设置全投或不投开关
+         * 根据机器mac地址,给每台机器设置通投或不投开关,如果某台机器设置了通投并且没有匹配的素材则随机选取一个素材投放
          */
         String mac = FileUtil.getMacAddress();
         String dswitch = (String) redisMapService.getValue(Constants.REDIS_MAP_KEY.DELIVERYSWITCH, mac);
@@ -75,7 +75,6 @@ public class YeahmobiController extends BaseController {
         Map<String, Object> result = new ConcurrentHashMap<>();
         if (StringUtils.isEmpty(androidid)) {
             if (flag) {
-                //随机选取一个androidid
                 Set<String> aids = redisMapService.getKeys(Constants.REDIS_MAP_KEY.AIDTAGMAP);
                 androidid = FileUtil.getRandomElement(aids);
             } else {
@@ -87,7 +86,6 @@ public class YeahmobiController extends BaseController {
         Object eq = redisMapService.getValue(Constants.REDIS_MAP_KEY.AIDTAGMAP, androidid);
         if (eq == null) {
             if (flag) {
-                //随机选取一个tag
                 Set<String> tags = redisMapService.getKeys(Constants.REDIS_MAP_KEY.MATTAGMAP);
                 eq = FileUtil.getRandomElement(tags);
             } else {
@@ -100,7 +98,6 @@ public class YeahmobiController extends BaseController {
         Object mids = redisMapService.getValue(Constants.REDIS_MAP_KEY.MATTAGMAP, tags[0]);
         if (mids == null) {
             if (flag) {
-                //随机选取一个素材
                 Set<String> matids = redisMapService.getKeys(Constants.REDIS_MAP_KEY.MRESULT);
                 mids = FileUtil.getRandomElement(matids);
             } else {
@@ -114,7 +111,6 @@ public class YeahmobiController extends BaseController {
         Object m = redisMapService.getValue(Constants.REDIS_MAP_KEY.MRESULT, mid);
         if (m == null) {
             if (flag) {
-                //随机选取一个素材
                 Set<String> matids = redisMapService.getKeys(Constants.REDIS_MAP_KEY.MRESULT);
                 String matid = FileUtil.getRandomElement(matids);
                 m = redisMapService.getValue(Constants.REDIS_MAP_KEY.MRESULT, matid);

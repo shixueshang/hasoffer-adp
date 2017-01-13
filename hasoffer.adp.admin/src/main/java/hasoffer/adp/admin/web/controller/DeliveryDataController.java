@@ -35,7 +35,7 @@ public class DeliveryDataController extends BaseController {
     @Resource
     AccessLogService accessLogService;
 
-    @Scheduled(cron = "0 0 1 * * ? ")
+    @Scheduled(cron = "0 0/2 * * * ? ")
     public void reqCount() {
 
         String requestPath = rootConfiguration.getRequestPath();
