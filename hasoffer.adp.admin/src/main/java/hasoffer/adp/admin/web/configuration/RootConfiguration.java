@@ -34,6 +34,18 @@ public class RootConfiguration {
 
     private String adclickPath;
 
+    private String mailHost;
+
+    private int mailPort;
+
+    private String mailUsername;
+
+    private String mailPassword;
+
+    private String mailFromaddress;
+
+    private String mailToaddress;
+
     @Bean
     public MessageSource messageSource(){
         ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
@@ -127,5 +139,71 @@ public class RootConfiguration {
 
     public void setAdclickPath(String adclickPath) {
         this.adclickPath = adclickPath;
+    }
+
+    public String getMailHost() {
+        if (mailHost == null) {
+            mailHost = env.getProperty("mail_host");
+        }
+        return mailHost;
+    }
+
+    public void setMailHost(String mailHost) {
+        this.mailHost = mailHost;
+    }
+
+    public int getMailPort() {
+        if (mailPort == 0) {
+            mailPort = Integer.parseInt(env.getProperty("mail_port"));
+        }
+        return mailPort;
+    }
+
+    public void setMailPort(int mailPort) {
+        this.mailPort = mailPort;
+    }
+
+    public String getMailUsername() {
+        if (mailUsername == null) {
+            mailUsername = env.getProperty("mail_username");
+        }
+        return mailUsername;
+    }
+
+    public void setMailUsername(String mailUsername) {
+        this.mailUsername = mailUsername;
+    }
+
+    public String getMailPassword() {
+        if (mailPassword == null) {
+            mailPassword = env.getProperty("mail_password");
+        }
+        return mailPassword;
+    }
+
+    public void setMailPassword(String mailPassword) {
+        this.mailPassword = mailPassword;
+    }
+
+    public String getMailFromaddress() {
+        if (mailFromaddress == null) {
+            mailFromaddress = env.getProperty("mail_fromaddress");
+        }
+        return mailFromaddress;
+    }
+
+    public void setMailFromaddress(String mailFromaddress) {
+        this.mailFromaddress = mailFromaddress;
+    }
+
+    public String getMailToaddress() {
+        if (mailToaddress == null) {
+            mailToaddress = env.getProperty("mail_toaddress");
+        }
+        return mailToaddress;
+    }
+
+    public void setMailToaddress(String mailToaddress) {
+        this.mailToaddress = mailToaddress;
     }
 }

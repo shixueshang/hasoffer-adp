@@ -2,6 +2,8 @@ package hasoffer.adp.admin.web.controller;
 
 import hasoffer.adp.admin.web.configuration.RootConfiguration;
 import hasoffer.adp.base.utils.TimeUtils;
+import hasoffer.adp.base.utils.mail.MailSenderInfo;
+import hasoffer.adp.base.utils.mail.SimpleMailSender;
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.base.utils.page.PageHelper;
 import hasoffer.adp.core.models.po.AccessLog;
@@ -58,6 +60,28 @@ public class DeliveryDataController extends BaseController {
 
         System.out.println("start insert log......");
         accessLogService.insert(log);
+
+
+        //发送邮件
+        MailSenderInfo mailInfo = new MailSenderInfo();
+        mailInfo.setMailServerHost(rootConfiguration.getMailHost());
+        mailInfo.setMailServerPort(rootConfiguration.getMailPort());
+        mailInfo.setValidate(true);
+        mailInfo.setUserName(rootConfiguration.getMailUsername());
+        mailInfo.setPassword(rootConfiguration.getMailPassword());
+        mailInfo.setFromAddress(rootConfiguration.getMailFromaddress());
+        mailInfo.setToAddress(rootConfiguration.getMailToaddress());
+        mailInfo.setSubject("日志统计");
+        String content = "请求数 : " + reqs + "\n" + "pv回调数 : " + pvCall + "\n" + "pv点击数 : " + pvClick + "\n" + "图片请求 : " + imgs + "\n" + "点击数 : " + clicks;
+        mailInfo.setContent(content);
+
+        SimpleMailSender sms = new SimpleMailSender();
+        try {
+            sms.sendTextMail(mailInfo);
+            System.out.println("send mail success....");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
