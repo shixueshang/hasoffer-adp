@@ -82,6 +82,8 @@ public class DeliveryDataController extends BaseController {
 
     private int count(File file, boolean flag, String str) {
         BufferedReader reader = null;
+        Date yesterday = new Date(hasoffer.base.utils.TimeUtils.yesterday());
+        System.out.println("yesterday : " + yesterday);
         int count = 0;
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -98,8 +100,8 @@ public class DeliveryDataController extends BaseController {
                 String reqUrl = tempString.split("GET")[1];
 
                 Date logTime = TimeUtils.parseUSDate(time, DATE_PATTERN);
-                Date yesterday = new Date(hasoffer.base.utils.TimeUtils.yesterday());
-                if (TimeUtils.getStartTimeOfDate(yesterday).before(logTime) && logTime.before(TimeUtils.getEndTimeOfDate(yesterday))) {
+                if (TimeUtils.getStartTimeOfDate(yesterday).getTime() < logTime.getTime() && logTime.getTime() < TimeUtils.getEndTimeOfDate(yesterday).getTime()) {
+                    System.out.println("logTime : " + logTime);
                     if (flag) {
                         if (reqUrl.contains(str)) {
                             count++;
