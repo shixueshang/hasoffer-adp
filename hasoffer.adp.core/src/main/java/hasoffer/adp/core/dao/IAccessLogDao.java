@@ -1,6 +1,7 @@
 package hasoffer.adp.core.dao;
 
 import hasoffer.adp.core.models.po.AccessLog;
+import hasoffer.adp.core.models.po.AccessLogDetail;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -25,4 +26,9 @@ public interface IAccessLogDao {
 
     @Select("select count(*) from t_access_log where date between #{dateTimeStart} and #{dateTimeEnd} limit #{offset}, #{size}")
     int count(@Param("offset") int offset, @Param("size") int size, @Param("dateTimeStart") Date dateTimeStart, @Param("dateTimeEnd") Date dateTimeEnd);
+
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Insert("insert into t_access_log_detail(date, mid, pvCallback, pvClicks, imgRequests, clicks) values (#{date}, #{mid}, #{pvCallback}, #{pvClicks}, #{imgRequests}, #{clicks})")
+    @Transactional
+    void insertLogDetail(AccessLogDetail logDetail);
 }

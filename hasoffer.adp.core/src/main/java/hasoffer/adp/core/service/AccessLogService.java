@@ -3,6 +3,7 @@ package hasoffer.adp.core.service;
 import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.core.dao.IAccessLogDao;
 import hasoffer.adp.core.models.po.AccessLog;
+import hasoffer.adp.core.models.po.AccessLogDetail;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,5 +28,9 @@ public class AccessLogService {
         List<AccessLog> list = dao.findPage(offset, size, dateTimeStart, dateTimeEnd);
         int count = dao.count(offset, size, dateTimeStart, dateTimeEnd);
         return new Page<AccessLog>(page, size, count, list);
+    }
+
+    public void insertLogDetail(AccessLogDetail logDetail) {
+        dao.insertLogDetail(logDetail);
     }
 }

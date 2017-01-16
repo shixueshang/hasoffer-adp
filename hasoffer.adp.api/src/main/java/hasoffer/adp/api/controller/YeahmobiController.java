@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hasoffer.adp.base.utils.Constants;
 import hasoffer.adp.base.utils.FileUtil;
 import hasoffer.data.redis.IRedisMapService;
-import hasoffer.site.helper.FlipkartHelper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping(value = "/ym")
 public class YeahmobiController extends BaseController {
 
-    private static final String CLICK_PREF_URL = "http://adclick.hasoffer.cn/rd?url=%s";
+    private static final String CLICK_PREF_URL = "http://adclick.hasoffer.cn/rd?ad=%s&url=%s";
 
     private static final String AD_CHANNEL = "HASAD_YM";
 
@@ -137,9 +136,9 @@ public class YeahmobiController extends BaseController {
             }
             result.put("imp_tks", itarr);
 
-            String url = FlipkartHelper.getUrlWithAff(result.get("clk_url").toString(), new String[]{AD_CHANNEL, androidid});
+            //String url = FlipkartHelper.getUrlWithAff(result.get("clk_url").toString(), new String[]{AD_CHANNEL, androidid});
 
-            String nurl = String.format(CLICK_PREF_URL, hasoffer.base.utils.StringUtils.urlEncode(url));
+            String nurl = String.format(CLICK_PREF_URL, mid, hasoffer.base.utils.StringUtils.urlEncode(result.get("clk_url").toString() + "&affid=189103703"));
 
             result.put("clk_url", nurl);
             result.put("error_msg", "ok");

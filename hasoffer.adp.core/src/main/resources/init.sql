@@ -143,4 +143,16 @@ CREATE TABLE `t_access_log` (
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8;
 
-
+DROP TABLE IF EXISTS `t_access_log_detail`;
+CREATE TABLE `t_access_log_detail` (
+  `id`          INT  NOT NULL AUTO_INCREMENT,
+  `date`        DATE NULL,
+  `mid`         INT  NULL,
+  `pvCallback`  INT  NULL,
+  `pvClicks`    INT  NULL,
+  `imgRequests` INT  NULL,
+  `clicks`      INT  NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
