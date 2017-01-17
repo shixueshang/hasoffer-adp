@@ -96,4 +96,15 @@ public class Constants {
 
     }
 
+
+    public static class LOG_TYPE {
+        public static final String PV_CALLBACK = "pvCallback";
+
+        public static final String PV_CLICKS = "pvClicks";
+
+        public static final String IMG_REQUESTS = "imgRequests";
+
+        public static final String CLICKS = "clicks";
+    }
+
 }

@@ -40,6 +40,17 @@ public class TimeUtils {
         return format.format(date);
     }
 
+    public static final Date parseDate(String strDate, String datePattern) {
+        SimpleDateFormat df = null;
+        Date date = null;
+        df = new SimpleDateFormat(datePattern);
+        try {
+            date = df.parse(strDate);
+        } catch (ParseException pe) {
+        }
+        return date;
+    }
+
     public static final Date parseUSDate(String strDate, String datePattern) {
         SimpleDateFormat df = null;
         Date date = null;
@@ -83,6 +94,11 @@ public class TimeUtils {
         return calendar.getTime();
     }
 
-
+    public static Date getFirstDayOfMonth() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        return c.getTime();
+    }
 
 }

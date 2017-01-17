@@ -4,6 +4,7 @@ import hasoffer.adp.base.utils.page.Page;
 import hasoffer.adp.core.dao.IAccessLogDao;
 import hasoffer.adp.core.models.po.AccessLog;
 import hasoffer.adp.core.models.po.AccessLogDetail;
+import hasoffer.adp.core.models.vo.AccessLogDetailVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,5 +33,9 @@ public class AccessLogService {
 
     public void insertLogDetail(AccessLogDetail logDetail) {
         dao.insertLogDetail(logDetail);
+    }
+
+    public List<AccessLogDetailVo> findLogDetail(String dateStr) {
+        return dao.findLogDetail(dateStr);
     }
 }

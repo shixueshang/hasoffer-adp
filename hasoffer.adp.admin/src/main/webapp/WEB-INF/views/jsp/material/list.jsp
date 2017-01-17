@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-
 <jsp:include page="../include/header.jsp"/>
 <body class="fixed-top">
 <jsp:include page="../include/nav.jsp"/>
@@ -36,12 +35,8 @@
                                 <tr>
                                     <td>标题</td>
                                     <td>按钮文字</td>
-                                    <td>结算方式</td>
-                                    <td>打开方式</td>
-                                    <td>价格</td>
+                                    <td>素材图片</td>
                                     <td>链接</td>
-                                    <td>投放国家</td>
-                                    <td>投放平台</td>
                                     <td>投放标签</td>
                                     <td>是否投放</td>
                                     <td width="80px">操作</td>
@@ -52,21 +47,10 @@
                                     <tr>
                                         <td>${material.title}</td>
                                         <td>${material.btnText}</td>
-                                        <td width="60px">${material.settlementWay}</td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${material.openWay == 'inner'}">
-                                                    内部
-                                                </c:when>
-                                                <c:otherwise>
-                                                    外部
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                        <td>${material.price}</td>
+                                        <td><c:forEach items="${material.creatives}" var="creative">
+                                            <img src="${creative.url}" width="300" height="200"/>
+                                        </c:forEach></td>
                                         <td>${material.url}</td>
-                                        <td>${material.putCountry}</td>
-                                        <td>${material.putPlatform}</td>
                                         <td>${material.tags}</td>
                                         <td>
                                             <c:choose>

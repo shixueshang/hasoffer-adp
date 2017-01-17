@@ -2,6 +2,7 @@ package hasoffer.adp.core.dao;
 
 import hasoffer.adp.core.models.po.AccessLog;
 import hasoffer.adp.core.models.po.AccessLogDetail;
+import hasoffer.adp.core.models.vo.AccessLogDetailVo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -31,4 +32,7 @@ public interface IAccessLogDao {
     @Insert("insert into t_access_log_detail(date, mid, pvCallback, pvClicks, imgRequests, clicks) values (#{date}, #{mid}, #{pvCallback}, #{pvClicks}, #{imgRequests}, #{clicks})")
     @Transactional
     void insertLogDetail(AccessLogDetail logDetail);
+
+    @Select("SELECT t.*, m.title FROM t_access_log_detail as t left join t_material as m on t.mid = m.id where date = #{date}")
+    List<AccessLogDetailVo> findLogDetail(@Param("date") String dateStr);
 }

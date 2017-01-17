@@ -122,7 +122,7 @@ public class TaskController extends BaseController {
                 arp.setCrid(m.getId().toString());
                 arp.setTitle(m.getTitle());
                 arp.setDesc(m.getDescription());
-                arp.setImg(configuration.getDomainUrl() + m.getCreatives().get(0).getUrl() + "&ad=" + m.getId());
+                arp.setImg(configuration.getDomainUrl() + m.getCreatives().get(0).getUrl() + "?ad=" + m.getId());
                 arp.setImgw(m.getCreatives().get(0).getWidth());
                 arp.setImgh(m.getCreatives().get(0).getHeight());
                 if (!StringUtils.isEmpty(m.getIcon())) {
